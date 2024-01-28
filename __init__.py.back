@@ -1,0 +1,38 @@
+from flask import Flask
+import os, sys
+import importlib
+
+# Globally accessible libraries
+# conditionally import the correct library depending on env vartiables describing the EPD size
+libdir = "./e-Paper/RaspberryPi_JetsonNano/python/lib"
+if os.path.exists(libdir):
+    sys.path.append(libdir)
+waveshare_epd_revision = os.getenv("WAVESHARE_EPD_REVISION", "2")
+waveshare_epd_model = os.getenv("WAVESHARE_EPD_MODEL", "2in7")
+epd_lib = importlib.import_module("waveshare_epd.epd"+waveshare_epd_model+"_V"+waveshare_epd_revision)
+
+def init_screen():
+    try:
+        epd = epd_lib.EPD()
+        logging.debug("Initialize screen")
+        epd.init()
+        epd.Clear()
+        return epd
+    except IOError as e:
+        logging.exception(e)
+
+def init_app():
+    """Initialize the core application."""
+    app = Flask(__name__, instance_relative_config=False)
+    app.config.from_object('config.Config')
+
+    # Initialize Plugins
+
+    with app.app_context():
+        # before_first_request equivalent here
+        epd = init_screen()
+        # Include our Routes
+        from . import routes
+
+        return app
+
