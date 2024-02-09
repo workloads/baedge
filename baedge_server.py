@@ -101,20 +101,20 @@ def clear_post():
 app.route(ROUTE_API_VERSION + ROUTE_NAMESPACE_DEVICE + "/write", methods=['POST'])
 def write_post():
     """ screen-writing endpoint """
-    logging.debug("[write_post] attempting to write to screen")
+    logging.debug("[write_post] attempt to write to screen")
 
     # get data from request and parse as JSON
     data = request.get_json(force=True)
 
     if data.get('text'):
         baedge.write_text(data.get('text'), data.get('style'))
-        logging.debug("[write_post] writing text to screen")
+        logging.debug("[write_post] write text to screen")
 
         response = make_response("OK", 200)
 
     elif data.get('image'):
         baedge.write_image(data.get('image'))
-        logging.debug("[write_post] writing image to screen")
+        logging.debug("[write_post] write image to screen")
 
         response = make_response("OK", 200)
 
