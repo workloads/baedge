@@ -68,7 +68,6 @@ def write_text(text, style):
     logging.debug("[write_to_screen] text: %s", text)
     logging.debug("[write_to_screen] style: %s", style)
 
-#    init_screen()
     # if font is specified, use that one, otherwise use the default
     if style:
         font = ImageFont.truetype(os.path.join(MEDIA_DIR, style), 14)
@@ -112,23 +111,6 @@ def write_to_screen(text, image):
         return False
 
     try:
-        logging.debug("[write_to_screen] initialize screen")
-
-        epd = epd_lib.EPD()
-        logging.debug("Initialize screen")
-        epd.init()
-        epd.Clear()
-
-        # the last number is the font size
-        font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
-        font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
-        font35 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 35)
-        fontDejaVuSansMono15 = ImageFont.truetype('./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf',15)
-        """
-        # Full screen refresh at 2 AM
-        if datetime.datetime.now().minute == 0 and datetime.datetime.now().hour == 2:
-            logging.debug("Clear screen")
-            epd.Clear()
         init_screen()
 
         font_config = ImageFont.truetype(font_face, font_size)
@@ -136,18 +118,8 @@ def write_to_screen(text, image):
         # 255: clear the frame
         image = Image.new('1', (epd.height, epd.width), 255)
 
-        if waveshare_epd75_version == "2B":
-            Limage_Other = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
-            epd.display(epd.getbuffer(Himage), epd.getbuffer(Limage_Other))
-        else:
-            epd.display(epd.getbuffer(Himage))
-        epd.sleep()
-        """
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
-        draw = ImageDraw.Draw(Himage)
-        # the numbers are coordinates on which to draw
-        draw.text((5, 30), text, font = font18, fill = 0)
-        draw.text((5, 60), text, font = fontDejaVuSansMono15, fill = 0)
+        draw = ImageDraw.Draw(image)
+        draw.text((5, 60), text, font = font_config, fill = 0)
     #    draw.line((80,80, 50, 100), fill=0)
         epd.display_Base(epd.getbuffer(image))
 
