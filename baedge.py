@@ -1,46 +1,72 @@
-#!/usr/bin/python3
+"""Baedge Library """
 
 import sys
 import os
 import logging
-import datetime
 import importlib
 from PIL import Image,ImageDraw,ImageFont
-import time
 
-libdir = "./e-Paper/RaspberryPi_JetsonNano/python/lib"
-if os.path.exists(libdir):
-    sys.path.append(libdir)
+from PIL import Image, ImageDraw, ImageFont
 
-picdir = "./e-Paper/RaspberryPi_JetsonNano/python/pic"
+# application configuration
+LIB_DIR = "./e-Paper/python/lib"
+MEDIA_DIR = "./e-Paper/python/pic"
 
-logging.basicConfig(level=logging.DEBUG)
+log_level = os.getenv("LOG_LEVEL", "INFO")
+
+# enable logging at the specified level
+logging.basicConfig(level=log_level)
+
+if os.path.exists(LIB_DIR):
+    sys.path.append(LIB_DIR)
+
+# environment configuration
+font_face = os.getenv("BAEDGE_FONT_FACE", "./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf")
+font_size = os.getenv("BAEDGE_FONT_SIZE", "15")
+screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
+screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "2")
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
-waveshare_epd_revision = os.getenv("WAVESHARE_EPD_REVISION", "2")
-waveshare_epd_model = os.getenv("WAVESHARE_EPD_MODEL", "2in7")
-epd_lib = importlib.import_module("waveshare_epd.epd"+waveshare_epd_model+"_V"+waveshare_epd_revision)
+epd_lib = importlib.import_module("waveshare_epd.epd" + screen_model + "_V" + screen_revision)
+logging.debug("[config] load EPD Library for Model %s (Rev: %s)",screen_model, screen_revision)
+
 
 ## TODO: Find a way to persist the epd config and not have to reset the screen on each request
 def init_screen():
+    """ initialize eInk screen """
     try:
         if 'epd' not in globals():
             epd = epd_lib.EPD()
             logging.debug("Initialize screen")
+
+            epd = epd_lib.EPD()
             epd.init()
             epd.Clear()
     except IOError as e:
+        logging.debug("[init_screen] exception occurred")
         logging.exception(e)
 
-def clear():
+
+def clear_screen():
+    """ clear content of eInk screen """
+    logging.debug("[clear_screen]")
+
     try:
+        logging.debug("[clear_screen] initialize and clear screen")
+
         epd = epd_lib.EPD()
-        logging.debug("Initialize screen")
+
         epd.init()
         epd.Clear()
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
+
+        # `255` clears the eInk screen
+        Himage = Image.new('1', (epd.height, epd.width), 255)
+
+        logging.debug("[clear] sleep screen")
         epd.sleep()
+
     except IOError as e:
+        logging.debug("[clear_screen] exception occurred")
         logging.exception(e)
 
 def write_text(text, style):
@@ -122,11 +148,16 @@ def write_to_screen(text, image):
         draw.text((5, 60), text, font = fontDejaVuSansMono15, fill = 0)
     #    draw.line((80,80, 50, 100), fill=0)
         epd.display_Base(epd.getbuffer(Himage))
+
+        logging.debug("[write_text] sleep screen")
         epd.sleep()
+
     except IOError as e:
+        logging.debug("[write_text] exception occurred")
         logging.exception(e)
 
     except KeyboardInterrupt:
-        logging.debug("Keyboard Interrupt - Exit")
+        logging.debug("[write_to_screen] keyboard interrupt")
+
         epd_lib.epdconfig.module_exit()
-        exit()
+        sys.exit()
