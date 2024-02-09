@@ -28,6 +28,9 @@ if os.path.exists(LIB_DIR):
 epd_lib = importlib.import_module("waveshare_epd.epd" + screen_model + "_V" + screen_revision)
 logging.debug("[config] load EPD Library for Model %s (Rev: %s)",screen_model, screen_revision)
 
+# initialize the eInk screen
+epd = epd_lib.EPD()
+
 
 ## TODO: Find a way to persist the epd config and not have to reset the screen on each request
 def init_screen():
