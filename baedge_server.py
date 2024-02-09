@@ -14,17 +14,23 @@ ROUTE_NAMESPACE_DEVICE = "/device"
 ROUTE_NAMESPACE_STATUS = "/status"
 DEBUG_MODE = False
 DOTENV = True
+
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable debug mode if log level is set to `DEBUG`
 if log_level == "DEBUG":
     DEBUG_MODE = True
 
+# environment configuration
 server_host = os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0")
 server_port = os.getenv("BAEDGE_SERVER_PORT", "2343")  # `2343` = `BDGE`
 
-# load Flask framework
+# enable logging at the specified level
+logging.basicConfig(level=log_level)
+
+# load Flask and disable static file serving
 app = Flask(__name__, static_folder=None)
+
 
 @app.route("/", methods=['GET'])
 def root_get():
@@ -91,7 +97,7 @@ def clear_post():
     """ screen-clearing endpoint """
     logging.debug("[clear_post]")
 
-    baedge.clear()
+    baedge.clear_screen()
 
     # respond with status code and message
     response = make_response("OK", 200)
