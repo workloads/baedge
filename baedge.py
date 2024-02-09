@@ -37,16 +37,12 @@ def init_screen():
     """ initialize eInk screen """
     try:
         if 'epd' not in globals():
-            epd = epd_lib.EPD()
-            logging.debug("Initialize screen")
-
-            epd = epd_lib.EPD()
-
-            logging.debug("[clear] init screen")
+            logging.debug("[init_screen] init screen")
             epd.init()
 
-            logging.debug("[clear] clear screen")
+            logging.debug("[init_screen] clear screen")
             epd.Clear()
+
     except IOError as e:
         logging.error("[init_screen] exception occurred")
         logging.exception(e)
@@ -57,17 +53,9 @@ def clear_screen():
     logging.debug("[clear_screen]")
 
     try:
-        logging.debug("[clear_screen] initialize and clear screen")
+        init_screen()
 
-        epd = epd_lib.EPD()
-
-        logging.debug("[clear] init screen")
-        epd.init()
-
-        logging.debug("[clear] clear screen")
-        epd.Clear()
-
-        logging.debug("[clear] sleep screen")
+        logging.debug("[clear_screen] sleep screen")
         epd.sleep()
 
     except IOError as e:
@@ -86,12 +74,9 @@ def write_text(text, style):
         font = ImageFont.truetype(os.path.join(MEDIA_DIR, style), 14)
     else:
         font = ImageFont.truetype(font_face, font_size)
-    try:
-        logging.debug("[write_text] initialize screen")
 
-        epd = epd_lib.EPD()
-        epd.init()
-        epd.Clear()
+    try:
+        init_screen()
 
         # `255` clears the eInk screen
         Himage = Image.new('1', (epd.height, epd.width), 255)
@@ -101,6 +86,7 @@ def write_text(text, style):
         #    draw.line((80,80, 50, 100), fill=0)
         epd.display_Base(epd.getbuffer(Himage))
         epd.sleep()
+
     except IOError as e:
         logging.error("[write_text] exception occurred")
         logging.exception(e)
@@ -124,6 +110,7 @@ def write_to_screen(text, image):
     if not len(text) > 0 and not len(image) > 0:
         logging.error("[write_to_screen] `image` and `text` are empty, nothing to display")
         return False
+
     try:
         logging.debug("[write_to_screen] initialize screen")
 
@@ -142,12 +129,12 @@ def write_to_screen(text, image):
         if datetime.datetime.now().minute == 0 and datetime.datetime.now().hour == 2:
             logging.debug("Clear screen")
             epd.Clear()
+        init_screen()
 
-        filename = sys.argv[1]
+        font_config = ImageFont.truetype(font_face, font_size)
 
-        logging.debug("Read image file: " + filename)
-        Himage = Image.open(filename)
-        logging.info("Display image file on screen")
+        # 255: clear the frame
+        image = Image.new('1', (epd.height, epd.width), 255)
 
         if waveshare_epd75_version == "2B":
             Limage_Other = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
@@ -162,7 +149,7 @@ def write_to_screen(text, image):
         draw.text((5, 30), text, font = font18, fill = 0)
         draw.text((5, 60), text, font = fontDejaVuSansMono15, fill = 0)
     #    draw.line((80,80, 50, 100), fill=0)
-        epd.display_Base(epd.getbuffer(Himage))
+        epd.display_Base(epd.getbuffer(image))
 
         logging.debug("[write_text] sleep screen")
         epd.sleep()
