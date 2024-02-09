@@ -12,7 +12,7 @@ LIB_DIR = "./e-Paper/python/lib"
 MEDIA_DIR = "./e-Paper/python/pic"
 
 # environment configuration
-font_face = os.getenv("BAEDGE_FONT_FACE", "./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf")
+font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/Regular.ttf")
 font_size = os.getenv("BAEDGE_FONT_SIZE", "15")
 screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
 screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "2")
