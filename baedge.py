@@ -1,4 +1,4 @@
-"""Baedge Library """
+""" Baedge Library """
 
 import sys
 import os
@@ -8,24 +8,24 @@ import importlib
 from PIL import Image, ImageDraw, ImageFont
 
 # application configuration
-LIB_DIR = "./e-Paper/python/lib"
-MEDIA_DIR = "./e-Paper/python/pic"
+LIB_DIR = "./lib"
 
 # environment configuration
 font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/Regular.ttf")
 font_size = os.getenv("BAEDGE_FONT_SIZE", "15")
 screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
-screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "2")
+screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_v2")
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable logging at the specified level
 logging.basicConfig(level=log_level)
 
+
+# conditionally import the correct library depending on env vartiables describing the EPD size
 if os.path.exists(LIB_DIR):
     sys.path.append(LIB_DIR)
 
-# conditionally import the correct library depending on env vartiables describing the EPD size
-epd_lib = importlib.import_module("waveshare_epd.epd" + screen_model + "_V" + screen_revision)
+epd_lib = importlib.import_module("waveshare_epd.epd" + screen_model + screen_revision)
 logging.debug("[config] load EPD Library for Model %s (Rev: %s)",screen_model, screen_revision)
 
 # initialize the eInk screen
@@ -68,11 +68,7 @@ def write_text(text, style):
     logging.debug("[write_to_screen] text: %s", text)
     logging.debug("[write_to_screen] style: %s", style)
 
-    # if font is specified, use that one, otherwise use the default
-    if style:
-        font = ImageFont.truetype(os.path.join(MEDIA_DIR, style), 14)
-    else:
-        font = ImageFont.truetype(font_face, font_size)
+    font = ImageFont.truetype(font_face, font_size)
 
     try:
         init_screen()
