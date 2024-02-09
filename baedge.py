@@ -4,7 +4,6 @@ import sys
 import os
 import logging
 import importlib
-from PIL import Image,ImageDraw,ImageFont
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -12,6 +11,11 @@ from PIL import Image, ImageDraw, ImageFont
 LIB_DIR = "./e-Paper/python/lib"
 MEDIA_DIR = "./e-Paper/python/pic"
 
+# environment configuration
+font_face = os.getenv("BAEDGE_FONT_FACE", "./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf")
+font_size = os.getenv("BAEDGE_FONT_SIZE", "15")
+screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
+screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "2")
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable logging at the specified level
@@ -19,12 +23,6 @@ logging.basicConfig(level=log_level)
 
 if os.path.exists(LIB_DIR):
     sys.path.append(LIB_DIR)
-
-# environment configuration
-font_face = os.getenv("BAEDGE_FONT_FACE", "./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf")
-font_size = os.getenv("BAEDGE_FONT_SIZE", "15")
-screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
-screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "2")
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
 epd_lib = importlib.import_module("waveshare_epd.epd" + screen_model + "_V" + screen_revision)
@@ -40,10 +38,14 @@ def init_screen():
             logging.debug("Initialize screen")
 
             epd = epd_lib.EPD()
+
+            logging.debug("[clear] init screen")
             epd.init()
+
+            logging.debug("[clear] clear screen")
             epd.Clear()
     except IOError as e:
-        logging.debug("[init_screen] exception occurred")
+        logging.error("[init_screen] exception occurred")
         logging.exception(e)
 
 
@@ -56,17 +58,17 @@ def clear_screen():
 
         epd = epd_lib.EPD()
 
+        logging.debug("[clear] init screen")
         epd.init()
-        epd.Clear()
 
-        # `255` clears the eInk screen
-        Himage = Image.new('1', (epd.height, epd.width), 255)
+        logging.debug("[clear] clear screen")
+        epd.Clear()
 
         logging.debug("[clear] sleep screen")
         epd.sleep()
 
     except IOError as e:
-        logging.debug("[clear_screen] exception occurred")
+        logging.error("[clear_screen] exception occurred")
         logging.exception(e)
 
 
@@ -97,7 +99,7 @@ def write_text(text, style):
         epd.display_Base(epd.getbuffer(Himage))
         epd.sleep()
     except IOError as e:
-        logging.debug("[write_text] exception occurred")
+        logging.error("[write_text] exception occurred")
         logging.exception(e)
 
 
@@ -116,11 +118,19 @@ def write_image(image):
     """
     return False
 
+
 def write_to_screen(text, image):
-    if not (len(text) > 0) and not (len(image) > 0):
-        logging.error("Both image and text are empty")
+    """ write content to eInk screen """
+
+    logging.debug("[write_to_screen] text: %s", text)
+    logging.debug("[write_to_screen] image: %s", image)
+
+    if not len(text) > 0 and not len(image) > 0:
+        logging.error("[write_to_screen] `image` and `text` are empty, nothing to display")
         return False
     try:
+        logging.debug("[write_to_screen] initialize screen")
+
         epd = epd_lib.EPD()
         logging.debug("Initialize screen")
         epd.init()
@@ -162,7 +172,7 @@ def write_to_screen(text, image):
         epd.sleep()
 
     except IOError as e:
-        logging.debug("[write_text] exception occurred")
+        logging.error("[write_text] exception occurred")
         logging.exception(e)
 
     except KeyboardInterrupt:
