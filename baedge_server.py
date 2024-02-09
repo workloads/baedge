@@ -1,12 +1,11 @@
-"""Baedge HTTP Server with API routes"""
+""" Flask-based HTTP Server for Baedge API """
 
 import os
 import logging
 
 from flask import Flask, jsonify, make_response, request
 
-# TODO: reenable
-#import baedge
+import baedge
 
 # application configuration
 APP_NAME = "🎫 Baedge Server."
@@ -15,10 +14,10 @@ ROUTE_NAMESPACE_DEVICE = "/device"
 ROUTE_NAMESPACE_STATUS = "/status"
 DEBUG_MODE = False
 DOTENV = True
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable debug mode if log level is set to `DEBUG`
-if LOG_LEVEL == "DEBUG":
+if log_level == "DEBUG":
     DEBUG_MODE = True
 
 server_host = os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0")
@@ -66,9 +65,10 @@ def status_routes_get():
 
     route_list = []
     for route in app.url_map.iter_rules():
-        methods = ','.join(route.methods)
+        methods = ', '.join(route.methods)
+
         route_list.append({
-            'endpoint': route.endpoint,
+            'function': route.endpoint,
             'methods': methods,
             'path': str(route),
        })
@@ -91,7 +91,7 @@ def clear_post():
     """ screen-clearing endpoint """
     logging.debug("[clear_post]")
 
-    #baedge.clear()
+    baedge.clear()
 
     # respond with status code and message
     response = make_response("OK", 200)
@@ -107,13 +107,13 @@ def write_post():
     data = request.get_json(force=True)
 
     if data.get('text'):
-        #baedge.write_text(data.get('text'), data.get('style'))
+        baedge.write_text(data.get('text'), data.get('style'))
         logging.debug("[write_post] writing text to screen")
 
         response = make_response("OK", 200)
 
     elif data.get('image'):
-        #baedge.write_image(data.get('image'))
+        baedge.write_image(data.get('image'))
         logging.debug("[write_post] writing image to screen")
 
         response = make_response("OK", 200)
