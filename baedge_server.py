@@ -24,7 +24,7 @@ server_host = os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0")
 server_port = os.getenv("BAEDGE_SERVER_PORT", "2343")  # `2343` = `BDGE`
 
 # load Flask framework
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 
 @app.route("/", methods=['GET'])
 def root_get():
