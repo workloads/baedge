@@ -12,7 +12,7 @@ LIB_DIR = "./lib"
 
 # environment configuration
 font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/regular.ttf")
-font_size = os.getenv("BAEDGE_FONT_SIZE", "15")
+font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
 screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
 screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_V2")
 log_level = os.getenv("LOG_LEVEL", "INFO")
@@ -37,13 +37,13 @@ def init_screen():
         logging.debug("[init_screen] clear screen")
         epd.Clear()
 
-        return True
+        return epd
 
     except IOError as e:
         logging.error("[init_screen] exception occurred")
         logging.exception(e)
 
-        return False
+        return None
 
 
 def clear_screen(epd):
@@ -69,16 +69,17 @@ def write_text(epd, text, style):
     font = ImageFont.truetype(font_face, font_size)
 
     try:
-       # init_screen()
+        epd.init()
+#        epd.Clear()
 
-        # `255` clears the eInk screen
+        # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
         draw.text((5, 30), text, font = font, fill = 0)
         #    draw.line((80,80, 50, 100), fill=0)
 
-        epd.display_Base(epd.getbuffer(image))
+        epd.display(epd.getbuffer(image))
         epd.sleep()
 
     except IOError as e:
@@ -109,10 +110,11 @@ def write_to_screen(epd, text, image):
 
     try:
 #        init_screen()
-
+        epd.Clear()
         font_config = ImageFont.truetype(font_face, font_size)
 
         # `255` clears the eInk screen
+        # does it though? or is this just the base background?
         image = Image.new('1', (epd.height, epd.width), 255)
 
         draw = ImageDraw.Draw(image)
