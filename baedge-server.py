@@ -5,7 +5,6 @@ import baedge
 
 app = Flask(__name__)
 
-
 @app.route("/v1/health")
 def status():
     return "OK"

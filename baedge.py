@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 import sys
 import os
 import logging
@@ -32,7 +33,7 @@ def init_screen():
         logging.exception(e)
 
 def clear():
-    try:    
+    try:
         epd = epd_lib.EPD()
         logging.debug("Initialize screen")
         epd.init()
@@ -54,16 +55,15 @@ def write_text(text, style):
         epd = epd_lib.EPD()
         logging.debug("Initialize screen")
         epd.init()
-        epd.Clear()        
+        epd.Clear()
         Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
-        draw = ImageDraw.Draw(Himage)        
         # the numbers are coordinates on which to draw
         draw.text((5, 30), text, font = font, fill = 0)
         #    draw.line((80,80, 50, 100), fill=0)
         epd.display_Base(epd.getbuffer(Himage))
-        epd.sleep()        
+        epd.sleep()
     except IOError as e:
-        logging.exception(e)        
+        logging.exception(e)
 
 
 def write_image(image):
@@ -77,7 +77,7 @@ def write_image(image):
             epd.display(epd.getbuffer(Himage), epd.getbuffer(Limage_Other))
         else:
             epd.display(epd.getbuffer(Himage))
-        epd.sleep()    
+        epd.sleep()
     """
     return False
 
@@ -92,9 +92,9 @@ def write_to_screen(text, image):
         epd.Clear()
 
         # the last number is the font size
-        font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)    
+        font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
         font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
-        font35 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 35)    
+        font35 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 35)
         fontDejaVuSansMono15 = ImageFont.truetype('./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf',15)
         """
         # Full screen refresh at 2 AM
@@ -118,7 +118,7 @@ def write_to_screen(text, image):
         Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
         draw = ImageDraw.Draw(Himage)
         # the numbers are coordinates on which to draw
-        draw.text((5, 30), text, font = font18, fill = 0)    
+        draw.text((5, 30), text, font = font18, fill = 0)
         draw.text((5, 60), text, font = fontDejaVuSansMono15, fill = 0)
     #    draw.line((80,80, 50, 100), fill=0)
         epd.display_Base(epd.getbuffer(Himage))
