@@ -1,5 +1,3 @@
-# see https://pypi.org/project/<package-name>/ for all packages
-
 blinker==1.7.0
 click==8.1.7
 colorzero==2.0

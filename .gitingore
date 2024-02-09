@@ -1,2 +1,3 @@
-__pycache__
-venv
+### Python ###
+__pycache__/
+#venv/
