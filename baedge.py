@@ -28,8 +28,10 @@ logging.debug("[config] load EPD Library for Model %s (Rev: %s)",screen_model, s
 ## TODO: Find a way to persist the epd config and not have to reset the screen on each request
 def init_screen():
     """ initialize eInk screen """
+    text = "{Ba,e}dge"
     try:
         epd = epd_lib.EPD()
+        font = ImageFont.truetype(font_face, font_size)
 
         logging.debug("[init_screen] init screen")
         epd.init()
@@ -37,6 +39,15 @@ def init_screen():
         logging.debug("[init_screen] clear screen")
         epd.Clear()
 
+        # 255 = clear background frame
+        image = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(image)
+        # the numbers are coordinates on which to draw
+        draw.text((5, 5), text, font = font, fill = 0)
+
+        epd.display_Base(epd.getbuffer(image))
+        epd.sleep()
+        
         return epd
 
     except IOError as e:
@@ -72,14 +83,22 @@ def write_text(epd, text, style):
         epd.init()
 #        epd.Clear()
 
+        # attempt
+        epd.display_Base_color(0xff)
+
+
         # 255 = clear background frame
-        image = Image.new('1', (epd.height, epd.width), 255)
+        image = Image.new('1', (epd.height, epd.width), 0xff)#255)
         draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
-        draw.text((5, 30), text, font = font, fill = 0)
-        #    draw.line((80,80, 50, 100), fill=0)
+        draw.rectangle((10, 110, 120, 150), fill = 255)        
+        draw.text((10, 110), text, font = font, fill = 0)
+        newimage = image.crop([10, 110, 120, 150])
+        image.paste(newimage, (10,110))        
+        epd.display_Partial(epd.getbuffer(image), 110, epd.height - 120, 150, epd.height - 10)
 
-        epd.display(epd.getbuffer(image))
+        #old full display write
+        #epd.display(epd.getbuffer(image))
         epd.sleep()
 
     except IOError as e:
@@ -112,9 +131,7 @@ def write_to_screen(epd, text, image):
 #        init_screen()
         epd.Clear()
         font_config = ImageFont.truetype(font_face, font_size)
-
-        # `255` clears the eInk screen
-        # does it though? or is this just the base background?
+        # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
 
         draw = ImageDraw.Draw(image)
