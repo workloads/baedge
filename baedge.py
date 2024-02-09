@@ -78,12 +78,13 @@ def write_text(text, style):
         init_screen()
 
         # `255` clears the eInk screen
-        Himage = Image.new('1', (epd.height, epd.width), 255)
-        draw = ImageDraw.Draw(Himage)
+        image = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
         draw.text((5, 30), text, font = font, fill = 0)
         #    draw.line((80,80, 50, 100), fill=0)
-        epd.display_Base(epd.getbuffer(Himage))
+
+        epd.display_Base(epd.getbuffer(image))
         epd.sleep()
 
     except IOError as e:
@@ -115,12 +116,12 @@ def write_to_screen(text, image):
 
         font_config = ImageFont.truetype(font_face, font_size)
 
-        # 255: clear the frame
+        # `255` clears the eInk screen
         image = Image.new('1', (epd.height, epd.width), 255)
 
         draw = ImageDraw.Draw(image)
         draw.text((5, 60), text, font = font_config, fill = 0)
-    #    draw.line((80,80, 50, 100), fill=0)
+
         epd.display_Base(epd.getbuffer(image))
 
         logging.debug("[write_text] sleep screen")
