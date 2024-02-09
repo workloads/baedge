@@ -104,18 +104,11 @@ def write_text(text, style):
 
 
 def write_image(image):
-    """
-        logging.debug("Read image file: " + filename)
-        Himage = Image.open(filename)
-        logging.info("Display image file on screen")
+    """ write image content to eInk screen """
+    logging.debug("[write_image] image: %s", image)
 
-        if waveshare_epd75_version == "2B":
-            Limage_Other = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
-            epd.display(epd.getbuffer(Himage), epd.getbuffer(Limage_Other))
-        else:
-            epd.display(epd.getbuffer(Himage))
-        epd.sleep()
-    """
+    # TODO: implement image writing
+
     return False
 
 
