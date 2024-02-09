@@ -1,3 +1,3 @@
 # baedge-server
 
-B{ae}dge Computing Server
+{Ba,E}dge Computing Server
