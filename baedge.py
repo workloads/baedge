@@ -36,10 +36,14 @@ def init_screen():
 
         logging.debug("[init_screen] clear screen")
         epd.Clear()
-        return epd
+
+        return True
+
     except IOError as e:
         logging.error("[init_screen] exception occurred")
         logging.exception(e)
+
+        return False
 
 
 def clear_screen(epd):
@@ -94,6 +98,7 @@ def write_image(epd, image):
     return False
 
 
+def write_to_screen(epd, text, image):
     """ write content to eInk screen """
     logging.debug("[write_to_screen] text: %s", text)
     logging.debug("[write_to_screen] image: %s", image)
