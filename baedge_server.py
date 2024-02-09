@@ -31,6 +31,7 @@ logging.basicConfig(level=log_level)
 # load Flask and disable static file serving
 app = Flask(__name__, static_folder=None)
 
+app.epd = baedge.init_screen()
 
 @app.route("/", methods=['GET'])
 def root_get():
@@ -104,7 +105,7 @@ def clear_post():
     return response
 
 
-app.route(ROUTE_API_VERSION + ROUTE_NAMESPACE_DEVICE + "/write", methods=['POST'])
+@app.route(ROUTE_API_VERSION + ROUTE_NAMESPACE_DEVICE + "/write", methods=['POST'])
 def write_post():
     """ screen-writing endpoint """
     logging.debug("[write_post] attempt to write to screen")
@@ -113,13 +114,13 @@ def write_post():
     data = request.get_json(force=True)
 
     if data.get('text'):
-        baedge.write_text(data.get('text'), data.get('style'))
+        baedge.write_text(data.get('text'), data.get('style'), app.epd)
         logging.debug("[write_post] write text to screen")
 
         response = make_response("OK", 200)
 
     elif data.get('image'):
-        baedge.write_image(data.get('image'))
+        baedge.write_image(data.get('image'), app.epd)
         logging.debug("[write_post] write image to screen")
 
         response = make_response("OK", 200)
@@ -134,4 +135,5 @@ def write_post():
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":
+#    app.epd = baedge.init_screen()  
     app.run(host=server_host, port=server_port, debug=DEBUG_MODE, load_dotenv=DOTENV)
