@@ -98,7 +98,7 @@ def clear_post():
     """ screen-clearing endpoint """
     logging.debug("[clear_post]")
 
-    baedge.clear_screen()
+    baedge.clear_screen(app.epd)
 
     # respond with status code and message
     response = make_response("OK", 200)
@@ -114,13 +114,13 @@ def write_post():
     data = request.get_json(force=True)
 
     if data.get('text'):
-        baedge.write_text(data.get('text'), data.get('style'), app.epd)
+        baedge.write_text(app.epd, data.get('text'), data.get('style'))
         logging.debug("[write_post] write text to screen")
 
         response = make_response("OK", 200)
 
     elif data.get('image'):
-        baedge.write_image(data.get('image'), app.epd)
+        baedge.write_image(app.epd, data.get('image'))
         logging.debug("[write_post] write image to screen")
 
         response = make_response("OK", 200)
@@ -135,5 +135,5 @@ def write_post():
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":
-#    app.epd = baedge.init_screen()  
+#    app.epd = baedge.init_screen()
     app.run(host=server_host, port=server_port, debug=DEBUG_MODE, load_dotenv=DOTENV)
