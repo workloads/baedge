@@ -2,8 +2,8 @@
 export LOG_LEVEL="DEBUG"
 
 # Baedge-specific configuration
-export BAEDGE_FONT_FACE="./MyFont.ttf"
-export BAEDGE_FONT_SIZE="14"
+export BAEDGE_FONT_FACE="./fonts/RobotoMono/Regular.ttf"
+export BAEDGE_FONT_SIZE="15"
 export BAEDGE_SCREEN_MODEL="2in7"
 export BAEDGE_SCREEN_REVISION="2"
 export BAEDGE_SERVER_HOST="0.0.0.0"
