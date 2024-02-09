@@ -69,26 +69,35 @@ def clear_screen():
         logging.debug("[clear_screen] exception occurred")
         logging.exception(e)
 
+
 def write_text(text, style):
+    """ write textual content to eInk screen """
+    logging.debug("[write_to_screen] text: %s", text)
+    logging.debug("[write_to_screen] style: %s", style)
+
 #    init_screen()
     # if font is specified, use that one, otherwise use the default
-    # TODO: handle font sizes automatically based on text length
     if style:
-        font = ImageFont.truetype(os.path.join(picdir, style), 14)
+        font = ImageFont.truetype(os.path.join(MEDIA_DIR, style), 14)
     else:
-        font = ImageFont.truetype('./dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf',15)
+        font = ImageFont.truetype(font_face, font_size)
     try:
+        logging.debug("[write_text] initialize screen")
+
         epd = epd_lib.EPD()
-        logging.debug("Initialize screen")
         epd.init()
         epd.Clear()
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
+
+        # `255` clears the eInk screen
+        Himage = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(Himage)
         # the numbers are coordinates on which to draw
         draw.text((5, 30), text, font = font, fill = 0)
         #    draw.line((80,80, 50, 100), fill=0)
         epd.display_Base(epd.getbuffer(Himage))
         epd.sleep()
     except IOError as e:
+        logging.debug("[write_text] exception occurred")
         logging.exception(e)
 
 
