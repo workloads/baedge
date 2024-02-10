@@ -13,8 +13,8 @@ LIB_DIR = "./lib"
 # environment configuration
 font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/regular.ttf")
 font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
-screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in7")
-screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_V2")
+screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in9b")
+screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_v3")
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable logging at the specified level
