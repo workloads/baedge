@@ -10,26 +10,109 @@ from PIL import Image, ImageDraw, ImageFont
 # application configuration
 LIB_DIR = "./lib"
 
-# environment configuration
+# Baedge environment configuration
 font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/regular.ttf")
 font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
 screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in9b")
 screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_v3")
+
+# Nomad environment info
+nomad_alloc_id = os.getenv("NOMAD_SHORT_ALLOC_ID", "fake")
+nomad_addr_http = os.getenv("NOMAD_ADDR_http", "http://192.168.1.15")
+
+# Socials info
+socials = {"Name": "Kerim Satirli", "Job": "Marketing" , "Social": "@ksatirli"}
+
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable logging at the specified level
 logging.basicConfig(level=log_level)
 
+# HashiCorp logo location
+hc_logo = '/opt/baedge-assets/hashicorp-icon-32.BMP'
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
 epd_lib = importlib.import_module("lib.waveshare_epd.epd" + screen_model + screen_revision)
 logging.debug("[config] load EPD Library for Model %s (Rev: %s)", screen_model, screen_revision)
 
+#def get_long_side(epd):
+#    """Waveshare have inconsistent width/height naming (2.7 has height as the long side, on 2.9 it's width)"""
 
-# TODO: Find a way to persist the epd config and not have to reset the screen on each request
+
+def write_socials(epd):
+    """ write socials info to eInk screen """
+    text = socials["Name"] + "\n" + socials["Job"] + "\n" + socials["Social"]
+    try:
+        font = ImageFont.truetype(font_face, font_size)        
+        logging.debug("[write_socials_info] write to screen")
+        # 255 = clear background frame
+        image = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(image)
+        # the numbers are coordinates on which to draw
+        draw.text((5, 5), text, font=font, fill=0)
+
+        epd.display(epd.getbuffer(image))
+        logging.debug("[write_socials_info] sleep screen")
+#        epd.sleep()
+
+    except IOError as e:
+        logging.error("[write_socials_info] exception occurred")
+        logging.exception(e)    
+
+def write_baedge(epd):
+    """ write Baedge info to eInk screen """
+    text = "{Ba,e}dge\n workloads.io/baedge "
+    try:
+        font = ImageFont.truetype(font_face, font_size)        
+        logging.debug("[write_baedge_info] write to screen")        
+        # 255 = clear background frame
+        image = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(image)
+        # the numbers are coordinates on which to draw
+        draw.text((5, 5), text, font=font, fill=0)
+
+        epd.display(epd.getbuffer(image))
+        logging.debug("[write_baedge_info] sleep screen")
+#        epd.sleep()
+
+    except IOError as e:
+        logging.error("[write_baedge_info] exception occurred")
+        logging.exception(e)
+
+def write_nomad_info(epd):
+    """ write Nomad info to eInk screen """
+    logging.debug("[write_nomad_info] writing Nomad information")
+
+    try:
+        font = ImageFont.truetype(font_face, font_size)
+        text = nomad_alloc_id + "\n" + nomad_addr_http
+        nimage = Image.new('1', (epd.height, epd.width), 255)
+        draw=ImageDraw.Draw(nimage)
+        # header, containing HashiCorp logo + white "Nomad" text on a black banner
+        bmp = Image.open(hc_logo)
+        nimage.paste(bmp, (0,0))
+        # draw a black rectangle on the top
+        draw.rectangle((32, 0, 750, 31), fill=0)
+        # write out Nomad in white
+        draw.text((40,0), "Nomad", font=font, fill=255)
+
+
+        # write out Nomad info in black 
+        draw.text((0,50), text, font=font, fill=0)
+        
+        # write to screen
+        epd.display(epd.getbuffer(nimage))
+
+        logging.debug("[write_nomad_info] sleep screen")    
+#        epd.sleep()
+
+    except IOError as e:
+        logging.error("[write_nomad_info] exception occurred")
+        logging.exception(e)
+
 def init_screen():
     """ initialize eInk screen """
-    text = "{Ba,e}dge"
+#    text = "{Ba,e}dge"
     try:
         epd = epd_lib.EPD()
         font = ImageFont.truetype(font_face, font_size)
@@ -39,7 +122,7 @@ def init_screen():
 
         logging.debug("[init_screen] clear screen")
         epd.Clear()
-
+        """
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
@@ -48,7 +131,7 @@ def init_screen():
 
         epd.display_Base(epd.getbuffer(image))
         epd.sleep()
-
+        """
         return epd
 
     except IOError as e:
@@ -63,7 +146,7 @@ def clear_screen(epd):
     logging.debug("[clear_screen]")
 
     try:
-        # init_screen()
+        epd.Clear()
 
         logging.debug("[clear_screen] sleep screen")
         epd.sleep()
@@ -83,8 +166,14 @@ def write_text(epd, text, style):
     try:
         epd.init()
 #        epd.Clear()
+        image = Image.new('1', (epd.height, epd.width), 255)
 
-        # attempt
+        draw = ImageDraw.Draw(image)
+        draw.text((5, 60), text, font=font, fill=0)
+
+        epd.display(epd.getbuffer(image))
+        """
+        # attempt at partial refresh, TODO
         epd.display_Base_color(0xff)
 
         # 255 = clear background frame
@@ -96,7 +185,7 @@ def write_text(epd, text, style):
         newimage = image.crop([10, 110, 120, 150])
         image.paste(newimage, (10, 110))
         epd.display_Partial(epd.getbuffer(image), 110, epd.height - 120, 150, epd.height - 10)
-
+        """
         epd.sleep()
 
     except IOError as e:
@@ -115,9 +204,9 @@ def write_image(epd, image):
 
     return False
 
-
+"""
 def write_to_screen(epd, text, image):
-    """ write content to eInk screen """
+    #write content to eInk screen
     logging.debug("[write_to_screen] text: %s", text)
     logging.debug("[write_to_screen] image: %s", image)
 
@@ -153,3 +242,4 @@ def write_to_screen(epd, text, image):
 
         epd.module_exit()
         sys.exit()
+"""
