@@ -1,11 +1,11 @@
 # Makefile for Baedge Server
 
 # configuration
-TITLE         = 🎫 BAEDGE SERVER
-FLAKE_CONFIG ?= ".flake8"
-FLASK_APP    ?= baedge_server
-FLASK_PORT   ?= 2343
-SNYK_COMMAND ?= python3
+TITLE          = 🎫 BAEDGE SERVER
+FLAKE_CONFIG  ?= ".flake8"
+FLASK_APP     ?= baedge_server
+FLASK_PORT    ?= 2343
+BINARY_PYTHON ?= python3
 
 include ../tooling/make/configs/shared.mk
 include ../tooling/make/targets/shared.mk
@@ -35,7 +35,7 @@ lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
 snyk: # lint Python files using Flake8 and Pylint [Usage: `make snyk`]
 	snyk \
 		test \
-			--command="${SNYK_COMMAND}" \
+			--command="${BINARY_PYTHON}" \
 			--file="requirements.txt" \
 			--package-manager=pip \
 			-- --allow-missing
@@ -53,3 +53,8 @@ run: # run Baedge Server using Flask [Usage: `make run`]
 		--debug \
 		run \
 			--port="${FLASK_PORT}"
+
+.SILENT .PHONY: gpio-info
+gpio-info: # print GPIO information using Python [Usage: `make gpio-info`]
+	${BINARY_PYTHON} \
+		gpio.py
