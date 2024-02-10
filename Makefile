@@ -29,7 +29,7 @@ routes: # list Baedge Server routes using Flask [Usage: `make routes`]
 run: # run Baedge Server using Flask [Usage: `make run`]
 	flask \
 		--app="${FLASK_APP}" \
+		--debug \
 		run \
-			--debug \
 			--port="${FLASK_PORT}"
 
