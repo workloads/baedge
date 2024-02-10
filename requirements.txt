@@ -1,3 +1,8 @@
+# This requirements list should ONLY be used for a manual installation via `pip` directly.
+#
+# The recommended way of installing these packages on Baedge-compatible hardware is to
+# use `apt` with `python3-` identifiers; see `packer/scripts/python.sh` for information.
+
 blinker==1.7.0
 click==8.1.7
 colorzero==2.0
