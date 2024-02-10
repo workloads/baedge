@@ -1,6 +1,5 @@
 """ Baedge Library """
 
-import sys
 import os
 import logging
 import importlib
@@ -17,17 +16,26 @@ font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
 screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in9b")
 screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_v3")
 
-# Nomad environment info
-nomad_alloc_id = os.getenv("NOMAD_SHORT_ALLOC_ID", "fake")
-nomad_addr_http = os.getenv("NOMAD_ADDR_http", "http://192.168.1.15")
+# (human) wearer configuration
+wearer_name = os.getenv("BAEDGE_WEARER_NAME", "{Ba,e}dge.")
+wearer_title = os.getenv("BAEDGE_WEARER_TITLE", "Orchestration at the Edge of Human and Compute")
+wearer_social = os.getenv("BAEDGE_WEARER_SOCIAL", "@wrklds")
+wearer_link = os.getenv("BAEDGE_WEARER_LINK", "https://workloads.io")
 
-# Socials info
-socials = {"Name": "Kerim Satirli", "Job": "Marketing" , "Social": "@ksatirli"}
+# Nomad Environment configuration
+nomad_alloc_id = os.getenv("NOMAD_SHORT_ALLOC_ID", "MISSING")
+nomad_addr_http = os.getenv("NOMAD_ADDR_http", "http://127.0.0.0")
 
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
 # enable logging at the specified level
 logging.basicConfig(level=log_level)
+
+# screen coordinates
+coordinates = {
+  # QR code is located in the bottom right corner
+  "qrcode": '5, 5'
+}
 
 # HashiCorp logo location
 hc_logo = '/opt/baedge-assets/hashicorp-icon-32.BMP'
@@ -36,92 +44,102 @@ hc_logo = '/opt/baedge-assets/hashicorp-icon-32.BMP'
 epd_lib = importlib.import_module("lib.waveshare_epd.epd" + screen_model + screen_revision)
 logging.debug("[config] load EPD Library for Model %s (Rev: %s)", screen_model, screen_revision)
 
-#def get_long_side(epd):
-#    """Waveshare have inconsistent width/height naming (2.7 has height as the long side, on 2.9 it's width)"""
-
 
 def write_socials(epd):
     """ write socials info to eInk screen """
-    text = socials["Name"] + "\n" + socials["Job"] + "\n" + socials["Social"]
+    text = wearer_name + "\n" + wearer_title + "\n" + wearer_social
+
     try:
-       font = ImageFont.truetype(font_face, font_size)        
-       logging.debug("[write_socials_info] write to screen")
-       # 255 = clear background frame
-       image = Image.new('1', (epd.height, epd.width), 255)
-       draw = ImageDraw.Draw(image)
-       # the numbers are coordinates on which to draw
-       draw.text((5, 5), text, font=font, fill=0)
-       qr = qrcode.QRCode(version=1, box_size=4)
-       qr.add_data('github.com/workloads')
-       qr.make(fit=True)
-       qri = qr.make_image()
-       print(qri)
-       image.paste(qri, (120,60))
+        font = ImageFont.truetype(font_face, font_size)
 
-       epd.display(epd.getbuffer(image))
-       logging.debug("[write_socials_info] sleep screen")
-#        epd.sleep()
-
-    except IOError as e:
-        logging.error("[write_socials_info] exception occurred")
-        logging.exception(e)    
-
-def write_baedge(epd):
-    """ write Baedge info to eInk screen """
-    text = "{Ba,e}dge\n workloads.io/baedge "
-    try:
-        font = ImageFont.truetype(font_face, font_size)        
-        logging.debug("[write_baedge_info] write to screen")        
+        logging.debug("[write_socials] write to screen")
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
-        draw.text((5, 5), text, font=font, fill=0)
+        draw.text((coordinates["qrcode"]), text, font=font, fill=0)
+        qr = qrcode.QRCode(version=1, box_size=4)
+        qr.add_data(wearer_link)
+        qr.make(fit=True)
+        qri = qr.make_image()
+        print(qri)
+        image.paste(qri, (120, 60))
+
+        epd.display(epd.getbuffer(image))
+        logging.debug("[write_socials_info] sleep screen")
+        # epd.sleep()
+
+    except IOError as e:
+        logging.error("[write_socials_info] exception occurred")
+        logging.exception(e)
+
+
+def write_baedge_info(epd):
+    """ write Baedge info to eInk screen """
+    logging.debug("[write_baedge_info] write to screen")
+
+    text = "{Ba,e}dge\n workloads.io/baedge "
+
+    try:
+        font = ImageFont.truetype(font_face, font_size)
+
+        # 255 = clear background frame
+        image = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(image)
+
+        draw.text((coordinates["qrcode"]), text, font=font, fill=0)
 
         epd.display(epd.getbuffer(image))
         logging.debug("[write_baedge_info] sleep screen")
-#        epd.sleep()
+        # epd.sleep()
 
     except IOError as e:
         logging.error("[write_baedge_info] exception occurred")
         logging.exception(e)
 
+
 def write_nomad_info(epd):
     """ write Nomad info to eInk screen """
-    logging.debug("[write_nomad_info] writing Nomad information")
+    logging.debug("[write_nomad_info] write to screen")
 
     try:
         font = ImageFont.truetype(font_face, font_size)
         text = nomad_alloc_id + "\n" + nomad_addr_http
         nimage = Image.new('1', (epd.height, epd.width), 255)
-        draw=ImageDraw.Draw(nimage)
+        draw = ImageDraw.Draw(nimage)
+
         # header, containing HashiCorp logo + white "Nomad" text on a black banner
         bmp = Image.open(hc_logo)
-        nimage.paste(bmp, (0,0))
+        nimage.paste(bmp, (0, 0))
         # draw a black rectangle on the top
         draw.rectangle((32, 0, 750, 31), fill=0)
         # write out Nomad in white
-        draw.text((40,0), "Nomad", font=font, fill=255)
+        draw.text((40, 0), "Nomad", font=font, fill=255)
 
+        # write out Nomad info in black
+        draw.text((0, 50), text, font=font, fill=0)
 
-        # write out Nomad info in black 
-        draw.text((0,50), text, font=font, fill=0)
-        
         # write to screen
         epd.display(epd.getbuffer(nimage))
 
-        logging.debug("[write_nomad_info] sleep screen")    
-#        epd.sleep()
+        logging.debug("[write_nomad_info] sleep screen")
+        # epd.sleep()
 
     except IOError as e:
         logging.error("[write_nomad_info] exception occurred")
         logging.exception(e)
 
+
 def init_screen():
     """ initialize eInk screen """
-#    text = "{Ba,e}dge"
+    logging.debug("[init_screen]")
+
+    # text = "{Ba,e}dge"
+
     try:
         epd = epd_lib.EPD()
+
+        # TODO: remove or use
         font = ImageFont.truetype(font_face, font_size)
 
         logging.debug("[init_screen] init screen")
@@ -129,6 +147,7 @@ def init_screen():
 
         logging.debug("[init_screen] clear screen")
         epd.Clear()
+
         """
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
@@ -172,13 +191,15 @@ def write_text(epd, text, style):
 
     try:
         epd.init()
-#        epd.Clear()
+        # epd.Clear()
+
         image = Image.new('1', (epd.height, epd.width), 255)
 
         draw = ImageDraw.Draw(image)
         draw.text((5, 60), text, font=font, fill=0)
 
         epd.display(epd.getbuffer(image))
+
         """
         # attempt at partial refresh, TODO
         epd.display_Base_color(0xff)
@@ -210,6 +231,7 @@ def write_image(epd, image):
     # TODO: implement image writing
 
     return False
+
 
 """
 def write_to_screen(epd, text, image):
