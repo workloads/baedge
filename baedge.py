@@ -47,7 +47,7 @@ def init_screen():
 
         epd.display_Base(epd.getbuffer(image))
         epd.sleep()
-        
+
         return epd
 
     except IOError as e:
@@ -91,10 +91,10 @@ def write_text(epd, text, style):
         image = Image.new('1', (epd.height, epd.width), 0xff)#255)
         draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
-        draw.rectangle((10, 110, 120, 150), fill = 255)        
+        draw.rectangle((10, 110, 120, 150), fill = 255)
         draw.text((10, 110), text, font = font, fill = 0)
         newimage = image.crop([10, 110, 120, 150])
-        image.paste(newimage, (10,110))        
+        image.paste(newimage, (10,110))
         epd.display_Partial(epd.getbuffer(image), 110, epd.height - 120, 150, epd.height - 10)
 
         #old full display write
