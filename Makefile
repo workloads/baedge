@@ -5,6 +5,7 @@ TITLE         = 🎫 BAEDGE SERVER
 FLAKE_CONFIG ?= ".flake8"
 FLASK_APP    ?= baedge_server
 FLASK_PORT   ?= 2343
+SNYK_COMMAND ?= python3
 
 include ../tooling/make/configs/shared.mk
 include ../tooling/make/targets/shared.mk
@@ -22,13 +23,22 @@ deps-dev: # install development dependencies [Usage: `make deps-dev`]
 		-r "requirements-dev.txt"
 
 .SILENT .PHONY: lint
-lint: # lint Python files using Pylint [Usage: `make lint`]
+lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
 	pylint \
 		*.py \
 	&& \
 	flake8 \
 		--config="${FLAKE_CONFIG}" \
 		*.py
+
+.SILENT .PHONY: snyk
+snyk: # lint Python files using Flake8 and Pylint [Usage: `make snyk`]
+	snyk \
+		test \
+			--command="${SNYK_COMMAND}" \
+			--file="requirements.txt" \
+			--package-manager=pip \
+			-- --allow-missing
 
 .SILENT .PHONY: routes
 routes: # list Baedge Server routes using Flask [Usage: `make routes`]
