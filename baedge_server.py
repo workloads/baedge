@@ -33,6 +33,7 @@ app = Flask(__name__, static_folder=None)
 
 app.epd = baedge.init_screen()
 
+
 @app.route("/", methods=['GET'])
 def root_get():
     """ root endpoint """
@@ -78,7 +79,7 @@ def status_routes_get():
             'function': route.endpoint,
             'methods': methods,
             'path': str(route),
-       })
+        })
 
     response = make_response(jsonify(route_list), 200)
     return response
@@ -135,5 +136,5 @@ def write_post():
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":
-#    app.epd = baedge.init_screen()
+    # app.epd = baedge.init_screen()
     app.run(host=server_host, port=server_port, debug=DEBUG_MODE, load_dotenv=DOTENV)

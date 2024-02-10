@@ -24,11 +24,11 @@ deps-dev: # install development dependencies [Usage: `make deps-dev`]
 
 .SILENT .PHONY: lint
 lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
-	pylint \
-		*.py \
-	&& \
 	flake8 \
 		--config="${FLAKE_CONFIG}" \
+		*.py \
+	&& \
+	pylint \
 		*.py
 
 .SILENT .PHONY: snyk
