@@ -7,9 +7,6 @@ import qrcode
 
 from PIL import Image, ImageDraw, ImageFont
 
-# application configuration
-LIB_DIR = "./lib"
-
 # Baedge environment configuration
 font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/regular.ttf")
 font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
@@ -31,21 +28,25 @@ log_level = os.getenv("LOG_LEVEL", "INFO")
 # enable logging at the specified level
 logging.basicConfig(level=log_level)
 
-# screen coordinates
+# screen layout configuration
+ASSETS_DIR = '/opt/baedge-assets/'
+
 coordinates = {
   # QR code is located in the bottom right corner
   "qrcode": '5, 5'
 }
 
-# HashiCorp logo location
-hc_logo = '/opt/baedge-assets/hashicorp-icon-32.BMP'
+media = {
+  # TODO: use PNG?
+  "company_icon": ASSETS_DIR + 'hashicorp-icon-32.BMP'
+}
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
 epd_lib = importlib.import_module("lib.waveshare_epd.epd" + screen_model + screen_revision)
 logging.debug("[config] load EPD Library for Model %s (Rev: %s)", screen_model, screen_revision)
 
 
-def write_socials(epd):
+def write_socials_info(epd):
     """ write socials info to eInk screen """
     text = wearer_name + "\n" + wearer_title + "\n" + wearer_social
 
@@ -56,16 +57,20 @@ def write_socials(epd):
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
-        # the numbers are coordinates on which to draw
         draw.text((coordinates["qrcode"]), text, font=font, fill=0)
+
         qr = qrcode.QRCode(version=1, box_size=4)
         qr.add_data(wearer_link)
         qr.make(fit=True)
         qri = qr.make_image()
+
+        # TODO: use logging
+        # should this say "writing QR image?"
         print(qri)
         image.paste(qri, (120, 60))
 
         epd.display(epd.getbuffer(image))
+
         logging.debug("[write_socials_info] sleep screen")
         # epd.sleep()
 
@@ -78,6 +83,7 @@ def write_baedge_info(epd):
     """ write Baedge info to eInk screen """
     logging.debug("[write_baedge_info] write to screen")
 
+    # TODO: move this up and define more globally
     text = "{Ba,e}dge\n workloads.io/baedge "
 
     try:
@@ -109,8 +115,9 @@ def write_nomad_info(epd):
         draw = ImageDraw.Draw(nimage)
 
         # header, containing HashiCorp logo + white "Nomad" text on a black banner
-        bmp = Image.open(hc_logo)
-        nimage.paste(bmp, (0, 0))
+        company_icon = Image.open(media["company_icon"])
+
+        nimage.paste(company_icon, (0, 0))
         # draw a black rectangle on the top
         draw.rectangle((32, 0, 750, 31), fill=0)
         # write out Nomad in white
@@ -134,8 +141,6 @@ def init_screen():
     """ initialize eInk screen """
     logging.debug("[init_screen]")
 
-    # text = "{Ba,e}dge"
-
     try:
         epd = epd_lib.EPD()
 
@@ -152,8 +157,7 @@ def init_screen():
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
-        # the numbers are coordinates on which to draw
-        draw.text((5, 5), text, font=font, fill=0)
+        draw.text((coordinates["qrcode"]), text, font=font, fill=0)
 
         epd.display_Base(epd.getbuffer(image))
         epd.sleep()
@@ -187,6 +191,7 @@ def write_text(epd, text, style):
     logging.debug("[write_to_screen] text: %s", text)
     logging.debug("[write_to_screen] style: %s", style)
 
+    # TODO: move this up and define more globally
     font = ImageFont.truetype(font_face, font_size)
 
     try:

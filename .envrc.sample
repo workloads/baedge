@@ -11,7 +11,7 @@ export BAEDGE_SERVER_PORT="2343"
 
 # (human) wearer configuration
 export BAEDGE_WEARER_NAME="{Ba,e}dge."
-export BAEDGE_WEARER_TITLE="Orchestration at the Edge of Human and Compute")
+export BAEDGE_WEARER_TITLE="Orchestration at the Edge of Human and Compute."
 export BAEDGE_WEARER_SOCIAL="@wrklds"
 export BAEDGE_WEARER_LINK=""https://workloads.io"
 
