@@ -4,6 +4,7 @@ import sys
 import os
 import logging
 import importlib
+import qrcode
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -43,16 +44,22 @@ def write_socials(epd):
     """ write socials info to eInk screen """
     text = socials["Name"] + "\n" + socials["Job"] + "\n" + socials["Social"]
     try:
-        font = ImageFont.truetype(font_face, font_size)        
-        logging.debug("[write_socials_info] write to screen")
-        # 255 = clear background frame
-        image = Image.new('1', (epd.height, epd.width), 255)
-        draw = ImageDraw.Draw(image)
-        # the numbers are coordinates on which to draw
-        draw.text((5, 5), text, font=font, fill=0)
+       font = ImageFont.truetype(font_face, font_size)        
+       logging.debug("[write_socials_info] write to screen")
+       # 255 = clear background frame
+       image = Image.new('1', (epd.height, epd.width), 255)
+       draw = ImageDraw.Draw(image)
+       # the numbers are coordinates on which to draw
+       draw.text((5, 5), text, font=font, fill=0)
+       qr = qrcode.QRCode(version=1, box_size=4)
+       qr.add_data('github.com/workloads')
+       qr.make(fit=True)
+       qri = qr.make_image()
+       print(qri)
+       image.paste(qri, (120,60))
 
-        epd.display(epd.getbuffer(image))
-        logging.debug("[write_socials_info] sleep screen")
+       epd.display(epd.getbuffer(image))
+       logging.debug("[write_socials_info] sleep screen")
 #        epd.sleep()
 
     except IOError as e:
