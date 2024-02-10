@@ -1,13 +1,18 @@
+# This requirements list should ONLY be used for a manual installation via `pip` directly.
+#
+# The recommended way of installing these packages on Baedge-compatible hardware is to
+# use `apt` with `python3-` identifiers; see `packer/scripts/python.sh` for information.
+
 blinker==1.7.0
 click==8.1.7
 colorzero==2.0
-Flask==3.0.1
+Flask==3.0.2
 gpiozero==2.0
 itsdangerous==2.1.2
 Jinja2==3.1.3
 lgpio==0.0.0.2
-MarkupSafe==2.1.4
-numpy==1.26.3
+MarkupSafe==2.1.5
+numpy==1.26.4
 pillow==10.2.0
 pypng==0.20220715.0
 qrcode==7.4.2
