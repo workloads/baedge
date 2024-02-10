@@ -1,0 +1,6 @@
+# This requirements list should ONLY be used for development purposesa manual installation via `pip` directly.
+#
+# The recommended way of installing these packages is to use a virtual environment
+
+flake8==7.0.0
+pylint=3.0.3

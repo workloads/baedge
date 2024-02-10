@@ -10,10 +10,16 @@ include ../tooling/make/configs/shared.mk
 include ../tooling/make/targets/shared.mk
 
 .SILENT .PHONY: deps
-deps: # install PIP dependencies [Usage: `make deps`]
+deps: # install dependencies [Usage: `make deps`]
 	pip \
 		install \
 		-r "requirements.txt"
+
+.SILENT .PHONY: deps-dev
+deps-dev: # install development dependencies [Usage: `make deps-dev`]
+	pip \
+		install \
+		-r "requirements-dev.txt"
 
 .SILENT .PHONY: lint
 lint: # lint Python files using Pylint [Usage: `make lint`]
@@ -37,4 +43,3 @@ run: # run Baedge Server using Flask [Usage: `make run`]
 		--debug \
 		run \
 			--port="${FLASK_PORT}"
-
