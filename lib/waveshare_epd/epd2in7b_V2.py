@@ -49,11 +49,11 @@ class EPD:
     # Hardware reset
     def reset(self):
         epdconfig.digital_write(self.reset_pin, 1)
-        epdconfig.delay_ms(200) 
+        epdconfig.delay_ms(200)
         epdconfig.digital_write(self.reset_pin, 0)
         epdconfig.delay_ms(2)
         epdconfig.digital_write(self.reset_pin, 1)
-        epdconfig.delay_ms(200)   
+        epdconfig.delay_ms(200)
 
     # Send Command
     def send_command(self, command):
@@ -69,32 +69,32 @@ class EPD:
         epdconfig.spi_writebyte([data])
         epdconfig.digital_write(self.cs_pin, 1)
 
-    # send a lot of data   
+    # send a lot of data
     def send_data2(self, data):
         epdconfig.digital_write(self.dc_pin, 1)
         epdconfig.digital_write(self.cs_pin, 0)
         epdconfig.spi_writebyte2(data)
         epdconfig.digital_write(self.cs_pin, 1)
-        
+
     # Read Busy
     def ReadBusy(self):
         logger.debug("e-Paper busy")
         while(epdconfig.digital_read(self.busy_pin) == 1):      # 0: idle, 1: busy
             epdconfig.delay_ms(10)
         logger.debug("e-Paper busy release")
-            
+
     # Setting the display window
     def SetWindows(self, Xstart, Ystart, Xend, Yend):
         self.send_command(0x44)
         self.send_data((Xstart >> 3) & 0xff)
         self.send_data((Xend >> 3) & 0xff)
-        
+
         self.send_command(0x45)
         self.send_data(Ystart & 0xff)
         self.send_data((Ystart >> 8) & 0xff)
         self.send_data(Yend & 0xff)
         self.send_data((Yend >> 8) & 0xff)
-    
+
     # Set Cursor
     def SetCursor(self, Xstart, Ystart):
         self.send_command(0x4E)
@@ -102,26 +102,26 @@ class EPD:
         self.send_command(0x4F)
         self.send_data(Ystart & 0xff)
         self.send_data((Ystart >> 8) & 0xff)
-        
+
     # Initialize the e-Paper register
     def init(self):
         if (epdconfig.module_init() != 0):
             return -1
-            
+
         self.reset()
 
-        self.ReadBusy() 
-        self.send_command(0x12)      
-        self.ReadBusy() 
-        
-        self.send_command(0x00)     
-        self.send_data(0x27) 
-        self.send_data(0x01) 
-        self.send_data(0x00) 
-        
-        self.send_command(0x11)     
-        self.send_data(0x03) 
-        
+        self.ReadBusy()
+        self.send_command(0x12)
+        self.ReadBusy()
+
+        self.send_command(0x00)
+        self.send_data(0x27)
+        self.send_data(0x01)
+        self.send_data(0x00)
+
+        self.send_command(0x11)
+        self.send_data(0x03)
+
         self.SetWindows(0, 0, self.width-1, self.height-1)
         self.SetCursor(0, 0)
         return 0
@@ -149,22 +149,22 @@ class EPD:
                     if pixels[x, y] == 0:
                         buf[int((newx + newy*self.width) / 8)] &= ~(0x80 >> (y % 8))
         return buf
-    
+
     # Sends the image buffer in RAM to e-Paper and displays
     def display(self, imageblack, imagered):
-        Width = self.width / 8 
-        Height = self.height 
+        Width = self.width / 8
+        Height = self.height
 
         buf = [0x00] * int(Width * Height)
         for i in range(0, int(Width * Height)):
             buf[i] = ~imagered[i]
 
-        self.send_command(0x24) 
-        self.send_data2(imageblack) 
+        self.send_command(0x24)
+        self.send_data2(imageblack)
 
-        self.send_command(0x26) 
-        self.send_data2(buf) 
-        
+        self.send_command(0x26)
+        self.send_data2(buf)
+
         self.TurnOnDisplay()
 
     # Clear the screen
@@ -174,9 +174,9 @@ class EPD:
 
         self.send_command(0x26)
         self.send_data2([0x00] * int(self.width * self.height / 8))
-            
+
         self.TurnOnDisplay()
-        
+
     # Turn on display
     def TurnOnDisplay(self):
         self.send_command(0x20)
@@ -186,8 +186,7 @@ class EPD:
     def sleep(self):
         self.send_command(0x10)
         self.send_data(0x01)
-        
+
         epdconfig.delay_ms(2000)
         epdconfig.module_exit()
 ### END OF FILE ###
-

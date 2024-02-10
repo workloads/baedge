@@ -48,7 +48,7 @@ class EPD:
         self.width = EPD_WIDTH
         self.height = EPD_HEIGHT
 
-    lut_vcomDC = [  
+    lut_vcomDC = [
         0x00, 0x08, 0x00, 0x00, 0x00, 0x02,
         0x60, 0x28, 0x28, 0x00, 0x00, 0x01,
         0x00, 0x14, 0x00, 0x00, 0x00, 0x01,
@@ -59,7 +59,7 @@ class EPD:
         0x00, 0x00,
     ]
 
-    lut_ww = [  
+    lut_ww = [
         0x40, 0x08, 0x00, 0x00, 0x00, 0x02,
         0x90, 0x28, 0x28, 0x00, 0x00, 0x01,
         0x40, 0x14, 0x00, 0x00, 0x00, 0x01,
@@ -69,7 +69,7 @@ class EPD:
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ]
 
-    lut_bw = [  
+    lut_bw = [
         0x40, 0x17, 0x00, 0x00, 0x00, 0x02,
         0x90, 0x0F, 0x0F, 0x00, 0x00, 0x03,
         0x40, 0x0A, 0x01, 0x00, 0x00, 0x01,
@@ -89,7 +89,7 @@ class EPD:
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ]
 
-    lut_bb = [ 
+    lut_bb = [
         0x80, 0x08, 0x00, 0x00, 0x00, 0x02,
         0x90, 0x28, 0x28, 0x00, 0x00, 0x01,
         0x80, 0x14, 0x00, 0x00, 0x00, 0x01,
@@ -98,8 +98,8 @@ class EPD:
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ]
-    
-    lut_vcom1 = [  
+
+    lut_vcom1 = [
         0x00, 0x19, 0x01, 0x00, 0x00, 0x01,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -110,7 +110,7 @@ class EPD:
         0x00, 0x00,
     ]
 
-    lut_ww1 = [  
+    lut_ww1 = [
         0x00, 0x19, 0x01, 0x00, 0x00, 0x01,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -120,7 +120,7 @@ class EPD:
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ]
 
-    lut_bw1 = [  
+    lut_bw1 = [
         0x80, 0x19, 0x01, 0x00, 0x00, 0x01,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -140,7 +140,7 @@ class EPD:
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ]
 
-    lut_bb1 = [ 
+    lut_bb1 = [
         0x00, 0x19, 0x01, 0x00, 0x00, 0x01,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -149,15 +149,15 @@ class EPD:
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ]
-        
+
     # Hardware reset
     def reset(self):
         epdconfig.digital_write(self.reset_pin, 1)
-        epdconfig.delay_ms(200) 
+        epdconfig.delay_ms(200)
         epdconfig.digital_write(self.reset_pin, 0)
         epdconfig.delay_ms(5)
         epdconfig.digital_write(self.reset_pin, 1)
-        epdconfig.delay_ms(200)   
+        epdconfig.delay_ms(200)
 
     def send_command(self, command):
         epdconfig.digital_write(self.dc_pin, 0)
@@ -170,32 +170,32 @@ class EPD:
         epdconfig.digital_write(self.cs_pin, 0)
         epdconfig.spi_writebyte([data])
         epdconfig.digital_write(self.cs_pin, 1)
-        
-    # send a lot of data   
+
+    # send a lot of data
     def send_data2(self, data):
         epdconfig.digital_write(self.dc_pin, 1)
         epdconfig.digital_write(self.cs_pin, 0)
         epdconfig.spi_writebyte2(data)
         epdconfig.digital_write(self.cs_pin, 1)
-    
+
     def ReadBusy(self):
         logger.debug("e-Paper busy")
         while(epdconfig.digital_read(self.busy_pin) == 0):      # 0: idle, 1: busy
             self.send_command(0x71)
-            epdconfig.delay_ms(100)  
+            epdconfig.delay_ms(100)
         logger.debug("e-Paper busy release")
-        
+
     def TurnOnDisplay(self):
         self.send_command(0x12)
         epdconfig.delay_ms(100)
         self.ReadBusy()
-        
+
     def init(self):
         if (epdconfig.module_init() != 0):
             return -1
         # EPD hardware init start
         self.reset()
-        
+
         self.send_command(0x01)	# POWER SETTING
         self.send_data(0x03)
         self.send_data(0x00)
@@ -226,13 +226,13 @@ class EPD:
         self.send_command(0x82)	# vcom_DC setting
         self.send_data(0x28)
         return 0
-        
+
     def SetFullReg(self):
         self.send_command(0x82)
         self.send_data(0x00)
         self.send_command(0X50)
         self.send_data(0x97)
-        
+
         self.send_command(0x20) # vcom
         self.send_data2(self.lut_vcomDC)
         self.send_command(0x21) # ww --
@@ -243,13 +243,13 @@ class EPD:
         self.send_data2(self.lut_wb)
         self.send_command(0x24) # bb b
         self.send_data2(self.lut_bb)
-    
+
     def SetPartReg(self):
         self.send_command(0x82)
         self.send_data(0x03)
         self.send_command(0X50)
         self.send_data(0x47)
-        
+
         self.send_command(0x20) # vcom
         self.send_data2(self.lut_vcom1)
         self.send_command(0x21) # ww --
@@ -288,7 +288,7 @@ class EPD:
     def display(self, image):
         if (Image == None):
             return
-            
+
         if self.width%8 == 0:
             linewidth = int(self.width/8)
         else:
@@ -297,18 +297,18 @@ class EPD:
         self.send_command(0x10)
         self.send_data2([0x00] * self.height * linewidth)
         epdconfig.delay_ms(10)
-        
+
         self.send_command(0x13)
         self.send_data2(image)
         epdconfig.delay_ms(10)
-        
+
         self.SetFullReg()
         self.TurnOnDisplay()
-        
-    def DisplayPartial(self, image):   
+
+    def DisplayPartial(self, image):
         if (Image == None):
             return
-            
+
         self.send_command(0x91)
         self.send_command(0x90)
         self.send_data(0)
@@ -319,7 +319,7 @@ class EPD:
         self.send_data(int(self.height / 256))
         self.send_data(self.height % 256 - 1)
         self.send_data(0x28)
-        
+
         if self.width%8 == 0:
             linewidth = int(self.width/8)
         else:
@@ -329,18 +329,18 @@ class EPD:
 
         for i in range(self.height * linewidth):
             buf[i] = ~image[i]
-        
+
         self.send_command(0x10)
         self.send_data2(image)
         epdconfig.delay_ms(10)
-        
+
         self.send_command(0x13)
         self.send_data2(buf)
         epdconfig.delay_ms(10)
-        
+
         self.SetPartReg()
         self.TurnOnDisplay()
-        
+
     def Clear(self):
         if self.width%8 == 0:
             linewidth = int(self.width/8)
@@ -350,11 +350,11 @@ class EPD:
         self.send_command(0x10)
         self.send_data2([0x00] * self.height * linewidth)
         epdconfig.delay_ms(10)
-        
+
         self.send_command(0x13)
         self.send_data2([0xFF] * self.height * linewidth)
         epdconfig.delay_ms(10)
-        
+
         self.SetFullReg()
         self.TurnOnDisplay()
 
@@ -362,11 +362,10 @@ class EPD:
         self.send_command(0X50)
         self.send_data(0xf7)
         self.send_command(0X02) # power off
-        self.send_command(0X07) # deep sleep  
+        self.send_command(0X07) # deep sleep
         self.send_data(0xA5)
 
         epdconfig.delay_ms(2000)
         epdconfig.module_exit()
 
 ### END OF FILE ###
-
