@@ -1,9 +1,10 @@
 # Makefile for Baedge Server
 
 # configuration
-TITLE     = 🎫 BAEDGE SERVER
-FLASK_APP = baedge_server
-FLASK_PORT = 2343
+TITLE         = 🎫 BAEDGE SERVER
+FLAKE_CONFIG ?= ".flake8"
+FLASK_APP    ?= baedge_server
+FLASK_PORT   ?= 2343
 
 include ../tooling/make/configs/shared.mk
 include ../tooling/make/targets/shared.mk
@@ -17,6 +18,10 @@ deps: # install PIP dependencies [Usage: `make deps`]
 .SILENT .PHONY: lint
 lint: # lint Python files using Pylint [Usage: `make lint`]
 	pylint \
+		*.py \
+	&& \
+	flake8 \
+		--config="${FLAKE_CONFIG}" \
 		*.py
 
 .SILENT .PHONY: routes

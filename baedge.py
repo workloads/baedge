@@ -23,9 +23,10 @@ logging.basicConfig(level=log_level)
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
 epd_lib = importlib.import_module("lib.waveshare_epd.epd" + screen_model + screen_revision)
-logging.debug("[config] load EPD Library for Model %s (Rev: %s)",screen_model, screen_revision)
+logging.debug("[config] load EPD Library for Model %s (Rev: %s)", screen_model, screen_revision)
 
-## TODO: Find a way to persist the epd config and not have to reset the screen on each request
+
+# TODO: Find a way to persist the epd config and not have to reset the screen on each request
 def init_screen():
     """ initialize eInk screen """
     text = "{Ba,e}dge"
@@ -43,7 +44,7 @@ def init_screen():
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
-        draw.text((5, 5), text, font = font, fill = 0)
+        draw.text((5, 5), text, font=font, fill=0)
 
         epd.display_Base(epd.getbuffer(image))
         epd.sleep()
@@ -62,7 +63,7 @@ def clear_screen(epd):
     logging.debug("[clear_screen]")
 
     try:
-#        init_screen()
+        # init_screen()
 
         logging.debug("[clear_screen] sleep screen")
         epd.sleep()
@@ -86,19 +87,16 @@ def write_text(epd, text, style):
         # attempt
         epd.display_Base_color(0xff)
 
-
         # 255 = clear background frame
-        image = Image.new('1', (epd.height, epd.width), 0xff)#255)
+        image = Image.new('1', (epd.height, epd.width), 0xff)  # `0xff` = `255`
         draw = ImageDraw.Draw(image)
         # the numbers are coordinates on which to draw
-        draw.rectangle((10, 110, 120, 150), fill = 255)
-        draw.text((10, 110), text, font = font, fill = 0)
+        draw.rectangle((10, 110, 120, 150), fill=255)
+        draw.text((10, 110), text, font=font, fill=0)
         newimage = image.crop([10, 110, 120, 150])
-        image.paste(newimage, (10,110))
+        image.paste(newimage, (10, 110))
         epd.display_Partial(epd.getbuffer(image), 110, epd.height - 120, 150, epd.height - 10)
 
-        #old full display write
-        #epd.display(epd.getbuffer(image))
         epd.sleep()
 
     except IOError as e:
@@ -128,14 +126,14 @@ def write_to_screen(epd, text, image):
         return False
 
     try:
-#        init_screen()
+        # init_screen()
         epd.Clear()
         font_config = ImageFont.truetype(font_face, font_size)
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
 
         draw = ImageDraw.Draw(image)
-        draw.text((5, 60), text, font = font_config, fill = 0)
+        draw.text((5, 60), text, font=font_config, fill=0)
 
         epd.display_Base(epd.getbuffer(image))
 
