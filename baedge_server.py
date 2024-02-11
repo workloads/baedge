@@ -31,7 +31,7 @@ logging.basicConfig(level=log_level)
 # load Flask and disable static file serving
 app = Flask(__name__, static_folder=None)
 
-app.epd = baedge.init_screen()
+app.epd = baedge.initialize_screen()
 
 
 @app.route("/", methods=['GET'])
@@ -136,5 +136,5 @@ def write_post():
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":
-    # app.epd = baedge.init_screen()
+    # app.epd = baedge.initialize_screen()
     app.run(host=server_host, port=server_port, debug=DEBUG_MODE, load_dotenv=DOTENV)
