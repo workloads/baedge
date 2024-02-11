@@ -5,9 +5,9 @@ import logging
 
 from flask import Flask, jsonify, make_response, request
 
-import baedge_helpers as hlp
 import baedge_config as cfg
 import baedge
+import helpers as hlp
 
 # application configuration
 APP_NAME = "🎫 Baedge Server."

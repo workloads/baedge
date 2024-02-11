@@ -6,11 +6,11 @@ import qrcode
 
 from PIL import Image, ImageDraw, ImageFont
 
-import baedge_helpers as hlp
 import baedge_config as cfg
+import helpers as hlp
 
 # enable logging at the specified level
-logging.basicConfig(level=cfg.log_level)
+logging.basicConfig(level=cfg.app["log_level"])
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
 epd_lib = importlib.import_module("lib.waveshare_epd.epd" + cfg.screen_model + cfg.screen_revision)
@@ -84,15 +84,13 @@ def write_socials_info(epd):
         draw = ImageDraw.Draw(image)
         draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
 
+        hlp.log_debug('write_socials_info', 'generate QR code')
         qr = qrcode.QRCode(version=1, box_size=4)
         qr.add_data(cfg.wearer["link"])
         qr.make(fit=True)
         qrcode_image = qr.make_image()
 
-        hlp.log_debug('write_socials_info', 'generated QR code')
-
-        # TODO: should we remove this?
-        print(qrcode_image)
+        hlp.log_debug('write_socials_info', 'QR code image: ' + qrcode_image)
         image.paste(qrcode_image, (120, 60))
 
         epd.display(epd.getbuffer(image))
