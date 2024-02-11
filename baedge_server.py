@@ -16,11 +16,11 @@ if cfg.app["log_level"] == "DEBUG":
 # enable logging at the specified level
 logging.basicConfig(level=cfg.app["log_level"])
 
-# load Flask and disable static file serving
+# load Flask and disable wildcard static file serving
 server = Flask(__name__, static_folder=None)
 
 # initialize eInk screen
-app.epd = baedge.initialize_screen()
+# server.epd = baedge.initialize_screen()
 
 
 @server.route(cfg.routes["root"], methods=['GET'])
@@ -40,7 +40,7 @@ def apple_touch_icon():
 
     response = send_from_directory(
       as_attachment=False,
-      directory=cfg.media_directory,
+      directory=cfg.app["media"],
       path=cfg.media["apple-touch-icon"],
     )
 

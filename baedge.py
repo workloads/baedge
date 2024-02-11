@@ -13,8 +13,11 @@ import config as cfg
 logging.basicConfig(level=cfg.app["log_level"])
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
-epd_lib = importlib.import_module("lib.waveshare_epd.epd" + cfg.screen_model + cfg.screen_revision)
-hlp.log_debug(__name__, '[config] load EPD Library for Model ' + cfg.screen_model + ' (Rev: ' + cfg.screen_revision + ')')
+screen_model = cfg.baedge["screen"]["model"]
+screen_revision = cfg.baedge["screen"]["revision"]
+
+epd_lib = importlib.import_module("lib.waveshare_epd.epd" + screen_model + screen_revision)
+hlp.log_debug(__name__, '[config] load EPD Library for Model ' + screen_model + ' (Rev: ' + screen_revision + ')')
 
 
 def initialize_screen():
