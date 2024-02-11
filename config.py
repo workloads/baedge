@@ -70,7 +70,7 @@ nomad = {
   "version": os.getenv("NOMAD_VERSION", "n/a"),
 }
 
-# convenience dict for building routes
+# application routes for Flask
 routes = {
   "root": "/",
 
