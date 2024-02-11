@@ -1,4 +1,4 @@
-""" Baedge Application """
+""" application """
 
 import logging
 import importlib

@@ -1,4 +1,4 @@
-""" Baedge Helpers """
+""" application helpers """
 
 import logging as log
 
