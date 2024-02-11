@@ -4,7 +4,7 @@
 TITLE          = 🎫 {BA,E}DGE SERVER
 BINARY_PYTHON ?= python3
 FLAKE_CONFIG  ?= ".flake8"
-FLASK_APP     ?= baedge_server
+FLASK_APP     ?= server
 FLASK_PORT    ?= 2343
 PYLINT_RCFILE ?= ".pylintrc"
 
