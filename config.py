@@ -4,12 +4,17 @@ import os
 
 # application configuration
 app = {
-  # env variables are strings, but debug and dotenv mode expected booleans
+  # `debug` is expected to be bool
   "debug": bool(os.getenv("BAEDGE_SERVER_DEBUG", "false")),
+
+  "description": "{Ba,E}dge Computing Server",
+
+  # `dotenv` is expected to be bool
   "dotenv": bool(os.getenv("BAEDGE_SERVER_DOTENV", "false")),
 
   "host": os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0"),
   "log_level": os.getenv("LOG_LEVEL", "INFO"),
+  "media": os.getenv("BAEDGE_MEDIA_PATH", "/opt/baedge-assets/"),
   "name": os.getenv("BAEDGE_SERVER_NAME", "🎫 Baedge Server."),
 
   # define namespaces for routes
@@ -18,10 +23,18 @@ app = {
     "status": "/status",
   },
 
-  # env variables are strings, but port is expected to be bool
+  # `port` is expected to be bool
   "port": int(os.getenv("BAEDGE_SERVER_PORT", "2343")),  # `2343` = `BDGE`
 
   "prefix": "/v1",
+  "templates": os.getenv("BAEDGE_TEMPLATES_PATH", "./templates"),
+}
+
+baedge = {
+  "screen": {
+    "model": os.getenv("BAEDGE_SCREEN_MODEL", "2in9b"),
+    "revision": os.getenv("BAEDGE_SCREEN_REVISION", "_v3"),
+  },
 }
 
 coordinates = {
@@ -33,26 +46,25 @@ coordinates = {
 # TODO: move to dict?
 font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/regular.ttf")
 font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
-screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in9b")
-screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_v3")
-
 
 # Nomad Environment configuration
 nomad = {
     "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
     "address": os.getenv("NOMAD_ADDR_http", "n/a"),
+    "version": os.getenv("NOMAD_VERSION", "n/a"),
 }
-
-# screen layout configuration
-media_directory = os.getenv("BAEDGE_MEDIA", "/opt/baedge-assets/")
 
 media = {
   # favicon-like files are served through Flask's `send_from_directory` and do not need `media` as a prefix
   "apple-touch-icon": 'apple-touch-icon.png',
   "favicon": 'favicon.ico',
 
-  # TODO: find better name
-  "company_icon": media_directory + 'hashicorp-icon_32x32.png'
+  # TODO: find better name for `company_icon`
+  "company_icon": app["media"] + 'hashicorp-icon_32x32.png',
+
+  "fonts": {
+    # TODO: define fonts
+  }
 }
 
 # convenience dict for building routes
