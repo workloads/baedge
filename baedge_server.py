@@ -5,28 +5,16 @@ import logging
 
 from flask import Flask, jsonify, make_response, request
 
-import baedge_config as cfg
 import baedge
 import helpers as hlp
+import config as cfg
 
-# application configuration
-APP_NAME = "🎫 Baedge Server."
-ROUTE_API_VERSION = "/v1"
-ROUTE_NAMESPACE_DEVICE = "/device"
-ROUTE_NAMESPACE_STATUS = "/status"
-DEBUG_MODE = False
-DOTENV = True
-
-# enable debug mode if log level is set to `DEBUG`
-if cfg.log_level == "DEBUG":
-    DEBUG_MODE = True
-
-# environment configuration
-server_host = os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0")
-server_port = os.getenv("BAEDGE_SERVER_PORT", "2343")  # `2343` = `BDGE`
+# override server debug mode if log level is explicitly set to `DEBUG`
+if cfg.app["log_level"] == "DEBUG":
+    cfg.app["debug"] = True
 
 # enable logging at the specified level
-logging.basicConfig(level=cfg.log_level)
+logging.basicConfig(level=cfg.app["log_level"])
 
 # load Flask and disable static file serving
 app = Flask(__name__, static_folder=None)
