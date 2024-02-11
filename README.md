@@ -41,7 +41,7 @@ This repository provides a [Makefile](./Makefile)-based workflow.
 Running `make` without commands will print out the following help information:
 
 ```text
-🎫 BAEDGE SERVER
+🎫 {BA,E}DGE SERVER
 
 Target          Description                                   Usage
 deps            install dependencies                          `make deps`

@@ -1,4 +1,4 @@
-""" Baedge Configuration """
+""" application configuration """
 
 import os
 

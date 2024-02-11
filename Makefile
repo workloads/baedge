@@ -1,11 +1,12 @@
 # Makefile for Baedge Server
 
 # configuration
-TITLE          = 🎫 BAEDGE SERVER
+TITLE          = 🎫 {BA,E}DGE SERVER
+BINARY_PYTHON ?= python3
 FLAKE_CONFIG  ?= ".flake8"
 FLASK_APP     ?= baedge_server
 FLASK_PORT    ?= 2343
-BINARY_PYTHON ?= python3
+PYLINT_RCFILE ?= ".pylintrc"
 
 include ../tooling/make/configs/shared.mk
 include ../tooling/make/targets/shared.mk
@@ -29,6 +30,7 @@ lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
 		*.py \
 	&& \
 	pylint \
+		--rcfile="${PYLINT_RCFILE}" \
 		*.py
 
 .SILENT .PHONY: snyk
