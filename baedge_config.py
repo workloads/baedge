@@ -8,15 +8,20 @@ font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
 screen_model = os.getenv("BAEDGE_SCREEN_MODEL", "2in9b")
 screen_revision = os.getenv("BAEDGE_SCREEN_REVISION", "_v3")
 
-# (human) wearer configuration
-wearer_name = os.getenv("BAEDGE_WEARER_NAME", "{Ba,e}dge")
-wearer_title = os.getenv("BAEDGE_WEARER_TITLE", "Orchestration at the Edge of Human and Compute.")
-wearer_social = os.getenv("BAEDGE_WEARER_SOCIAL", "@wrklds")
-wearer_link = os.getenv("BAEDGE_WEARER_LINK", "https://workloads.io")
-
 # Nomad Environment configuration
-nomad_alloc_id = os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a")
-nomad_addr_http = os.getenv("NOMAD_ADDR_http", "http://127.0.0.0")
+nomad = {
+    "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
+    "address": os.getenv("NOMAD_ADDR_http", "n/a"),
+}
+
+# (human) wearer configuration
+wearer = {
+    "name": os.getenv("BAEDGE_WEARER_NAME", "{Ba,e}dge"),
+    "title": os.getenv("BAEDGE_WEARER_TITLE", "Orchestration at the Edge of Human and Compute."),
+    "social": os.getenv("BAEDGE_WEARER_SOCIAL", "@wrklds"),
+    "link": os.getenv("BAEDGE_WEARER_LINK", "https://workloads.io"),
+}
+
 
 log_level = os.getenv("LOG_LEVEL", "INFO")
 

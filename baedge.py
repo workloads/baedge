@@ -36,7 +36,7 @@ def initialize_screen():
         # 255 = clear background frame
         # image = Image.new('1', (epd.height, epd.width), 255)
         # draw = ImageDraw.Draw(image)
-        # draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
+        # draw.text((cfg.coordinates.qrcode), text, font=font, fill=0)
 
         # epd.display_Base(epd.getbuffer(image))
         # epd.sleep()
@@ -74,7 +74,7 @@ def write_socials_info(epd):
     """ write socials info to eInk screen """
     hlp.log_debug('write_socials_info', 'init')
 
-    text = cfg.wearer_name + "\n" + cfg.wearer_title + "\n" + cfg.wearer_social
+    text = cfg.wearer["name"] + "\n" + cfg.wearer["title"] + "\n" + cfg.wearer["social"]
 
     try:
         font = ImageFont.truetype(cfg.font_face, cfg.font_size)
@@ -85,7 +85,7 @@ def write_socials_info(epd):
         draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
 
         qr = qrcode.QRCode(version=1, box_size=4)
-        qr.add_data(cfg.wearer_link)
+        qr.add_data(cfg.wearer["link"])
         qr.make(fit=True)
         qrcode_image = qr.make_image()
 
@@ -146,7 +146,7 @@ def write_nomad_info(epd):
         font = ImageFont.truetype(cfg.font_face, cfg.font_size)
 
         # TODO: move this up and define more globally
-        text = cfg.nomad_alloc_id + "\n" + cfg.nomad_addr_http
+        text = cfg.nomad["allocation"] + "\n" + cfg.nomad["address"]
 
         nimage = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(nimage)
