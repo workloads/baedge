@@ -9,6 +9,12 @@ def log_debug(function, msg):
     log.debug("[%s] %s", function, msg)
 
 
+def log_error(function, msg):
+    """ create log message for errors """
+
+    log.error("[%s] %s", function, msg)
+
+
 def log_exception(function, exception):
     """ create log message for exceptions """
 
