@@ -49,6 +49,26 @@ def initialize_screen():
         return None
 
 
+def clear_screen(epd, sleep):
+    """ clear content of eInk screen """
+    hlp.log_debug('clear_screen', 'init')
+
+    try:
+        hlp.log_debug('clear_screen', 'clear screen')
+        epd.Clear()
+
+        # only sleep if requested
+        if sleep:
+            hlp.log_debug('clear_screen', 'sleep screen')
+            epd.sleep()
+
+        hlp.log_debug('clear_screen', 'end')
+        return True
+
+    except IOError as e:
+        hlp.log_exception('clear_screen', e)
+        return None
+
 
 def write_socials_info(epd):
     """ write socials info to eInk screen """
@@ -157,25 +177,6 @@ def write_nomad_info(epd):
 
     except IOError as e:
         hlp.log_exception('write_nomad_info', e)
-        return None
-
-
-def clear_screen(epd):
-    """ clear content of eInk screen """
-    hlp.log_debug('clear_screen', 'init')
-
-    try:
-        hlp.log_debug('clear_screen', 'clear screen')
-        epd.Clear()
-
-        hlp.log_debug('clear_screen', 'sleep screen')
-        epd.sleep()
-
-        hlp.log_debug('clear_screen', 'end')
-        return True
-
-    except IOError as e:
-        hlp.log_exception('clear_screen', e)
         return None
 
 

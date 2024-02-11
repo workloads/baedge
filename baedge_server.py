@@ -99,7 +99,7 @@ def clear_post():
     """ screen-clearing endpoint """
     logging.debug("[clear_post]")
 
-    baedge.clear_screen(app.epd)
+    baedge.clear_screen(app.epd, sleep=True)
 
     # respond with status code and message
     response = make_response("OK", 200)
