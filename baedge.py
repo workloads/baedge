@@ -6,8 +6,8 @@ import qrcode
 
 from PIL import Image, ImageDraw, ImageFont
 
-import baedge_config as cfg
 import helpers as hlp
+import config as cfg
 
 # enable logging at the specified level
 logging.basicConfig(level=cfg.app["log_level"])

@@ -32,7 +32,38 @@ def root_get():
     return response
 
 
-@app.route(ROUTE_API_VERSION + ROUTE_NAMESPACE_STATUS, methods=['GET'])
+# handle favicon-like resend_from_directoryquests, see https://flask.palletsprojects.com/en/3.0.x/patterns/favicon/
+@server.route(cfg.routes["apple-touch-icon"])
+def apple_touch_icon():
+    """ apple-touch-icon endpoint """
+    hlp.log_debug('GET ' + cfg.routes["apple-touch-icon"], 'init')
+
+    response = send_from_directory(
+      as_attachment=False,
+      directory=cfg.media_directory,
+      path=cfg.media["apple-touch-icon"],
+    )
+
+    return response
+
+
+# handle favicon-like resend_from_directoryquests, see https://flask.palletsprojects.com/en/3.0.x/patterns/favicon/
+@server.route(cfg.routes["favicon"])
+def favicon():
+    """ favicon endpoint """
+    hlp.log_debug('GET ' + cfg.routes["favicon"], 'init')
+
+    response = send_from_directory(
+      as_attachment=False,
+      directory=cfg.media_directory,
+      path=cfg.media["favicon"],
+      mimetype='image/vnd.microsoft.icon'
+    )
+
+    return response
+
+
+@server.route(cfg.routes["status"], methods=['GET'])
 def status_get():
     """ status endpoint """
     hlp.log_debug('GET ' + cfg.routes["status"], 'init')
