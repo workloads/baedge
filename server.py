@@ -53,7 +53,7 @@ def apple_touch_icon():
     # render file and return default status
     return send_from_directory(
       as_attachment=False,
-      directory=cfg.app["media"],
+      directory=cfg.media["images"],
       path=cfg.media["apple-touch-icon"],
     )
 

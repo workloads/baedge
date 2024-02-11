@@ -17,11 +17,11 @@ FONT_FACE = cfg.baedge["fonts"]["path"] + "RobotoMono/regular.ttf"
 FONT_SIZE = 15
 
 # conditionally import the correct library depending on env vartiables describing the EPD size
-screen_model = cfg.baedge["screen"]["model"]
-screen_revision = cfg.baedge["screen"]["revision"]
+hardware_model = cfg.baedge["hardware"]["model"]
+hardware_revision = cfg.baedge["hardware"]["revision"]
 
-epd_lib = importlib.import_module("lib.waveshare_epd.epd" + screen_model + screen_revision)
-hlp.log_debug(__name__, '[config] load EPD Library for Model ' + screen_model + ' (Rev: ' + screen_revision + ')')
+epd_lib = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
+hlp.log_debug(__name__, 'load EPD Library for Model ' + hardware_model + ' (Rev: ' + hardware_revision + ')')
 
 
 def initialize_screen():
@@ -81,7 +81,7 @@ def write_socials_info(epd):
     """ write socials info to eInk screen """
     hlp.log_debug('write_socials_info', 'init')
 
-    text = cfg.wearer["name"] + "\n" + cfg.wearer["title"] + "\n" + cfg.wearer["social"]
+    text = cfg.baedge["wearer"]["name"] + "\n" + cfg.baedge["wearer"]["title"] + "\n" + cfg.baedge["wearer"]["social"]
 
     try:
         font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
@@ -93,7 +93,7 @@ def write_socials_info(epd):
 
         hlp.log_debug('write_socials_info', 'generate QR code')
         qr = qrcode.QRCode(version=1, box_size=4)
-        qr.add_data(cfg.wearer["link"])
+        qr.add_data(cfg.baedge["wearer"]["link"])
         qr.make(fit=True)
         qrcode_image = qr.make_image()
 
@@ -119,7 +119,7 @@ def write_baedge_info(epd):
     hlp.log_debug('write_baedge_info', 'init')
 
     # TODO: move this up and define more globally
-    text = "{Ba,e}dge\n workloads.io/baedge "
+    text = "{Ba,e}dge\n go.workloads.io/baedge "
 
     try:
         font = ImageFont.truetype(FONT_FACE, FONT_SIZE)

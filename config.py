@@ -12,9 +12,11 @@ app = {
   # `dotenv` is expected to be bool
   "dotenv": bool(os.getenv("BAEDGE_SERVER_DOTENV", "false")),
 
+  "fonts": os.getenv("BAEDGE_FONTS_PATH", "./media/fonts"),
+
   "host": os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0"),
   "log_level": os.getenv("LOG_LEVEL", "INFO"),
-  "media": os.getenv("BAEDGE_MEDIA_PATH", "/opt/baedge-assets/"),
+  "media": os.getenv("BAEDGE_MEDIA_PATH", "./media"),
   "name": os.getenv("BAEDGE_SERVER_NAME", "🎫 Baedge Server."),
 
   # define namespaces for routes
@@ -36,22 +38,18 @@ baedge = {
     "qrcode": '5, 5',
   },
 
-  "fonts": {
-    "path": os.getenv("BAEDGE_FONTS_PATH", "./media/fonts"),
+  "hardware": {
+    "model": os.getenv("BAEDGE_HARDWARE_MODEL", "2in9b"),
+    "revision": os.getenv("BAEDGE_HARDWARE_REVISION", "_v3"),
   },
 
-  "screen": {
-    "model": os.getenv("BAEDGE_SCREEN_MODEL", "2in9b"),
-    "revision": os.getenv("BAEDGE_SCREEN_REVISION", "_v3"),
+  # (human) wearer configuration
+  "wearer": {
+      "name": os.getenv("BAEDGE_WEARER_NAME", "{Ba,e}dge"),
+      "title": os.getenv("BAEDGE_WEARER_TITLE", "Orchestration at the Edge of Human and Compute."),
+      "social": os.getenv("BAEDGE_WEARER_SOCIAL", "@wrklds"),
+      "link": os.getenv("BAEDGE_WEARER_LINK", "https://go.workloads.io/baedge"),
   },
-}
-
-# TODO: move this to a more appropriate location
-# Nomad Environment configuration
-nomad = {
-    "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
-    "address": os.getenv("NOMAD_ADDR_http", "n/a"),
-    "version": os.getenv("NOMAD_VERSION", "n/a"),
 }
 
 media = {
@@ -61,10 +59,15 @@ media = {
 
   # TODO: find better name for `company_icon`
   "company_icon": app["media"] + 'hashicorp-icon_32x32.png',
+}
 
-  "fonts": {
-    # TODO: define fonts
-  }
+
+# TODO: move this to a more appropriate location
+# Nomad Environment configuration
+nomad = {
+  "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
+  "address": os.getenv("NOMAD_ADDR_http", "n/a"),
+  "version": os.getenv("NOMAD_VERSION", "n/a"),
 }
 
 # convenience dict for building routes
@@ -84,12 +87,4 @@ routes = {
   "status_environment": app["prefix"] + app["namespaces"]["status"] + "/environment",
   "status_routes": app["prefix"] + app["namespaces"]["status"] + "/routes",
   "status_screen": app["prefix"] + app["namespaces"]["status"] + "/screen",
-}
-
-# (human) wearer configuration
-wearer = {
-  "name": os.getenv("BAEDGE_WEARER_NAME", "{Ba,e}dge"),
-  "title": os.getenv("BAEDGE_WEARER_TITLE", "Orchestration at the Edge of Human and Compute."),
-  "social": os.getenv("BAEDGE_WEARER_SOCIAL", "@wrklds"),
-  "link": os.getenv("BAEDGE_WEARER_LINK", "https://workloads.io"),
 }
