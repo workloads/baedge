@@ -164,9 +164,10 @@ def clear_screen(epd):
     hlp.log_debug('clear_screen', 'init')
 
     try:
+        hlp.log_debug('clear_screen', 'clear screen')
         epd.Clear()
 
-        logging.debug("[clear_screen] sleep screen")
+        hlp.log_debug('clear_screen', 'sleep screen')
         epd.sleep()
 
         hlp.log_debug('clear_screen', 'end')
@@ -181,8 +182,8 @@ def write_text(epd, text, style):
     """ write textual content to eInk screen """
     hlp.log_debug('write_text', 'init')
 
-    logging.debug("[write_text] text: %s", text)
-    logging.debug("[write_text] style: %s", style)
+    hlp.log_debug('write_text', 'text: ' + text)
+    hlp.log_debug('write_text', 'style: ' + style)
 
     # TODO: move this up and define more globally
     font = ImageFont.truetype(cfg.font_face, cfg.font_size)
@@ -223,7 +224,9 @@ def write_text(epd, text, style):
 
 def write_image(epd, image):
     """ write image content to eInk screen """
-    logging.debug("[write_image] image: %s", image)
+    hlp.log_debug('write_image', 'init')
+
+    hlp.log_debug('write_image', 'image: ' + image)
 
     try:
         # TODO: implement image writing
