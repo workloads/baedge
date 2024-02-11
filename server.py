@@ -147,19 +147,21 @@ def write_post():
         hlp.log_debug('POST ' + cfg.routes["device_write"], 'write text to screen')
         # baedge.write_text(server.epd, data.get('text'), data.get('style'))
 
-        return make_response("OK", 200)
+        response = make_response("OK", 200)
 
     elif data.get('image'):
         hlp.log_debug('POST ' + cfg.routes["device_write"], 'write image to screen')
         # baedge.write_image(server.epd, data.get('image'))
 
-        return make_response("OK", 200)
+        response = make_response("OK", 200)
 
     else:
         hlp.log_error('POST ' + cfg.routes["device_write"], 'unable to write to screen')
 
         # return response with status 400
-        return make_response("Payload did not contain expected data", 400)
+        response = make_response("Payload did not contain expected data", 400)
+
+    return response
 
 
 # if no app name is specified, default to running Flask internally

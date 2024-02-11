@@ -27,26 +27,26 @@ app = {
   "port": int(os.getenv("BAEDGE_SERVER_PORT", "2343")),  # `2343` = `BDGE`
 
   "prefix": "/v1",
-  "templates": os.getenv("BAEDGE_TEMPLATES_PATH", "./templates"),
+  "templates": os.getenv("BAEDGE_TEMPLATES_PATH", "./media/templates"),
 }
 
 baedge = {
+  "coordinates": {
+    # QR code is located in the bottom right corner
+    "qrcode": '5, 5',
+  },
+
+  "fonts": {
+    "path": os.getenv("BAEDGE_FONTS_PATH", "./media/fonts"),
+  },
+
   "screen": {
     "model": os.getenv("BAEDGE_SCREEN_MODEL", "2in9b"),
     "revision": os.getenv("BAEDGE_SCREEN_REVISION", "_v3"),
   },
 }
 
-coordinates = {
-  # QR code is located in the bottom right corner
-  "qrcode": '5, 5'
-}
-
-# Baedge environment configuration
-# TODO: move to dict?
-font_face = os.getenv("BAEDGE_FONT_FACE", "./fonts/RobotoMono/regular.ttf")
-font_size = int(os.getenv("BAEDGE_FONT_SIZE", "15"))
-
+# TODO: move this to a more appropriate location
 # Nomad Environment configuration
 nomad = {
     "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),

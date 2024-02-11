@@ -12,6 +12,10 @@ import config as cfg
 # enable logging at the specified level
 logging.basicConfig(level=cfg.app["log_level"])
 
+# TODO: move to a more logical place
+FONT_FACE = cfg.baedge["fonts"]["path"] + "RobotoMono/regular.ttf"
+FONT_SIZE = 15
+
 # conditionally import the correct library depending on env vartiables describing the EPD size
 screen_model = cfg.baedge["screen"]["model"]
 screen_revision = cfg.baedge["screen"]["revision"]
@@ -28,7 +32,7 @@ def initialize_screen():
         epd = epd_lib.EPD()
 
         # TODO: remove or use
-        # font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+        # font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
 
         hlp.log_debug('initialize_screen', 'initialize screen')
         epd.init()
@@ -80,12 +84,12 @@ def write_socials_info(epd):
     text = cfg.wearer["name"] + "\n" + cfg.wearer["title"] + "\n" + cfg.wearer["social"]
 
     try:
-        font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+        font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
 
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
-        draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
+        draw.text((cfg.baedge["coordinates"]["qrcode"]), text, font=font, fill=0)
 
         hlp.log_debug('write_socials_info', 'generate QR code')
         qr = qrcode.QRCode(version=1, box_size=4)
@@ -118,13 +122,13 @@ def write_baedge_info(epd):
     text = "{Ba,e}dge\n workloads.io/baedge "
 
     try:
-        font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+        font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
 
         # 255 = clear background frame
         image = Image.new('1', (epd.height, epd.width), 255)
         draw = ImageDraw.Draw(image)
 
-        draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
+        draw.text((cfg.baedge["coordinates"]["qrcode"]), text, font=font, fill=0)
 
         epd.display(epd.getbuffer(image))
 
@@ -144,7 +148,7 @@ def write_nomad_info(epd):
     hlp.log_debug('write_nomad_info', 'init')
 
     try:
-        font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+        font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
 
         # TODO: move this up and define more globally
         text = cfg.nomad["allocation"] + "\n" + cfg.nomad["address"]
@@ -189,7 +193,7 @@ def write_text(epd, text, style):
     hlp.log_debug('write_text', 'style: ' + style)
 
     # TODO: move this up and define more globally
-    font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+    font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
 
     try:
         epd.init()

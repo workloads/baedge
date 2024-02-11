@@ -5,8 +5,6 @@ export LOG_LEVEL="DEBUG"
 export BAEDGE_SERVER_DEBUG="true"
 export BAEDGE_SERVER_DOTENV="false"
 export BAEDGE_MEDIA_PATH="/opt/baedge-assets"
-export BAEDGE_FONT_FACE="./fonts/RobotoMono/Regular.ttf"
-export BAEDGE_FONT_SIZE="15"
 export BAEDGE_SCREEN_MODEL="2in9b"
 export BAEDGE_SCREEN_REVISION="_v3"
 
