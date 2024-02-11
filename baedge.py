@@ -18,31 +18,35 @@ hlp.log_debug(__name__, '[config] load EPD Library for Model ' + cfg.screen_mode
 
 
 def initialize_screen():
-  """ initialize eInk screen """
-  hlp.log_debug('initialize_screen', 'init')
+    """ initialize eInk screen """
+    hlp.log_debug('initialize_screen', 'init')
 
-  try:
-    epd = epd_lib.EPD()
+    try:
+        epd = epd_lib.EPD()
 
-    # TODO: remove or use
-    # font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+        # TODO: remove or use
+        # font = ImageFont.truetype(cfg.font_face, cfg.font_size)
 
-    hlp.log_debug('initialize_screen', 'initialize screen')
-    epd.init()
+        hlp.log_debug('initialize_screen', 'initialize screen')
+        epd.init()
 
-    hlp.log_debug('initialize_screen', 'clear screen')
-    epd.Clear()
+        hlp.log_debug('initialize_screen', 'clear screen')
+        epd.Clear()
 
-    # 255 = clear background frame
-    # image = Image.new('1', (epd.height, epd.width), 255)
-    # draw = ImageDraw.Draw(image)
-    # draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
+        # 255 = clear background frame
+        # image = Image.new('1', (epd.height, epd.width), 255)
+        # draw = ImageDraw.Draw(image)
+        # draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
 
-    # epd.display_Base(epd.getbuffer(image))
-    # epd.sleep()
+        # epd.display_Base(epd.getbuffer(image))
+        # epd.sleep()
 
-    hlp.log_debug('initialize_screen', 'end')
-    return epd
+        hlp.log_debug('initialize_screen', 'end')
+        return epd
+
+    except IOError as e:
+        hlp.log_exception('initialize_screen', e)
+        return None
 
   except IOError as e:
     hlp.log_exception('initialize_screen', e)
