@@ -17,6 +17,38 @@ epd_lib = importlib.import_module("lib.waveshare_epd.epd" + cfg.screen_model + c
 hlp.log_debug(__name__, '[config] load EPD Library for Model ' + cfg.screen_model + ' (Rev: ' + cfg.screen_revision + ')')
 
 
+def initialize_screen():
+  """ initialize eInk screen """
+  hlp.log_debug('initialize_screen', 'init')
+
+  try:
+    epd = epd_lib.EPD()
+
+    # TODO: remove or use
+    # font = ImageFont.truetype(cfg.font_face, cfg.font_size)
+
+    hlp.log_debug('initialize_screen', 'initialize screen')
+    epd.init()
+
+    hlp.log_debug('initialize_screen', 'clear screen')
+    epd.Clear()
+
+    # 255 = clear background frame
+    # image = Image.new('1', (epd.height, epd.width), 255)
+    # draw = ImageDraw.Draw(image)
+    # draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
+
+    # epd.display_Base(epd.getbuffer(image))
+    # epd.sleep()
+
+    hlp.log_debug('initialize_screen', 'end')
+    return epd
+
+  except IOError as e:
+    hlp.log_exception('initialize_screen', e)
+    return None
+
+
 def write_socials_info(epd):
     """ write socials info to eInk screen """
     hlp.log_debug('write_socials_info', 'init')
@@ -124,38 +156,6 @@ def write_nomad_info(epd):
 
     except IOError as e:
         hlp.log_exception('write_nomad_info', e)
-        return None
-
-
-def initialize_screen():
-    """ initialize eInk screen """
-    hlp.log_debug('initialize_screen', 'init')
-
-    try:
-        epd = epd_lib.EPD()
-
-        # TODO: remove or use
-        # font = ImageFont.truetype(cfg.font_face, cfg.font_size)
-
-        hlp.log_debug('initialize_screen', 'initialize screen')
-        epd.init()
-
-        hlp.log_debug('initialize_screen', 'clear screen')
-        epd.Clear()
-
-        # 255 = clear background frame
-        # image = Image.new('1', (epd.height, epd.width), 255)
-        # draw = ImageDraw.Draw(image)
-        # draw.text((cfg.coordinates["qrcode"]), text, font=font, fill=0)
-
-        # epd.display_Base(epd.getbuffer(image))
-        # epd.sleep()
-
-        hlp.log_debug('initialize_screen', 'end')
-        return epd
-
-    except IOError as e:
-        hlp.log_exception('initialize_screen', e)
         return None
 
 
