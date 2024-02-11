@@ -48,9 +48,6 @@ def initialize_screen():
         hlp.log_exception('initialize_screen', e)
         return None
 
-  except IOError as e:
-    hlp.log_exception('initialize_screen', e)
-    return None
 
 
 def write_socials_info(epd):
