@@ -191,7 +191,7 @@ if __name__ == "__main__":
     server.epd = baedge.initialize_screen()
 
     # start Flask application
-    hlp.log_debug(__name__, 'start server at http://' + cfg.app["host"] + ":" + cfg.app["port"])
+    hlp.log_debug(__name__, 'start server at http://' + cfg.app["host"] + ":" + str(cfg.app["port"]))
     server.run(
         debug=cfg.app["debug"],
         host=cfg.app["host"],
