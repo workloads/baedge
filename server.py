@@ -16,12 +16,15 @@ if cfg.app["logging"]["level"] == "DEBUG":
 # enable application logging at the specified level
 logging.basicConfig(level=cfg.app["logging"]["level"])
 
-# enable Flask Werkzeug-specific logging
+# toggle Flask;s Werkzeug-specific logging
+log = logging.getLogger('werkzeug')
+
 if cfg.app["logging"]["werkzeug"]["enable"]:
-  log = logging.getLogger('werkzeug')
-  log.setLevel(cfg.app["logging"]["werkzeug"]["level"])
+    log.setLevel(cfg.app["logging"]["werkzeug"]["level"])
+    log.disabled = False
 
-
+else:
+    log.disabled = True
 
 # load Flask and disable wildcard static file serving
 server = Flask(
