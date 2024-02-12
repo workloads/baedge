@@ -100,8 +100,8 @@ media = {
 
 # Nomad environment configuration
 nomad = {
-  "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
   "address": os.getenv("NOMAD_ADDR_http", "n/a"),
+  "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
   "version": os.getenv("NOMAD_VERSION", "n/a"),
 }
 

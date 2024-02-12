@@ -12,11 +12,11 @@ import config as cfg
 # enable logging at the specified level
 logging.basicConfig(level=cfg.app["logging"]["level"])
 
-# conditionally import the correct library depending on env vartiables describing the EPD size
+# conditionally import the correct library depending on vartiables describing the EPD model and revision
 hardware_model = cfg.baedge["hardware"]["model"]
 hardware_revision = cfg.baedge["hardware"]["revision"]
 
-epd_lib = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
+epd_library = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
 hlp.log_debug(__name__, 'load EPD Library for Model `' + hardware_model + '` (Rev: `' + hardware_revision + '`)')
 
 
@@ -25,16 +25,16 @@ def initialize_screen():
     Initialize screen for use
 
     Parameters:
-      None
+        None
 
     Returns:
-      object: Object containing EPD library and configuration
+        object: Object containing EPD library and configuration
     """
 
     hlp.log_debug('initialize_screen', 'init')
 
     try:
-        epd = epd_lib.EPD()
+        epd = epd_library.EPD()
 
         hlp.log_debug('initialize_screen', 'initialize screen')
         epd.init()
@@ -50,16 +50,16 @@ def initialize_screen():
         return None
 
 
-def clear_screen(epd, sleep):
+def clear_screen(epd, sleep_screen):
     """
     Clear contents on screen
 
     Parameters:
-      epd (object): Object containing EPD library and configuration
-      sleep (bool): Boolean indicating wether to sleep display or not
+        epd (object):         Object containing EPD library and configuration
+        sleep_screen (bool): Boolean indicating wether to sleep display or not
 
     Returns:
-      bool: Boolean True if screen was cleared successfully
+        bool: Boolean True if screen was cleared successfully
     """
 
     hlp.log_debug('clear_screen', 'init')
@@ -69,7 +69,7 @@ def clear_screen(epd, sleep):
         epd.Clear()
 
         # only sleep if requested
-        if sleep:
+        if sleep_screen:
             hlp.log_debug('clear_screen', 'sleep screen')
             epd.sleep()
 
@@ -81,16 +81,17 @@ def clear_screen(epd, sleep):
         return None
 
 
-def write_screen(epd, screen):
+def write_screen(epd, screen, sleep_screen):
     """
     Write contents to screen
 
     Parameters:
-      epd (object):    Object containing EPD library and configuration
-      screen (string): String indicating which screen to load data from
+        epd (object):         Object containing EPD library and configuration
+        screen (string):      String indicating which screen to load data from
+        sleep_screen (bool): Boolean indicating wether to sleep display or not
 
     Returns:
-      bool: Boolean True if contents were written successfully
+        bool: Boolean True if contents were written successfully
     """
 
     hlp.log_debug('write_screen', 'init')
@@ -159,12 +160,13 @@ def write_screen(epd, screen):
                 hlp.log_exception('write_screen', e)
                 return None
 
-        # TODO: document
+        # get buffered canvas data and update display
         epd.display(epd.getbuffer(canvas))
 
-        # TODO: should we remove this?
-        # hlp.log_debug('write_socials_info', 'sleep screen')
-        # epd.sleep()
+        # only sleep if requested
+        if sleep_screen:
+            hlp.log_debug('write_screen', 'sleep screen')
+            epd.sleep()
 
         hlp.log_debug('write_screen', 'end')
         return True
