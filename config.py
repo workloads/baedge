@@ -126,82 +126,93 @@ routes = {
 
 # screen configuration
 screens = {
-  # list of currently active screens
-  "active": [
-    "baedge",
-    "hardware",
-    "nomad",
-    "socials",
-  ],
+    # list of currently active screens
+    "active": [
+        "baedge",
+        "hardware",
+        "nomad",
+        "socials",
+    ],
 
-  # the `socials` screen displays wearer information
-  "baedge": {
-    "font": {
-      "face": media["fonts"]["isidorasans"] + "/regular.ttf",
-      "size": 15,
+    # the `socials` screen displays wearer information
+    "baedge": {
+        "font": {
+            "face": media["fonts"]["isidorasans"] + "/regular.ttf",
+            "size": 15,
+        },
+
+        "texts": [
+            {
+                "content": f'''
+          {app["description"]}
+
+          go.workloads.io/baedge
+        ''',
+                "coordinates": (5, 5),
+            },
+        ]
     },
 
-    "text": "{Ba,e}dge\n go.workloads.io/baedge"
-  },
+    # the `socials` screen displays wearer information
+    "hardware": {
+        "font": {
+            "face": media["fonts"]["robotomono"] + "/regular.ttf",
+            "size": 15,
+        },
 
-  # the `socials` screen displays wearer information
-  "hardware": {
-    "font": {
-      "face": media["fonts"]["robotomono"] + "/regular.ttf",
-      "size": 15,
+        "texts": [
+            {
+                "content": f'''
+              Model:    {baedge["hardware"]["model"]}
+              Revision: {baedge["hardware"]["model"]}
+          ''',
+
+                "coordinates": (5, 5),
+            },
+        ]
     },
 
-    "text": {
-      "content": f'''
-        Model:    {baedge["hardware"]["model"]}
-        Revision: {baedge["hardware"]["model"]}
-      ''',
+    # the `nomad` screen displays Nomad-specific information
+    "nomad": {
+        "font": {
+            "face": media["fonts"]["robotomono"] + "/regular.ttf",
+            "size": 15,
+        },
 
-      "coordinates": (5, 5),
-    },
-  },
-
-  # the `nomad` screen displays Nomad-specific information
-  "nomad": {
-    "font": {
-      "face": media["fonts"]["robotomono"] + "/regular.ttf",
-      "size": 15,
-    },
-
-    "text": {
-      "content": f'''
+        "text": {
+            "content": f'''
         Allocation ID {nomad["allocation"]}
         Address:      {nomad["address"]}
         Version:      {nomad["version"]}
       ''',
 
-      "coordinates": (5, 5),
-    },
-  },
-
-  # the `socials` screen displays wearer information
-  "socials": {
-    "font": {
-      "face": media["fonts"]["robotomono"] + "/regular.ttf",
-      "size": 15,
+            "coordinates": (5, 5),
+        },
     },
 
-    "text": {
-      "content": f'''
+    # the `socials` screen displays wearer information
+    "socials": {
+        "font": {
+            "face": media["fonts"]["robotomono"] + "/regular.ttf",
+            "size": 15,
+        },
+
+        "text": {
+            "content": f'''
         {baedge["wearer"]["name"]}
         {baedge["wearer"]["title"]}
 
         {baedge["wearer"]["social"]}
       ''',
 
-      "coordinates": (5, 5),
-    },
+            "coordinates": (5, 5),
+        },
 
-    "qrcode": {
-      "content": baedge["wearer"]["link"],
+        "qrcode": {
+            "content": baedge["wearer"]["link"],
 
-      # QR code is located in the bottom right corner
-      "coordinates": (120, 60),
+            # QR code is located in the bottom right corner
+            "coordinates": (120, 60),
+        },
     },
-  },
 }

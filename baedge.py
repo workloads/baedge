@@ -131,8 +131,10 @@ def write_screen(epd, screen, sleep_screen):
         # draw initial image to canvas
         draw = ImageDraw.Draw(canvas)
 
-        text_content = screen["text"]["content"]
-        text_coordinates = screen["text"]["coordinates"]
+        # iterate over text items for screen
+        for item in screen["texts"]:
+            text_content = item["content"]
+            text_coordinates = item["coordinates"]
 
         # assemble text object
         # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
