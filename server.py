@@ -150,25 +150,21 @@ def write_post():
     """ screen-writing endpoint """
     hlp.log_debug('POST ' + cfg.routes["device_write"], 'init')
 
-    # get data from request and parse as JSON
-    data = request.get_json(force=True)
+    # get `screen` identifier from POST data
+    screen = request.form.get('screen')
 
-    if data.get('text'):
-        hlp.log_debug('POST ' + cfg.routes["device_write"], 'write text to screen')
-        # baedge.write_text(server.epd, data.get('text'), data.get('style'))
+    if screen:
+        hlp.log_debug('POST ' + cfg.routes["device_write"], "screen is: " + screen)
 
-        response = make_response("OK", 200)
+        if baedge.write_screen(server.epd, screen):
+            hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
+            response = make_response("OK", 200)
 
-    elif data.get('image'):
-        hlp.log_debug('POST ' + cfg.routes["device_write"], 'write image to screen')
-        # baedge.write_image(server.epd, data.get('image'))
-
-        response = make_response("OK", 200)
+        else:
+            hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen failed")
+            response = make_response("Unable to write to screen", 400)
 
     else:
-        hlp.log_error('POST ' + cfg.routes["device_write"], 'unable to write to screen')
-
-        # return response with status 400
         response = make_response("Payload did not contain expected data", 400)
 
     return response
@@ -178,8 +174,8 @@ def write_post():
 if __name__ == "__main__":
     hlp.log_debug(__name__, 'init Flask')
 
-    # TODO: should we remove this?
-    # server.epd = baedge.initialize_screen()
+    hlp.log_debug(__name__, 'initialize screen')
+    server.epd = baedge.initialize_screen()
 
     # start Flask application
     server.run(
