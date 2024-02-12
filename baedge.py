@@ -21,28 +21,26 @@ hlp.log_debug(__name__, 'load EPD Library for Model `' + hardware_model + '` (Re
 
 
 def initialize_screen():
-    """ initialize eInk screen """
+    """
+    Initialize screen for use
+
+    Parameters:
+      None
+
+    Returns:
+      object: Object containing EPD library and configuration
+    """
+
     hlp.log_debug('initialize_screen', 'init')
 
     try:
         epd = epd_lib.EPD()
-
-        # TODO: remove or use
-        # font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
 
         hlp.log_debug('initialize_screen', 'initialize screen')
         epd.init()
 
         hlp.log_debug('initialize_screen', 'clear screen')
         epd.Clear()
-
-        # 255 = clear background frame
-        # image = Image.new('1', (epd.height, epd.width), 255)
-        # draw = ImageDraw.Draw(image)
-        # draw.text((cfg.coordinates.qrcode), text, font=font, fill=0)
-
-        # epd.display_Base(epd.getbuffer(image))
-        # epd.sleep()
 
         hlp.log_debug('initialize_screen', 'end')
         return epd
@@ -53,7 +51,17 @@ def initialize_screen():
 
 
 def clear_screen(epd, sleep):
-    """ clear content of eInk screen """
+    """
+    Clear contents on screen
+
+    Parameters:
+      epd (object): Object containing EPD library and configuration
+      sleep (bool): Boolean indicating wether to sleep display or not
+
+    Returns:
+      bool: Boolean True if screen was cleared successfully
+    """
+
     hlp.log_debug('clear_screen', 'init')
 
     try:
