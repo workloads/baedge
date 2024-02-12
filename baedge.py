@@ -27,8 +27,8 @@ if os.path.exists("/proc/cpuinfo"):
     epd_library = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
 
 else:
-  hlp.log_debug(__name__, 'skip load EPD Library on unsupported system')
-  epd_library = {}
+    hlp.log_debug(__name__, 'skip load EPD Library on unsupported system')
+    epd_library = {}
 
 
 def initialize_screen():
@@ -116,16 +116,16 @@ def write_screen(epd, screen, sleep_screen):
         # assemble font information
         # see https://pillow.readthedocs.io/en/latest/reference/ImageFont.html#PIL.ImageFont.truetype
         font = ImageFont.truetype(
-          screen["font"]["face"],
-          screen["font"]["size"]
+            screen["font"]["face"],
+            screen["font"]["size"]
         )
 
         # create canvas for downstream population with relevant data
         # see https://pillow.readthedocs.io/en/latest/reference/Image.html#PIL.Image.new
         canvas = Image.new(
-          mode=cfg.baedge["image_mode"],
-          size=(5, 5),  # (epd.height, epd.width),
-          color=255
+            mode=cfg.baedge["image_mode"],
+            size=(5, 5),  # (epd.height, epd.width),
+            color=255
         )
 
         # draw initial image to canvas
@@ -136,14 +136,14 @@ def write_screen(epd, screen, sleep_screen):
             text_content = item["content"]
             text_coordinates = item["coordinates"]
 
-        # assemble text object
-        # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
-        draw.text(
-          text_coordinates,
-          text_content,
-          font=font,
-          fill=0
-        )
+            # assemble text object
+            # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
+            draw.text(
+                text_coordinates,
+                text_content,
+                font=font,
+                fill=0
+            )
 
         # check if QR Code configuration is present and prep QR code image
         if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
@@ -155,8 +155,8 @@ def write_screen(epd, screen, sleep_screen):
 
                 # see https://pypi.org/project/qrcode/#advanced-usage
                 qrc_image = qrcode.QRCode(
-                  box_size=cfg.baedge["qrcode"]["box_size"],
-                  version=cfg.baedge["qrcode"]["version"],
+                    box_size=cfg.baedge["qrcode"]["box_size"],
+                    version=cfg.baedge["qrcode"]["version"],
                 )
 
                 # add data to image and make it fit the bounding box

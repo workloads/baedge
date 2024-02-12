@@ -46,6 +46,7 @@ Running `make` without commands will print out the following help information:
 Target          Description                                   Usage
 deps            install dependencies                          `make deps`
 deps-dev        install development dependencies              `make deps-dev`
+fix             fix Python files using autopep8               `make fix`
 lint            lint Python files using Flake8 and Pylint     `make lint`
 snyk            lint Python files using Flake8 and Pylint     `make snyk`
 routes          list Baedge Server routes using Flask         `make routes`

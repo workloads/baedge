@@ -4,12 +4,12 @@ import os
 import logging
 
 from flask import (
-  Flask,
-  jsonify,
-  make_response,
-  render_template,
-  request,
-  send_from_directory
+    Flask,
+    jsonify,
+    make_response,
+    render_template,
+    request,
+    send_from_directory
 )
 
 import helpers as hlp
@@ -48,13 +48,13 @@ def root_get():
 
     # render template and return status 200
     return render_template(
-      'index.html',
-      title=cfg.app["name"],
-      description=cfg.app["description"],
+        'index.html',
+        title=cfg.app["name"],
+        description=cfg.app["description"],
 
-      # `logo_path` must be a path that is actually routed
-      logo_path="/" + cfg.media["web"]["favicon"],
-      logo_alt_text=cfg.app["description"],
+        # `logo_path` must be a path that is actually routed
+        logo_path="/" + cfg.media["web"]["favicon"],
+        logo_alt_text=cfg.app["description"],
     ), 200
 
 
@@ -66,10 +66,10 @@ def apple_touch_icon():
 
     # render file and return default status
     return send_from_directory(
-      as_attachment=False,
-      directory=cfg.app["media"],
-      mimetype='image/png',
-      path=cfg.media["web"]["apple-touch-icon"],
+        as_attachment=False,
+        directory=cfg.app["media"],
+        mimetype='image/png',
+        path=cfg.media["web"]["apple-touch-icon"],
     )
 
 
@@ -81,10 +81,10 @@ def favicon():
 
     # render file and return default status
     return send_from_directory(
-      as_attachment=False,
-      directory=cfg.app["media"],
-      mimetype='image/vnd.microsoft.icon',
-      path=cfg.media["web"]["favicon"],
+        as_attachment=False,
+        directory=cfg.app["media"],
+        mimetype='image/vnd.microsoft.icon',
+        path=cfg.media["web"]["favicon"],
     )
 
 
@@ -168,13 +168,13 @@ def write_post():
 
         # continue for allowed screens
         else:
-          if baedge.write_screen(server.epd, screen, sleep_screen=False):
-              hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
-              response = make_response("OK", 200)
+            if baedge.write_screen(server.epd, screen, sleep_screen=False):
+                hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
+                response = make_response("OK", 200)
 
-          else:
-              hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen failed")
-              response = make_response("Unable to write to screen", 400)
+            else:
+                hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen failed")
+                response = make_response("Unable to write to screen", 400)
 
     else:
         response = make_response("Payload did not contain expected data", 400)
@@ -193,8 +193,8 @@ if __name__ == "__main__":
     # start Flask application
     hlp.log_debug(__name__, 'start server at http://' + cfg.app["host"] + ":" + cfg.app["port"])
     server.run(
-      debug=cfg.app["debug"],
-      host=cfg.app["host"],
-      port=cfg.app["port"],
-      load_dotenv=cfg.app["dotenv"]
+        debug=cfg.app["debug"],
+        host=cfg.app["host"],
+        port=cfg.app["port"],
+        load_dotenv=cfg.app["dotenv"]
     )

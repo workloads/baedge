@@ -23,6 +23,12 @@ deps-dev: # install development dependencies [Usage: `make deps-dev`]
 		install \
 		-r "requirements-dev.txt"
 
+.SILENT .PHONY: fix
+fix: # fix Python files using autopep8 [Usage: `make fix`]
+	autopep8 \
+		--in-place \
+		*.py \
+
 .SILENT .PHONY: lint
 lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
 	flake8 \
