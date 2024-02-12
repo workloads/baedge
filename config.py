@@ -126,6 +126,14 @@ routes = {
 
 # screen configuration
 screens = {
+  # list of currently active screens
+  "active": [
+    "baedge",
+    "hardware",
+    "nomad",
+    "socials",
+  ],
+
   # the `socials` screen displays wearer information
   "baedge": {
     "font": {

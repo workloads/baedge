@@ -7,7 +7,7 @@ from flask import Flask, jsonify, make_response, render_template, request, send_
 
 import helpers as hlp
 import config as cfg
-# import baedge
+import baedge
 
 # override server debug mode if log level is explicitly set to `DEBUG`
 if cfg.app["logging"]["level"] == "DEBUG":
@@ -156,7 +156,12 @@ def write_post():
     if screen:
         hlp.log_debug('POST ' + cfg.routes["device_write"], "screen is: " + screen)
 
-        if baedge.write_screen(server.epd, screen):
+        # catch disallowed screens and bail
+        if screen not in cfg.screens["allowed"]:
+            hlp.log_debug('POST ' + cfg.routes["device_write"], "select inactive screen")
+            response = make_response("Not allowed to load screen `" + screen + "`", 400)
+
+        if baedge.write_screen(server.epd, screen, sleep_screen=False):
             hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
             response = make_response("OK", 200)
 
