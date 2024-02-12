@@ -47,14 +47,26 @@ app = {
 }
 
 baedge = {
-  "coordinates": {
-    # QR code is located in the bottom right corner
-    "qrcode": "5, 5",
-  },
-
   "hardware": {
     "model": os.getenv("BAEDGE_HARDWARE_MODEL", "2in9b"),
     "revision": os.getenv("BAEDGE_HARDWARE_REVISION", "_v3"),
+  },
+
+  # "1" = 1-bit pixels, black and white, stored with one pixel per byte
+  # "L" = 8-bit pixels, grayscale
+  # see https://pillow.readthedocs.io/en/latest/handbook/concepts.html#concept-modes
+  "image_mode": "1",
+
+  # QR code configuration
+  "qrcode": {
+      # `box_size` defines how many pixels each block of the QR code is
+      "box_size": 4,
+
+      # `fit` defines wether the image should be made to fit the bounding box
+      "fit": True,
+
+      # `version` is a range between 1 and 40, indicating the size
+      "version": 1,
   },
 
   # (human) wearer configuration
@@ -68,20 +80,25 @@ baedge = {
 
 # media (fonts, images, etc.) configuration
 media = {
+  "fonts": {
+    "isidorasans": app["fonts"] + "/IsidoraSans",
+    "robotomono": app["fonts"] + "/RobotoMono",
+  },
+
+  "images": {
+      "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/32x32.png",
+      "nomad_logo": app["media"] + "/images/logomarks/nomad/32x32.png",
+  },
+
   # files in this dict are served through Flask's `send_from_directory`
   # and do not require the `app["media"]` prefix in their path attribute
   "web": {
     "apple-touch-icon": "apple-touch-icon.png",
     "favicon": "favicon.ico",
   },
-
-  # TODO: find better name for `company_icon`
-  "company_icon": app["media"] + "hashicorp-icon_32x32.png",
 }
 
-
-# TODO: move this to a more appropriate location
-# Nomad Environment configuration
+# Nomad environment configuration
 nomad = {
   "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
   "address": os.getenv("NOMAD_ADDR_http", "n/a"),
