@@ -2,6 +2,8 @@
 
 import importlib
 import logging
+import os
+import platform
 import qrcode
 
 from PIL import Image, ImageDraw, ImageFont
@@ -12,12 +14,21 @@ import config as cfg
 # enable logging at the specified level
 logging.basicConfig(level=cfg.app["logging"]["level"])
 
-# conditionally import the correct library depending on vartiables describing the EPD model and revision
-hardware_model = cfg.baedge["hardware"]["model"]
-hardware_revision = cfg.baedge["hardware"]["revision"]
+hlp.log_debug(__name__, 'detected platform: `' + platform.system() + '`')
 
-epd_library = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
-hlp.log_debug(__name__, 'load EPD Library for Model `' + hardware_model + '` (Rev: `' + hardware_revision + '`)')
+# Waveshare's EPD library queries the content of `/proc/cpuinfo` for system information for string `Raspberry`
+# This makes it cumbersome to develop on non-RPi devices, so we set `epd_library` to an empty object
+if os.path.exists("/proc/cpuinfo"):
+    # conditionally import the correct library depending on vartiables describing the EPD model and revision
+    hardware_model = cfg.baedge["hardware"]["model"]
+    hardware_revision = cfg.baedge["hardware"]["revision"]
+
+    hlp.log_debug(__name__, 'load EPD Library for Model `' + hardware_model + '` (Rev: `' + hardware_revision + '`)')
+    epd_library = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
+
+else:
+  hlp.log_debug(__name__, 'skip load EPD Library on unsupported system')
+  epd_library = {}
 
 
 def initialize_screen():
