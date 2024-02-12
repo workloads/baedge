@@ -1,7 +1,7 @@
 """ application """
 
-import logging
 import importlib
+import logging
 import qrcode
 
 from PIL import Image, ImageDraw, ImageFont
@@ -12,16 +12,12 @@ import config as cfg
 # enable logging at the specified level
 logging.basicConfig(level=cfg.app["logging"]["level"])
 
-# TODO: move to a more logical place
-FONT_FACE = cfg.baedge["fonts"]["path"] + "RobotoMono/regular.ttf"
-FONT_SIZE = 15
-
 # conditionally import the correct library depending on env vartiables describing the EPD size
 hardware_model = cfg.baedge["hardware"]["model"]
 hardware_revision = cfg.baedge["hardware"]["revision"]
 
 epd_lib = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
-hlp.log_debug(__name__, 'load EPD Library for Model ' + hardware_model + ' (Rev: ' + hardware_revision + ')')
+hlp.log_debug(__name__, 'load EPD Library for Model `' + hardware_model + '` (Rev: `' + hardware_revision + '`)')
 
 
 def initialize_screen():
