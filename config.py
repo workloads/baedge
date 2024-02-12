@@ -144,11 +144,13 @@ screens = {
         "texts": [
             {
                 "content": f'''
-          {app["description"]}
+                  {app["description"]}
 
-          go.workloads.io/baedge
-        ''',
+                  go.workloads.io/baedge
+                ''',
+
                 "coordinates": (5, 5),
+                "fill": 255,
             },
         ]
     },
@@ -163,11 +165,12 @@ screens = {
         "texts": [
             {
                 "content": f'''
-              Model:    {baedge["hardware"]["model"]}
-              Revision: {baedge["hardware"]["model"]}
-          ''',
+                    Model:    {baedge["hardware"]["model"]}
+                    Revision: {baedge["hardware"]["model"]}
+                ''',
 
                 "coordinates": (5, 5),
+                "fill": 255,
             },
         ]
     },
@@ -179,15 +182,33 @@ screens = {
             "size": 15,
         },
 
-        "text": {
-            "content": f'''
-        Allocation ID {nomad["allocation"]}
-        Address:      {nomad["address"]}
-        Version:      {nomad["version"]}
-      ''',
+        "images": [
+            {
+                "content": media["images"]["hashicorp_logo"],
+                "coordinates": (5, 5),
+            },
+        ],
 
-            "coordinates": (5, 5),
-        },
+        "shapes": [
+            {
+                "coordinates": (32, 0, 750, 31),
+                "fill": 0,
+                "type": "rectangle",
+            },
+        ],
+
+        "texts": [
+            {
+                "content": f'''
+                  Allocation ID {nomad["allocation"]}
+                  Address:      {nomad["address"]}
+                  Version:      {nomad["version"]}
+                ''',
+
+                "coordinates": (5, 5),
+                "fill": 255,
+            }
+        ],
     },
 
     # the `socials` screen displays wearer information
@@ -199,20 +220,20 @@ screens = {
 
         "text": {
             "content": f'''
-        {baedge["wearer"]["name"]}
-        {baedge["wearer"]["title"]}
+              {baedge["wearer"]["name"]}
+              {baedge["wearer"]["title"]}
 
-        {baedge["wearer"]["social"]}
-      ''',
+              {baedge["wearer"]["social"]}
+            ''',
 
             "coordinates": (5, 5),
+            "fill": 255,
         },
 
         "qrcode": {
             "content": baedge["wearer"]["link"],
-
-            # QR code is located in the bottom right corner
             "coordinates": (120, 60),
+            "fill": 255,
         },
     },
 }
