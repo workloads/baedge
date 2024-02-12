@@ -120,7 +120,7 @@ def write_screen(epd, screen, sleep_screen):
           screen["font"]["size"]
         )
 
-        # create base canvas for downstream population with relevant data
+        # create canvas for downstream population with relevant data
         # see https://pillow.readthedocs.io/en/latest/reference/Image.html#PIL.Image.new
         canvas = Image.new(
           mode=cfg.baedge["image_mode"],

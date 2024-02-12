@@ -3,7 +3,14 @@
 import os
 import logging
 
-from flask import Flask, jsonify, make_response, render_template, request, send_from_directory
+from flask import (
+  Flask,
+  jsonify,
+  make_response,
+  render_template,
+  request,
+  send_from_directory
+)
 
 import helpers as hlp
 import config as cfg
@@ -16,7 +23,7 @@ if cfg.app["logging"]["level"] == "DEBUG":
 # enable application logging at the specified level
 logging.basicConfig(level=cfg.app["logging"]["level"])
 
-# toggle Flask;s Werkzeug-specific logging
+# toggle Flask's Werkzeug-specific logging
 log = logging.getLogger('werkzeug')
 
 if cfg.app["logging"]["werkzeug"]["enable"]:
@@ -31,10 +38,7 @@ server = Flask(
     __name__,
     static_folder=None,
     template_folder=cfg.app["templates"],
-  )
-
-# initialize eInk screen
-# server.epd = baedge.initialize_screen()
+)
 
 
 @server.route(cfg.routes["root"], methods=['GET'])
@@ -54,7 +58,7 @@ def root_get():
     ), 200
 
 
-# handle favicon-like resend_from_directoryquests, see https://flask.palletsprojects.com/en/3.0.x/patterns/favicon/
+# handle favicon-like requests, see https://flask.palletsprojects.com/en/3.0.x/patterns/favicon/
 @server.route(cfg.routes["apple-touch-icon"])
 def apple_touch_icon():
     """ apple-touch-icon endpoint """
@@ -63,12 +67,13 @@ def apple_touch_icon():
     # render file and return default status
     return send_from_directory(
       as_attachment=False,
-      directory=cfg.media["web"]["images"],
+      directory=cfg.app["media"],
+      mimetype='image/png',
       path=cfg.media["web"]["apple-touch-icon"],
     )
 
 
-# handle favicon-like resend_from_directoryquests, see https://flask.palletsprojects.com/en/3.0.x/patterns/favicon/
+# handle favicon-like requests, see https://flask.palletsprojects.com/en/3.0.x/patterns/favicon/
 @server.route(cfg.routes["favicon"])
 def favicon():
     """ favicon endpoint """
@@ -78,8 +83,8 @@ def favicon():
     return send_from_directory(
       as_attachment=False,
       directory=cfg.app["media"],
+      mimetype='image/vnd.microsoft.icon',
       path=cfg.media["web"]["favicon"],
-      mimetype='image/vnd.microsoft.icon'
     )
 
 
@@ -179,10 +184,12 @@ def write_post():
 if __name__ == "__main__":
     hlp.log_debug(__name__, 'init Flask')
 
+    # initialize eInk screen
     hlp.log_debug(__name__, 'initialize screen')
     server.epd = baedge.initialize_screen()
 
     # start Flask application
+    hlp.log_debug(__name__, 'start server at http://' + cfg.app["host"] + ":" + cfg.app["port"])
     server.run(
       debug=cfg.app["debug"],
       host=cfg.app["host"],
