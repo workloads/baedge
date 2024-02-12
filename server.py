@@ -162,17 +162,19 @@ def write_post():
         hlp.log_debug('POST ' + cfg.routes["device_write"], "screen is: " + screen)
 
         # catch disallowed screens and bail
-        if screen not in cfg.screens["allowed"]:
+        if screen not in cfg.screens["active"]:
             hlp.log_debug('POST ' + cfg.routes["device_write"], "select inactive screen")
-            response = make_response("Not allowed to load screen `" + screen + "`", 400)
+            response = make_response("Cannot load screen `" + screen + "`", 400)
 
-        if baedge.write_screen(server.epd, screen, sleep_screen=False):
-            hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
-            response = make_response("OK", 200)
-
+        # continue for allowed screens
         else:
-            hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen failed")
-            response = make_response("Unable to write to screen", 400)
+          if baedge.write_screen(server.epd, screen, sleep_screen=False):
+              hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
+              response = make_response("OK", 200)
+
+          else:
+              hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen failed")
+              response = make_response("Unable to write to screen", 400)
 
     else:
         response = make_response("Payload did not contain expected data", 400)
