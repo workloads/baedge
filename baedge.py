@@ -81,171 +81,94 @@ def clear_screen(epd, sleep):
         return None
 
 
-def write_socials_info(epd):
-    """ write socials info to eInk screen """
-    hlp.log_debug('write_socials_info', 'init')
+def write_screen(epd, screen):
+    """
+    Write contents to screen
 
-    text = cfg.baedge["wearer"]["name"] + "\n" + cfg.baedge["wearer"]["title"] + "\n" + cfg.baedge["wearer"]["social"]
+    Parameters:
+      epd (object):    Object containing EPD library and configuration
+      screen (string): String indicating which screen to load data from
+
+    Returns:
+      bool: Boolean True if contents were written successfully
+    """
+
+    hlp.log_debug('write_screen', 'init')
+
+    # load screen data from common object
+    hlp.log_debug('write_screen', 'load screen data for `' + screen + '`')
+    screen = cfg.screens[screen]
+    hlp.log_debug('write_screen:screen', screen)
 
     try:
-        font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
+        # assemble font information
+        # see https://pillow.readthedocs.io/en/latest/reference/ImageFont.html#PIL.ImageFont.truetype
+        font = ImageFont.truetype(
+          screen["font"]["face"],
+          screen["font"]["size"]
+        )
 
-        # 255 = clear background frame
-        image = Image.new('1', (epd.height, epd.width), 255)
-        draw = ImageDraw.Draw(image)
-        draw.text((cfg.baedge["coordinates"]["qrcode"]), text, font=font, fill=0)
+        # create base canvas for downstream population with relevant data
+        # see https://pillow.readthedocs.io/en/latest/reference/Image.html#PIL.Image.new
+        canvas = Image.new(
+          mode=cfg.baedge["image_mode"],
+          size=(5, 5),  # (epd.height, epd.width),
+          color=255
+        )
 
-        hlp.log_debug('write_socials_info', 'generate QR code')
-        qr = qrcode.QRCode(version=1, box_size=4)
-        qr.add_data(cfg.baedge["wearer"]["link"])
-        qr.make(fit=True)
-        qrcode_image = qr.make_image()
+        # draw initial image to canvas
+        draw = ImageDraw.Draw(canvas)
 
-        hlp.log_debug('write_socials_info', 'QR code image: ' + qrcode_image)
-        image.paste(qrcode_image, (120, 60))
+        text_content = screen["text"]["content"]
+        text_coordinates = screen["text"]["coordinates"]
 
-        epd.display(epd.getbuffer(image))
+        # assemble text object
+        # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
+        draw.text(
+          text_coordinates,
+          text_content,
+          font=font,
+          fill=0
+        )
+
+        # check if QR Code configuration is present and prep QR code image
+        if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
+            try:
+                qrc_content = screen["qrcode"]["content"]
+                qrc_coordinates = screen["qrcode"]["coordinates"]
+
+                hlp.log_debug('write_screen', 'prep QR code image')
+
+                # see https://pypi.org/project/qrcode/#advanced-usage
+                qrc_image = qrcode.QRCode(
+                  box_size=cfg.baedge["qrcode"]["box_size"],
+                  version=cfg.baedge["qrcode"]["version"],
+                )
+
+                # add data to image and make it fit the bounding box
+                qrc_image.add_data(qrc_content)
+                qrc_image.make(cfg.baedge["qrcode"]["fit"])
+
+                hlp.log_debug('write_screen:qrcode_image', qrc_image)
+                qrc_image.make_image()
+
+                hlp.log_debug('write_screen', 'place QR code image at coordinates: ' + str(qrc_coordinates))
+                # canvas.paste(qrc_image, qrc_coordinates)
+
+            except ValueError as e:
+                hlp.log_exception('write_screen', e)
+                return None
+
+        # TODO: document
+        epd.display(epd.getbuffer(canvas))
 
         # TODO: should we remove this?
         # hlp.log_debug('write_socials_info', 'sleep screen')
         # epd.sleep()
 
-        hlp.log_debug('write_socials_info', 'end')
+        hlp.log_debug('write_screen', 'end')
         return True
 
     except IOError as e:
-        hlp.log_exception('write_socials_info', e)
-        return None
-
-
-def write_baedge_info(epd):
-    """ write Baedge info to eInk screen """
-    hlp.log_debug('write_baedge_info', 'init')
-
-    # TODO: move this up and define more globally
-    text = "{Ba,e}dge\n go.workloads.io/baedge "
-
-    try:
-        font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
-
-        # 255 = clear background frame
-        image = Image.new('1', (epd.height, epd.width), 255)
-        draw = ImageDraw.Draw(image)
-
-        draw.text((cfg.baedge["coordinates"]["qrcode"]), text, font=font, fill=0)
-
-        epd.display(epd.getbuffer(image))
-
-        logging.debug("[write_baedge_info] sleep screen")
-        # epd.sleep()
-
-        hlp.log_debug('write_baedge_info', 'end')
-        return True
-
-    except IOError as e:
-        hlp.log_exception('write_baedge_info', e)
-        return None
-
-
-def write_nomad_info(epd):
-    """ write Nomad info to eInk screen """
-    hlp.log_debug('write_nomad_info', 'init')
-
-    try:
-        font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
-
-        # TODO: move this up and define more globally
-        text = cfg.nomad["allocation"] + "\n" + cfg.nomad["address"]
-
-        nimage = Image.new('1', (epd.height, epd.width), 255)
-        draw = ImageDraw.Draw(nimage)
-
-        # header, containing HashiCorp logo + white "Nomad" text on a black banner
-        # TODO: move this up and define more globally
-        company_icon = Image.open(cfg.media["company_icon"])
-
-        nimage.paste(company_icon, (0, 0))
-
-        # draw a black rectangle on the top
-        draw.rectangle((32, 0, 750, 31), fill=0)
-
-        # write out Nomad in white
-        draw.text((40, 0), "Nomad", font=font, fill=255)
-
-        # write out Nomad info in black
-        draw.text((0, 50), text, font=font, fill=0)
-
-        # write to screen
-        epd.display(epd.getbuffer(nimage))
-
-        # hlp.log_debug('write_nomad_info', 'sleep screen')
-        # epd.sleep()
-
-        hlp.log_debug('write_nomad_info', 'end')
-        return True
-
-    except IOError as e:
-        hlp.log_exception('write_nomad_info', e)
-        return None
-
-
-def write_text(epd, text, style):
-    """ write textual content to eInk screen """
-    hlp.log_debug('write_text', 'init')
-
-    hlp.log_debug('write_text', 'text: ' + text)
-    hlp.log_debug('write_text', 'style: ' + style)
-
-    # TODO: move this up and define more globally
-    font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
-
-    try:
-        epd.init()
-        # epd.Clear()
-
-        image = Image.new('1', (epd.height, epd.width), 255)
-
-        draw = ImageDraw.Draw(image)
-        draw.text((5, 60), text, font=font, fill=0)
-
-        epd.display(epd.getbuffer(image))
-
-        # attempt at partial refresh, TODO
-        # epd.display_Base_color(0xff)
-        #
-        # # 255 = clear background frame
-        # image = Image.new('1', (epd.height, epd.width), 0xff)  # `0xff` = `255`
-        # draw = ImageDraw.Draw(image)
-        # # the numbers are coordinates on which to draw
-        # draw.rectangle((10, 110, 120, 150), fill=255)
-        # draw.text((10, 110), text, font=font, fill=0)
-        # newimage = image.crop([10, 110, 120, 150])
-        # image.paste(newimage, (10, 110))
-        # epd.display_Partial(epd.getbuffer(image), 110, epd.height - 120, 150, epd.height - 10)
-
-        epd.sleep()
-
-        hlp.log_debug('write_text', 'end')
-        return True
-
-    except IOError as e:
-        hlp.log_exception('write_text', e)
-        return None
-
-
-def write_image(epd, image):
-    """ write image content to eInk screen """
-    hlp.log_debug('write_image', 'init')
-
-    hlp.log_debug('write_image', 'image: ' + image)
-
-    try:
-        # TODO: implement image writing
-        hlp.log_debug('write_image', 'not implemented')
-
-        hlp.log_debug('write_image', 'end')
-        return True
-
-    except IOError as e:
-        hlp.log_exception('write_image', e)
-        return None
+        hlp.log_exception('write_screen', e)
+        return False

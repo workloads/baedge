@@ -123,3 +123,36 @@ routes = {
   "status_routes": app["prefix"] + app["namespaces"]["status"] + "/routes",
   "status_screen": app["prefix"] + app["namespaces"]["status"] + "/screen",
 }
+
+# screen configuration
+screens = {
+  # the `socials` screen displays wearer information
+  "baedge": {
+    "font": {
+      "face": media["fonts"]["isidorasans"] + "/regular.ttf",
+      "size": 15,
+    },
+
+    "text": "{Ba,e}dge\n go.workloads.io/baedge"
+  },
+
+  # the `socials` screen displays wearer information
+  "socials": {
+    "font": {
+      "face": media["fonts"]["robotomono"] + "/regular.ttf",
+      "size": 15,
+    },
+
+    "text": {
+      "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n" + baedge["wearer"]["social"],
+      "coordinates": (5, 5),
+    },
+
+    "qrcode": {
+      "content": baedge["wearer"]["link"],
+
+      # QR code is located in the bottom right corner
+      "coordinates": (120, 60),
+    },
+  },
+}
