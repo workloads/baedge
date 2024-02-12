@@ -151,10 +151,14 @@ screens = {
       "size": 15,
     },
 
-    "text": f'''
-      Hardware Model:    {baedge["hardware"]["model"]}
-      Hardware Revision: {baedge["hardware"]["model"]}
-    '''
+    "text": {
+      "content": f'''
+        Model:    {baedge["hardware"]["model"]}
+        Revision: {baedge["hardware"]["model"]}
+      ''',
+
+      "coordinates": (5, 5),
+    },
   },
 
   # the `nomad` screen displays Nomad-specific information
@@ -164,12 +168,15 @@ screens = {
       "size": 15,
     },
 
-    "text": f'''
-      Allocation ID {nomad["allocation"]}
-      Address:      {nomad["address"]}
+    "text": {
+      "content": f'''
+        Allocation ID {nomad["allocation"]}
+        Address:      {nomad["address"]}
+        Version:      {nomad["version"]}
+      ''',
 
-      Version:      {nomad["version"]}
-    '''
+      "coordinates": (5, 5),
+    },
   },
 
   # the `socials` screen displays wearer information
@@ -180,7 +187,13 @@ screens = {
     },
 
     "text": {
-      "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n" + baedge["wearer"]["social"],
+      "content": f'''
+        {baedge["wearer"]["name"]}
+        {baedge["wearer"]["title"]}
+
+        {baedge["wearer"]["social"]}
+      ''',
+
       "coordinates": (5, 5),
     },
 
