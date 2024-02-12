@@ -3,20 +3,57 @@
 import logging as log
 
 
-def log_debug(function, msg):
-    """ create log message for debugging """
+def log_debug(identifier, message):
+    """
+    Log a debug-level item containing an identifier and a message
 
-    log.debug("[%s] %s", function, msg)
+    Parameters:
+      identifier (string): A function or route identifier.
+      message (string or dict): A string or dict of the debug message.
+
+    Returns:
+      None
+    """
+
+    # if `message` is a dict, print the individual keys and values
+    if isinstance(message, dict):
+        log.debug("[%s] \n%s\n", identifier, ", ".join(f"\n{key}: {value}" for key, value in message.items()))
+    else:
+        log.debug("[%s] %s", identifier, message)
+
+    return True
 
 
-def log_error(function, msg):
-    """ create log message for errors """
+def log_error(identifier, message):
+    """
+    Log an error-level item containing an identifier and a message
 
-    log.error("[%s] %s", function, msg)
+    Parameters:
+      identifier (string): A function or route identifier.
+      message (string): A string of the error message.
+
+    Returns:
+      None
+    """
+
+    log.error("[%s] %s", identifier, message)
+
+    return True
 
 
-def log_exception(function, exception):
-    """ create log message for exceptions """
+def log_exception(identifier, exception):
+    """
+    Log an exception-level item containing an identifier and an exception
 
-    log.error("[%s] exception occurred", function)
+    Parameters:
+      identifier (string): A function or route identifier.
+      exception (exception): An exception of the error.
+
+    Returns:
+      None
+    """
+
+    log.error("[%s] exception occurred", identifier)
     log.exception(exception)
+
+    return True
