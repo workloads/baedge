@@ -39,7 +39,7 @@ def root_get():
       description=cfg.app["description"],
 
       # `logo_path` must be a path that is actually routed
-      logo_path="/" + cfg.media["favicon"],
+      logo_path="/" + cfg.media["web"]["favicon"],
       logo_alt_text=cfg.app["description"],
     ), 200
 
@@ -53,8 +53,8 @@ def apple_touch_icon():
     # render file and return default status
     return send_from_directory(
       as_attachment=False,
-      directory=cfg.media["images"],
-      path=cfg.media["apple-touch-icon"],
+      directory=cfg.media["web"]["images"],
+      path=cfg.media["web"]["apple-touch-icon"],
     )
 
 
@@ -68,7 +68,7 @@ def favicon():
     return send_from_directory(
       as_attachment=False,
       directory=cfg.app["media"],
-      path=cfg.media["favicon"],
+      path=cfg.media["web"]["favicon"],
       mimetype='image/vnd.microsoft.icon'
     )
 

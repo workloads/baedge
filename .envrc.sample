@@ -3,7 +3,6 @@ export LOG_LEVEL="DEBUG"
 
 # Baedge-specific configuration
 export BAEDGE_SERVER_DEBUG="true"
-export BAEDGE_SERVER_DOTENV="false"
 export BAEDGE_MEDIA_PATH="/opt/baedge-assets"
 export BAEDGE_HARDWARE_MODEL="2in9b"
 export BAEDGE_HARDWARE_REVISION="_v3"

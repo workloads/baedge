@@ -2,7 +2,7 @@
 
 import os
 
-# application configuration
+# application (Flask server) configuration
 app = {
   # `debug` is expected to be bool
   "debug": bool(os.getenv("BAEDGE_SERVER_DEBUG", "false")),
@@ -35,7 +35,7 @@ app = {
 baedge = {
   "coordinates": {
     # QR code is located in the bottom right corner
-    "qrcode": '5, 5',
+    "qrcode": "5, 5",
   },
 
   "hardware": {
@@ -52,13 +52,17 @@ baedge = {
   },
 }
 
+# media (fonts, images, etc.) configuration
 media = {
-  # favicon-like files are served through Flask's `send_from_directory` and do not need `media` as a prefix
-  "apple-touch-icon": 'apple-touch-icon.png',
-  "favicon": 'favicon.ico',
+  # files in this dict are served through Flask's `send_from_directory`
+  # and do not require the `app["media"]` prefix in their path attribute
+  "web": {
+    "apple-touch-icon": "apple-touch-icon.png",
+    "favicon": "favicon.ico",
+  },
 
   # TODO: find better name for `company_icon`
-  "company_icon": app["media"] + 'hashicorp-icon_32x32.png',
+  "company_icon": app["media"] + "hashicorp-icon_32x32.png",
 }
 
 
@@ -75,8 +79,8 @@ routes = {
   "root": "/",
 
   # favicon-like requests
-  "apple-touch-icon": "/apple-touch-icon.png",
-  "favicon": "/favicon.ico",
+  "apple-touch-icon": "/" + media["web"]["apple-touch-icon"],
+  "favicon": "/" + media["web"]["favicon"],
 
   # /device routes
   "device_clear": app["prefix"] + app["namespaces"]["device"] + "/clear",
