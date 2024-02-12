@@ -145,6 +145,34 @@ screens = {
   },
 
   # the `socials` screen displays wearer information
+  "hardware": {
+    "font": {
+      "face": media["fonts"]["robotomono"] + "/regular.ttf",
+      "size": 15,
+    },
+
+    "text": f'''
+      Hardware Model:    {baedge["hardware"]["model"]}
+      Hardware Revision: {baedge["hardware"]["model"]}
+    '''
+  },
+
+  # the `nomad` screen displays Nomad-specific information
+  "nomad": {
+    "font": {
+      "face": media["fonts"]["robotomono"] + "/regular.ttf",
+      "size": 15,
+    },
+
+    "text": f'''
+      Allocation ID {nomad["allocation"]}
+      Address:      {nomad["address"]}
+
+      Version:      {nomad["version"]}
+    '''
+  },
+
+  # the `socials` screen displays wearer information
   "socials": {
     "font": {
       "face": media["fonts"]["robotomono"] + "/regular.ttf",
