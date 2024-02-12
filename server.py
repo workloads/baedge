@@ -10,11 +10,18 @@ import config as cfg
 # import baedge
 
 # override server debug mode if log level is explicitly set to `DEBUG`
-if cfg.app["log_level"] == "DEBUG":
+if cfg.app["logging"]["level"] == "DEBUG":
     cfg.app["debug"] = True
 
-# enable logging at the specified level
-logging.basicConfig(level=cfg.app["log_level"])
+# enable application logging at the specified level
+logging.basicConfig(level=cfg.app["logging"]["level"])
+
+# enable Flask Werkzeug-specific logging
+if cfg.app["logging"]["werkzeug"]["enable"]:
+  log = logging.getLogger('werkzeug')
+  log.setLevel(cfg.app["logging"]["werkzeug"]["level"])
+
+
 
 # load Flask and disable wildcard static file serving
 server = Flask(

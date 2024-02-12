@@ -15,7 +15,21 @@ app = {
   "fonts": os.getenv("BAEDGE_FONTS_PATH", "./media/fonts"),
 
   "host": os.getenv("BAEDGE_SERVER_HOST", "0.0.0.0"),
-  "log_level": os.getenv("LOG_LEVEL", "INFO"),
+
+  "logging": {
+    # generic logging level, for Baedge functionality etc.
+    "level": os.getenv("LOG_LEVEL", "INFO"),
+
+    # Flask-internal logging, primarily for reporting tracebacks and Flask-specific items
+    "werkzeug": {
+      # `enable` is expected to be bool
+      "enable": bool(os.getenv("LOG_WERKZEUG", "false")),
+
+      # Werkzeug-specific log level
+      "level": os.getenv("LOG_LEVEL_WERKZEUG", "ERROR"),
+    },
+  },
+
   "media": os.getenv("BAEDGE_MEDIA_PATH", "./media"),
   "name": os.getenv("BAEDGE_SERVER_NAME", "🎫 Baedge Server."),
 

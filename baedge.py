@@ -10,7 +10,7 @@ import helpers as hlp
 import config as cfg
 
 # enable logging at the specified level
-logging.basicConfig(level=cfg.app["log_level"])
+logging.basicConfig(level=cfg.app["logging"]["level"])
 
 # TODO: move to a more logical place
 FONT_FACE = cfg.baedge["fonts"]["path"] + "RobotoMono/regular.ttf"
