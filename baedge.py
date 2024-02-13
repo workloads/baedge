@@ -92,7 +92,7 @@ def clear_screen(epd, sleep_screen):
         return None
 
 
-def write_screen(epd, screen, sleep_screen=False):
+def write_screen(epd, screen_name, sleep_screen=False):
     """
     Write contents to screen
 
@@ -108,9 +108,9 @@ def write_screen(epd, screen, sleep_screen=False):
     hlp.log_debug('write_screen', 'init')
 
     # load screen data from common object
-    hlp.log_debug('write_screen', 'load screen data for `' + screen + '`')
-    screen = cfg.screens[screen]
-    hlp.log_debug('write_screen:screen', screen)
+    hlp.log_debug('write_screen', 'load screen data for `' + screen_name + '`')
+    screen = cfg.screens[screen_name]
+    hlp.log_debug('write_screen:screen', screen_name)
 
     try:
         # assemble font information
@@ -132,21 +132,22 @@ def write_screen(epd, screen, sleep_screen=False):
         draw = ImageDraw.Draw(canvas)
 
         # iterate over text items for screen
-        for item in screen["texts"]:
-            text_content = item["content"]
-            text_coordinates = item["coordinates"]
+        if "texts" in screen:
+            for item in screen["texts"]:
+                text_content = item["content"]
+                text_coordinates = item["coordinates"]
 
-            # assemble text object
-            # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
-            draw.text(
-                text_coordinates,
-                text_content,
-                font=font,
-                fill=0
-            )
+                # assemble text object
+                # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
+                draw.text(
+                    text_coordinates,
+                    text_content,
+                    font=font,
+                    fill=0
+                )
 
         # check if QR Code configuration is present and prep QR code image
-        if not screen["qrcode"]:
+        if "qrcode" not in screen:
             hlp.log_debug('write_screen', 'skip QR code configuration')
 
         else:
