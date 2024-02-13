@@ -146,32 +146,36 @@ def write_screen(epd, screen, sleep_screen):
             )
 
         # check if QR Code configuration is present and prep QR code image
-        if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
-            try:
-                qrc_content = screen["qrcode"]["content"]
-                qrc_coordinates = screen["qrcode"]["coordinates"]
+        if not screen["qrcode"]:
+            hlp.log_debug('write_screen', 'skip QR code configuration')
 
-                hlp.log_debug('write_screen', 'prep QR code image')
+        else:
+            if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
+                try:
+                    qrc_content = screen["qrcode"]["content"]
+                    qrc_coordinates = screen["qrcode"]["coordinates"]
 
-                # see https://pypi.org/project/qrcode/#advanced-usage
-                qrc_image = qrcode.QRCode(
-                    box_size=cfg.baedge["qrcode"]["box_size"],
-                    version=cfg.baedge["qrcode"]["version"],
-                )
+                    hlp.log_debug('write_screen', 'prep QR code image')
 
-                # add data to image and make it fit the bounding box
-                qrc_image.add_data(qrc_content)
-                qrc_image.make(cfg.baedge["qrcode"]["fit"])
+                    # see https://pypi.org/project/qrcode/#advanced-usage
+                    qrc_image = qrcode.QRCode(
+                        box_size=cfg.baedge["qrcode"]["box_size"],
+                        version=cfg.baedge["qrcode"]["version"],
+                    )
 
-                hlp.log_debug('write_screen:qrcode_image', qrc_image)
-                qrc_image.make_image()
+                    # add data to image and make it fit the bounding box
+                    qrc_image.add_data(qrc_content)
+                    qrc_image.make(cfg.baedge["qrcode"]["fit"])
 
-                hlp.log_debug('write_screen', 'place QR code image at coordinates: ' + str(qrc_coordinates))
-                # canvas.paste(qrc_image, qrc_coordinates)
+                    hlp.log_debug('write_screen:qrcode_image', qrc_image)
+                    qrc_image.make_image()
 
-            except ValueError as e:
-                hlp.log_exception('write_screen', e)
-                return None
+                    hlp.log_debug('write_screen', 'place QR code image at coordinates: ' + str(qrc_coordinates))
+                    # canvas.paste(qrc_image, qrc_coordinates)
+
+                except ValueError as e:
+                    hlp.log_exception('write_screen', e)
+                    return None
 
         # get buffered canvas data and update display
         epd.display(epd.getbuffer(canvas))
