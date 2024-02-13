@@ -30,6 +30,11 @@ else:
     hlp.log_debug(__name__, 'skip load EPD Library on unsupported system')
     epd_library = {}
 
+class EPD:
+  def __init__(self):
+    # Initialize your EPD object here
+    pass
+
 
 def initialize_screen():
     """
@@ -66,7 +71,7 @@ def clear_screen(epd, sleep_screen):
     Clear contents on screen
 
     Parameters:
-        epd (object):         Object containing EPD library and configuration
+        epd (object):        Object containing EPD library and configuration
         sleep_screen (bool): Boolean indicating wether to sleep display or not
 
     Returns:
@@ -97,8 +102,8 @@ def write_screen(epd, screen, sleep_screen=False):
     Write contents to screen
 
     Parameters:
-        epd (object):         Object containing EPD library and configuration
-        screen (string):      String indicating which screen to load data from
+        epd (object):        Object containing EPD library and configuration
+        screen (string):     String indicating which screen to load data from
         sleep_screen (bool): Boolean indicating wether to sleep display or not
 
     Returns:
@@ -117,7 +122,7 @@ def write_screen(epd, screen, sleep_screen=False):
         # see https://pillow.readthedocs.io/en/latest/reference/ImageFont.html#PIL.ImageFont.truetype
         font = ImageFont.truetype(
             screen["font"]["face"],
-            screen["font"]["size"]
+            screen["font"]["size"],
         )
 
         # create canvas for downstream population with relevant data
@@ -125,7 +130,7 @@ def write_screen(epd, screen, sleep_screen=False):
         canvas = Image.new(
             mode=cfg.baedge["image_mode"],
             size=(5, 5),  # (epd.height, epd.width),
-            color=255
+            color=255,
         )
 
         # draw initial image to canvas
