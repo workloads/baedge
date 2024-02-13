@@ -220,17 +220,19 @@ screens = {
             "size": 15,
         },
 
-        "text": {
-            "content": f'''
+        "texts": [
+            {
+                "content": f'''
               {baedge["wearer"]["name"]}
               {baedge["wearer"]["title"]}
 
               {baedge["wearer"]["social"]}
             ''',
 
-            "coordinates": (5, 5),
-            "fill": 255,
-        },
+                "coordinates": (5, 5),
+                "fill": 255,
+            }
+        ],
 
         "qrcode": {
             "content": baedge["wearer"]["link"],
