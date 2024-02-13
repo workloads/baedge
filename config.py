@@ -69,7 +69,7 @@ baedge = {
         "version": 1,
     },
 
-    # (human) wearer configuration
+    # (human) wearer-specific configuration
     "wearer": {
         "name": os.getenv("BAEDGE_WEARER_NAME", "{Ba,e}dge"),
         "title": os.getenv("BAEDGE_WEARER_TITLE", "Orchestration at the Edge of Human and Compute."),
