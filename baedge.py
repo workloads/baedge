@@ -92,7 +92,7 @@ def clear_screen(epd, sleep_screen):
         return None
 
 
-def write_screen(epd, screen, sleep_screen):
+def write_screen(epd, screen, sleep_screen=False):
     """
     Write contents to screen
 

@@ -168,7 +168,7 @@ def write_post():
 
         # continue for allowed screens
         else:
-            if baedge.write_screen(server.epd, screen, sleep_screen=False):
+            if baedge.write_screen(server.epd, screen):
                 hlp.log_debug('POST ' + cfg.routes["device_write"], "write to screen successful")
                 response = make_response("OK", 200)
 
