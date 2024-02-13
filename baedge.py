@@ -124,7 +124,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # see https://pillow.readthedocs.io/en/latest/reference/Image.html#PIL.Image.new
         canvas = Image.new(
             mode=cfg.baedge["image_mode"],
-            size=(5, 5),  # (epd.height, epd.width),
+            size=(epd.height, epd.width),
             color=255,
         )
 
@@ -134,6 +134,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # iterate over text items for screen
         if "texts" in screen:
             for item in screen["texts"]:
+                print(item)
                 text_content = item["content"]
                 text_coordinates = item["coordinates"]
 
@@ -179,6 +180,9 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     return None
 
         # get buffered canvas data and update display
+        print(canvas)
+        canvas.show()
+        print(canvas.show())
         epd.display(epd.getbuffer(canvas))
 
         # only sleep if requested
