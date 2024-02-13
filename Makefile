@@ -15,13 +15,13 @@ include ../tooling/make/targets/shared.mk
 deps: # install dependencies [Usage: `make deps`]
 	pip \
 		install \
-		-r "requirements.txt"
+		--requirement "requirements.txt"
 
 .SILENT .PHONY: deps-dev
 deps-dev: # install development dependencies [Usage: `make deps-dev`]
 	pip \
 		install \
-		-r "requirements-dev.txt"
+		--requirement "requirements-dev.txt"
 
 .SILENT .PHONY: fix
 fix: # fix Python files using autopep8 [Usage: `make fix`]
@@ -61,6 +61,12 @@ run: # run Baedge Server using Flask [Usage: `make run`]
 		--debug \
 		run \
 			--port="${FLASK_PORT}"
+
+.SILENT .PHONY: env-info
+env-info: # print Baedge Environment information [Usage: `make env-info`]
+	env | \
+	grep \
+		"BAEDGE_"
 
 .SILENT .PHONY: gpio-info
 gpio-info: # print GPIO information using Python [Usage: `make gpio-info`]
