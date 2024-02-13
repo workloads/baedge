@@ -100,7 +100,9 @@ media = {
 
 # Nomad environment configuration
 nomad = {
-    "address": os.getenv("NOMAD_ADDR_http", "n/a"),
+    # `NOMAD_ADDR_main` is based on the service name defined in the Nomad Service stanza
+    # see https://github.com/workloads/nomad-pack-registry/tree/main/packs/baedge
+    "address": os.getenv("NOMAD_ADDR_main", "n/a"),
     "allocation": os.getenv("NOMAD_SHORT_ALLOC_ID", "n/a"),
     "version": os.getenv("NOMAD_VERSION", "n/a"),
 }
