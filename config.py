@@ -168,7 +168,7 @@ screens = {
             {
                 "content": f'''
                     Model:    {baedge["hardware"]["model"]}
-                    Revision: {baedge["hardware"]["model"]}
+                    Revision: {baedge["hardware"]["revision"]}
                 ''',
 
                 "coordinates": (5, 5),
