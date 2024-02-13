@@ -30,11 +30,6 @@ else:
     hlp.log_debug(__name__, 'skip load EPD Library on unsupported system')
     epd_library = {}
 
-class EPD:
-  def __init__(self):
-    # Initialize your EPD object here
-    pass
-
 
 def initialize_screen():
     """
