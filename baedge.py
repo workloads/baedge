@@ -185,13 +185,9 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     hlp.log_exception('write_screen', e)
                     return None
 
-        # get buffered canvas data and update display
-        # TODO remove
-        print(canvas)
         canvas.show()
 
-        # TODO remove
-        print(canvas.show())
+        # get buffered canvas data and update display
         epd.display(epd.getbuffer(canvas))
 
         # only sleep if requested
