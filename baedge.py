@@ -66,7 +66,7 @@ def initialize_screen():
         return None
 
 
-def clear_screen(epd, sleep_screen):
+def clear_screen(epd, sleep_screen=False):
     """
     Clear contents on screen
 
