@@ -2,7 +2,6 @@
 
 import logging as log
 
-
 def log_info(identifier, message):
     """
     Log an info-level item containing an identifier and a message
@@ -78,3 +77,4 @@ def log_exception(identifier, exception):
     log.exception(exception)
 
     return True
+

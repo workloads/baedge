@@ -2,6 +2,8 @@
 
 import os
 import logging
+import signal
+import sys
 
 from flask import (
     Flask,
@@ -181,26 +183,35 @@ def write_post():
 
     return response
 
+def handle_signal(sig, frame):
+    hlp.log_debug("handle_signal", 'Caught a SIGTERM or SIGINT, shutting down gracefully')
+    baedge.clear_screen(server.epd, sleep_screen = False)
+    baedge.epd_library.epdconfig.module_exit(cleanup=True)
+    sys.exit(0)
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":
-    hlp.log_debug(__name__, 'init Flask')
+        hlp.log_debug(__name__, 'init Flask')
 
-    # skip screen initialization if an unsupported OS is detected:
-    if not baedge.SKIP_INITIALIZE_SCREEN:
-        # initialize eInk screen
-        hlp.log_debug(__name__, 'initialize screen')
-        server.epd = baedge.initialize_screen()
+        # skip screen initialization if an unsupported OS is detected:
+        if not baedge.SKIP_INITIALIZE_SCREEN:
+            # initialize eInk screen
+            hlp.log_debug(__name__, 'initialize screen')
+            server.epd = baedge.initialize_screen()
+        else:
+            hlp.log_debug(__name__, 'skip screen initialization')
+        
+        #catching signals to ensure graceful shutdown
+        signal.signal(signal.SIGTERM, handle_signal)
+        signal.signal(signal.SIGINT, handle_signal)
+        #signal.signal(signal.SIGKILL, handle_signal) 
 
-    else:
-        hlp.log_debug(__name__, 'skip screen initialization')
-
-    # start Flask application
-    hlp.log_info(__name__, 'start server at http://' + cfg.app["host"] + ":" + str(cfg.app["port"]))
-    server.run(
-        debug=cfg.app["debug"],
-        host=cfg.app["host"],
-        port=cfg.app["port"],
-        load_dotenv=cfg.app["dotenv"],
-        use_reloader=False
-    )
+        # start Flask application
+        hlp.log_info(__name__, 'start server at http://' + cfg.app["host"] + ":" + str(cfg.app["port"]))
+        server.run(
+            debug=cfg.app["debug"],
+            host=cfg.app["host"],
+            port=cfg.app["port"],
+            load_dotenv=cfg.app["dotenv"],
+            use_reloader=False
+        )
