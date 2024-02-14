@@ -17,7 +17,7 @@ logging.basicConfig(level=cfg.app["logging"]["level"])
 hlp.log_debug(__name__, 'detected platform: `' + platform.system() + '`')
 
 # Waveshare's EPD library queries the content of `/proc/cpuinfo` for system information for string `Raspberry`
-# This makes it cumbersome to develop on non-RPi devices, so we set `epd_library` to an empty object
+# This makes it cumbersome to develop on non-RPi devices, so we override `epd_library` and skip initialization
 if os.path.exists("/proc/cpuinfo"):
     # conditionally import the correct library depending on vartiables describing the EPD model and revision
     hardware_model = cfg.baedge["hardware"]["model"]
@@ -29,6 +29,9 @@ if os.path.exists("/proc/cpuinfo"):
 else:
     hlp.log_info(__name__, 'skip load of EPD Library on unsupported system')
     epd_library = {}
+
+    # set flag to skip initialization of screen on unsupported system
+    SKIP_INITIALIZE_SCREEN = True
 
 
 def initialize_screen():

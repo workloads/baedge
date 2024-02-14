@@ -186,9 +186,11 @@ def write_post():
 if __name__ == "__main__":
     hlp.log_debug(__name__, 'init Flask')
 
-    # initialize eInk screen
-    hlp.log_debug(__name__, 'initialize screen')
-    server.epd = baedge.initialize_screen()
+    # skip screen initialization if an unsupported OS is detected:
+    if not baedge.SKIP_INITIALIZE_SCREEN:
+        # initialize eInk screen
+        hlp.log_debug(__name__, 'initialize screen')
+        server.epd = baedge.initialize_screen()
 
     # start Flask application
     hlp.log_debug(__name__, 'start server at http://' + cfg.app["host"] + ":" + str(cfg.app["port"]))
