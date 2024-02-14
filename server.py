@@ -201,5 +201,6 @@ if __name__ == "__main__":
         debug=cfg.app["debug"],
         host=cfg.app["host"],
         port=cfg.app["port"],
-        load_dotenv=cfg.app["dotenv"]
+        load_dotenv=cfg.app["dotenv"],
+        use_reloader=False
     )
