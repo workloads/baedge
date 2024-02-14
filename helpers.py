@@ -3,6 +3,27 @@
 import logging as log
 
 
+def log_info(identifier, message):
+    """
+    Log an info-level item containing an identifier and a message
+
+    Parameters:
+      identifier (string):      A function or route identifier.
+      message (string or dict): A string or dict of the debug message.
+
+    Returns:
+      bool: Boolean True
+    """
+
+    # if `message` is a dict, print the individual keys and values
+    if isinstance(message, dict):
+        log.info("[%s] \n%s\n", identifier, ", ".join(f"\n{key}: {value}" for key, value in message.items()))
+    else:
+        log.info("[%s] %s", identifier, message)
+
+    return True
+
+
 def log_debug(identifier, message):
     """
     Log a debug-level item containing an identifier and a message
