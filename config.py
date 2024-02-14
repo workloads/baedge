@@ -92,6 +92,7 @@ media = {
 
     # files in this dict are served through Flask's `send_from_directory`
     # and do not require the `app["media"]` prefix in their path attribute
+    # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     "web": {
         "apple-touch-icon": "apple-touch-icon.png",
         "favicon": "favicon.ico",
