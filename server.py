@@ -217,25 +217,30 @@ def write_post():
 if __name__ == "__main__":
     hlp.log_debug(__name__, 'initialize function')
 
-        # skip screen initialization if an unsupported OS is detected:
-        if not baedge.SKIP_INITIALIZE_SCREEN:
-            # initialize eInk screen
-            hlp.log_debug(__name__, 'initialize screen')
-            server.epd = baedge.initialize_screen()
-        else:
-            hlp.log_debug(__name__, 'skip screen initialization')
-        
-        #catching signals to ensure graceful shutdown
-        signal.signal(signal.SIGTERM, handle_signal)
-        signal.signal(signal.SIGINT, handle_signal)
-        #signal.signal(signal.SIGKILL, handle_signal) 
+    # skip screen initialization if an unsupported OS is detected:
+    if not baedge.SKIP_INITIALIZE_SCREEN:
+        # initialize eInk screen
+        hlp.log_debug(__name__, 'initialize screen')
+        server.epd = baedge.initialize_screen()
 
-        # start Flask application
-        hlp.log_info(__name__, 'start server at http://' + cfg.app["host"] + ":" + str(cfg.app["port"]))
-        server.run(
-            debug=cfg.app["debug"],
-            host=cfg.app["host"],
-            port=cfg.app["port"],
-            load_dotenv=cfg.app["dotenv"],
-            use_reloader=False
-        )
+    else:
+        hlp.log_debug(__name__, 'skip screen initialization')
+
+    # catch system signals and (attempt to) handle them gracefully
+    # SIGKILL and SIGSTOP cannot be caught, blocked, or ignored
+    # see https://docs.python.org/3/library/signal.html
+    signal.signal(signal.SIGTERM, handle_signal)
+    signal.signal(signal.SIGINT, handle_signal)
+
+    # start Flask application
+    hlp.log_debug(__name__, 'initialize Flask')
+    server.run(
+        debug=cfg.app["debug"],
+        host=cfg.app["host"],
+        port=cfg.app["port"],
+        load_dotenv=cfg.app["dotenv"],
+
+        # using Flask's reloader functionality is highly likely to cause issues with several Waveshare eInk screen models
+        # as the reloader bypasses the required screen sleep and initialization steps, resulting in `GPIO busy` errors.
+        use_reloader=False
+    )
