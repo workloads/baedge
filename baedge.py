@@ -47,7 +47,7 @@ def initialize_screen():
         object: Object containing EPD library and configuration
     """
 
-    hlp.log_debug('initialize_screen', 'init')
+    hlp.log_debug('initialize_screen', 'init function')
 
     try:
         epd = epd_library.EPD()
@@ -58,7 +58,7 @@ def initialize_screen():
         hlp.log_debug('initialize_screen', 'clear screen')
         epd.Clear()
 
-        hlp.log_debug('initialize_screen', 'end')
+        hlp.log_debug('initialize_screen', 'end function')
         return epd
 
     except IOError as e:
@@ -78,7 +78,7 @@ def clear_screen(epd, sleep_screen):
         bool: Boolean True if screen was cleared successfully
     """
 
-    hlp.log_debug('clear_screen', 'init')
+    hlp.log_debug('clear_screen', 'init function')
 
     try:
         hlp.log_debug('clear_screen', 'clear screen')
@@ -89,7 +89,7 @@ def clear_screen(epd, sleep_screen):
             hlp.log_debug('clear_screen', 'sleep screen')
             epd.sleep()
 
-        hlp.log_debug('clear_screen', 'end')
+        hlp.log_debug('clear_screen', 'end function')
         return True
 
     except IOError as e:
@@ -110,7 +110,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
         bool: Boolean True if contents were written successfully
     """
 
-    hlp.log_debug('write_screen', 'init')
+    hlp.log_debug('write_screen', 'init function')
 
     # load screen data from common object
     hlp.log_debug('write_screen', 'load screen data for `' + screen_name + '`')
@@ -186,8 +186,11 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     return None
 
         # get buffered canvas data and update display
+        # TODO remove
         print(canvas)
         canvas.show()
+
+        # TODO remove
         print(canvas.show())
         epd.display(epd.getbuffer(canvas))
 
@@ -196,7 +199,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
             hlp.log_debug('write_screen', 'sleep screen')
             epd.sleep()
 
-        hlp.log_debug('write_screen', 'end')
+        hlp.log_debug('write_screen', 'end function')
         return True
 
     except IOError as e:
