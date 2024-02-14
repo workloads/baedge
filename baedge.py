@@ -26,6 +26,8 @@ if os.path.exists("/proc/cpuinfo"):
     hlp.log_debug(__name__, 'load EPD Library for Model `' + hardware_model + '` (Rev: `' + hardware_revision + '`)')
     epd_library = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
 
+    SKIP_INITIALIZE_SCREEN = False
+
 else:
     hlp.log_info(__name__, 'skip load of EPD Library on unsupported system')
     epd_library = {}
