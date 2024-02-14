@@ -1,7 +1,7 @@
 """ Flask-based HTTP Server for Baedge API """
 
-import os
 import logging
+import os
 import signal
 import sys
 
@@ -34,6 +34,35 @@ if cfg.app["logging"]["werkzeug"]["enable"]:
 
 else:
     log.disabled = True
+
+
+# pylint: disable=unused-argument
+def handle_signal(signal_name, signal_frame):
+    """
+      Log an exception-level item containing an identifier and an exception
+
+      Parameters:
+          identifier (string):   A function or route identifier.
+          exception (exception): An exception of the error.
+
+      Returns:
+          bool: Boolean True
+    """
+
+    hlp.log_debug('handle_signal', 'catch `' + signal_name + '`, attempt graceful shutdown')
+
+    # attempt to clear the screen without sleeping to allow for releasing GPIO
+    baedge.clear_screen(
+        server.epd,
+        sleep_screen=False
+    )
+
+    # release GPIO and exit EPD module cleanly
+    baedge.epd_library.epdconfig.module_exit(cleanup=True)
+
+    # good goodbye
+    sys.exit(0)
+
 
 # load Flask and disable wildcard static file serving
 server = Flask(
@@ -183,15 +212,10 @@ def write_post():
 
     return response
 
-def handle_signal(sig, frame):
-    hlp.log_debug("handle_signal", 'Caught a SIGTERM or SIGINT, shutting down gracefully')
-    baedge.clear_screen(server.epd, sleep_screen = False)
-    baedge.epd_library.epdconfig.module_exit(cleanup=True)
-    sys.exit(0)
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":
-        hlp.log_debug(__name__, 'init Flask')
+    hlp.log_debug(__name__, 'initialize function')
 
         # skip screen initialization if an unsupported OS is detected:
         if not baedge.SKIP_INITIALIZE_SCREEN:
