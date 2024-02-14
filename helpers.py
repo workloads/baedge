@@ -8,11 +8,11 @@ def log_debug(identifier, message):
     Log a debug-level item containing an identifier and a message
 
     Parameters:
-      identifier (string): A function or route identifier.
-      message (string or dict): A string or dict of the debug message.
+        identifier (string):      A function or route identifier.
+        message (string or dict): A string or dict of the debug message.
 
     Returns:
-      None
+        bool: Boolean True
     """
 
     # if `message` is a dict, print the individual keys and values
@@ -30,10 +30,10 @@ def log_error(identifier, message):
 
     Parameters:
       identifier (string): A function or route identifier.
-      message (string): A string of the error message.
+      message (string):    A string of the error message.
 
     Returns:
-      None
+      bool: Boolean True
     """
 
     log.error("[%s] %s", identifier, message)
@@ -46,11 +46,11 @@ def log_exception(identifier, exception):
     Log an exception-level item containing an identifier and an exception
 
     Parameters:
-      identifier (string): A function or route identifier.
-      exception (exception): An exception of the error.
+        identifier (string):   A function or route identifier.
+        exception (exception): An exception of the error.
 
     Returns:
-      None
+        bool: Boolean True
     """
 
     log.error("[%s] exception occurred", identifier)

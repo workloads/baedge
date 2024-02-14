@@ -27,7 +27,7 @@ if os.path.exists("/proc/cpuinfo"):
     epd_library = importlib.import_module("lib.waveshare_epd.epd" + hardware_model + hardware_revision)
 
 else:
-    hlp.log_debug(__name__, 'skip load EPD Library on unsupported system')
+    hlp.log_info(__name__, 'skip load of EPD Library on unsupported system')
     epd_library = {}
 
 
@@ -36,7 +36,7 @@ def initialize_screen():
     Initialize screen for use
 
     Parameters:
-        None
+        n/a
 
     Returns:
         object: Object containing EPD library and configuration
@@ -134,7 +134,8 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # iterate over text items for screen
         if "texts" in screen:
             for item in screen["texts"]:
-                print(item)
+                hlp.log_debug('write_screen:texts', item)
+
                 text_content = item["content"]
                 text_coordinates = item["coordinates"]
 
