@@ -136,6 +136,37 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # draw initial image to canvas
         draw = ImageDraw.Draw(canvas)
 
+        # iterate over image items for screen
+        if "images" in screen:
+            for item in screen["images"]:
+                hlp.log_debug('write_screen:image', item)
+
+                if item["content"] and item["coordinates"]:
+                    content = item["content"]
+                    coordinates = item["coordinates"]
+
+                    hlp.log_debug('write_screen:image', 'write image')
+                    # TODO: write image
+
+                else:
+                    hlp.log_debug('write_screen:image', 'incomplete data, skip write image')
+
+        # iterate over shape items for screen
+        if "shapes" in screen:
+            for item in screen["shapes"]:
+                hlp.log_debug('write_screen:shapes', item)
+
+                if item["coordinates"] and item["fill"] and item["type"]:
+                    coordinates = item["coordinates"]
+                    fill = item["fill"]
+                    type = item["type"]
+
+                    hlp.log_debug('write_screen:shapes', 'write shape')
+                    # TODO: write shape
+
+                else:
+                    hlp.log_debug('write_screen:shapes', 'incomplete data, skip write shape')
+
         # iterate over text items for screen
         if "texts" in screen:
             for item in screen["texts"]:
