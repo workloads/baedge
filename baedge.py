@@ -126,11 +126,11 @@ def write_screen(epd, screen_name, sleep_screen=False):
         )
 
         # create canvas for downstream population with relevant data
-        # see https://pillow.readthedocs.io/en/latest/reference/Image.html#PIL.Image.new
+        # see https://pillow.readthedocs.io/en/latesmt/reference/Image.html#PIL.Image.new
         canvas = Image.new(
             mode=cfg.baedge["image_mode"],
             size=(epd.height, epd.width),
-            fill=255,
+            color=255,
         )
 
         # draw initial image to canvas

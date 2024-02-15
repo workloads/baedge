@@ -1,10 +1,7 @@
 """ application """
 
-import logging
+from PIL import Image, ImageDraw
 
-from PIL import Image, ImageDraw, ImageFont
-
-import helpers as hlp
 import config as cfg
 
 # to do: move to a more logical place
