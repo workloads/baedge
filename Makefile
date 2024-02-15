@@ -45,7 +45,7 @@ lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
 		*.py
 
 .SILENT .PHONY: snyk
-snyk: # lint Python files using Flake8 and Pylint [Usage: `make snyk`]
+snyk: # check Python files using Snyk [Usage: `make snyk`]
 	snyk \
 		test \
 			--command="${BINARY_PYTHON}" \

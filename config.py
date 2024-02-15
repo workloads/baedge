@@ -137,7 +137,7 @@ screens = {
         "baedge",
         "hardware",
         "nomad",
-        "socials",
+        "wearer",
     ],
 
     # the `socials` screen displays wearer information
@@ -217,8 +217,8 @@ screens = {
         ],
     },
 
-    # the `socials` screen displays wearer information
-    "socials": {
+    # the `wearer` screen displays wearer information
+    "wearer": {
         "font": {
             "face": media["fonts"]["robotomono"] + "/regular.ttf",
             "size": 15,
