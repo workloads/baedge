@@ -57,6 +57,9 @@ baedge = {
     # see https://pillow.readthedocs.io/en/latest/handbook/concepts.html#concept-modes
     "image_mode": "1",
 
+    # initial screen to display
+    "initial_screen": "baedge",
+
     # QR code configuration
     "qrcode": {
         # `box_size` defines how many pixels each block of the QR code is

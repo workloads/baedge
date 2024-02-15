@@ -223,6 +223,9 @@ if __name__ == "__main__":
         hlp.log_debug(__name__, 'initialize screen')
         server.epd = baedge.initialize_screen()
 
+        hlp.log_debug(__name__, 'write initial screen: ' + cfg.baedge["initial_screen"])
+        baedge.write_screen(server.epd, cfg.baedge["initial_screen"])
+
     else:
         hlp.log_debug(__name__, 'skip screen initialization')
 
