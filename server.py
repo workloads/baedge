@@ -241,7 +241,7 @@ if __name__ == "__main__":
         debug=cfg.app["debug"],
         host=cfg.app["host"],
         port=cfg.app["port"],
-        load_dotenv=cfg.app["dotenv"],
+        load_dotenv=cfg.app["load_dotenv"],
 
         # using Flask's reloader functionality is highly likely to cause issues with several Waveshare eInk screen models
         # as the reloader bypasses the required screen sleep and initialization steps, resulting in `GPIO busy` errors.

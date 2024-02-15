@@ -10,7 +10,7 @@ app = {
     "description": "{Ba,E}dge Computing Server",
 
     # `dotenv` is expected to be bool
-    "dotenv": bool(os.getenv("BAEDGE_SERVER_DOTENV", "false")),
+    "load_dotenv": bool(os.getenv("BAEDGE_SERVER_DOTENV", "false")),
 
     "fonts": os.getenv("BAEDGE_FONTS_PATH", "./media/fonts"),
 
