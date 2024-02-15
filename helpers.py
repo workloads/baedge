@@ -8,8 +8,8 @@ def log_info(identifier, message):
     Log an info-level item containing an identifier and a message
 
     Parameters:
-      identifier (string):      A function or route identifier.
-      message (string or dict): A string or dict of the debug message.
+      identifier (string):      Function or route identifier.
+      message (string or dict): String or Dict of info-level message.
 
     Returns:
       bool: Boolean True
@@ -29,8 +29,8 @@ def log_debug(identifier, message):
     Log a debug-level item containing an identifier and a message
 
     Parameters:
-        identifier (string):      A function or route identifier.
-        message (string or dict): A string or dict of the debug message.
+        identifier (string):      Function or route identifier.
+        message (string or dict): String or Dict of debug-level message.
 
     Returns:
         bool: Boolean True
@@ -50,8 +50,8 @@ def log_error(identifier, message):
     Log an error-level item containing an identifier and a message
 
     Parameters:
-      identifier (string): A function or route identifier.
-      message (string):    A string of the error message.
+      identifier (string):      Function or route identifier.
+      message (string or dict): String of error-level message.
 
     Returns:
       bool: Boolean True
@@ -67,8 +67,8 @@ def log_exception(identifier, exception):
     Log an exception-level item containing an identifier and an exception
 
     Parameters:
-        identifier (string):   A function or route identifier.
-        exception (exception): An exception of the error.
+        identifier (string):   Function or route identifier.
+        exception (exception): Exception.
 
     Returns:
         bool: Boolean True
