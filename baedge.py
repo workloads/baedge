@@ -130,7 +130,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
         canvas = Image.new(
             mode=cfg.baedge["image_mode"],
             size=(epd.height, epd.width),
-            color=255,
+            fill=255,
         )
 
         # draw initial image to canvas
@@ -139,19 +139,25 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # iterate over text items for screen
         if "texts" in screen:
             for item in screen["texts"]:
-                hlp.log_debug('write_screen:texts', item)
+                hlp.log_debug('write_screen:text', item)
 
-                text_content = item["content"]
-                text_coordinates = item["coordinates"]
+                if item["content"] and item["coordinates"] and item["fill"]:
+                    content = item["content"]
+                    coordinates = item["coordinates"]
+                    fill = item["fill"]
 
-                # assemble text object
-                # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
-                draw.text(
-                    text_coordinates,
-                    text_content,
-                    font=font,
-                    fill=0
-                )
+                    hlp.log_debug('write_screen:text', 'write text')
+                    # assemble text object
+                    # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
+                    draw.text(
+                        coordinates,
+                        content,
+                        font=font,
+                        fill=fill
+                    )
+
+                else:
+                    hlp.log_debug('write_screen:text', 'incomplete data, skip write text')
 
         # check if QR Code configuration is present and prep QR code image
         if "qrcode" not in screen:
