@@ -140,7 +140,7 @@ screens = {
     # the `socials` screen displays wearer information
     "baedge": {
         "font": {
-            "face": media["fonts"]["isidorasans"] + "/regular.ttf",
+            "face": media["fonts"]["robotomono"] + "/regular.ttf",
             "size": 15,
         },
 
