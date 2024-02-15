@@ -8,38 +8,6 @@ import config as cfg
 FONT_FACE = "RobotoMono/regular.ttf"
 FONT_SIZE = 15
 
-"""
-def write_to_screen(epd, text, image):
-    try:
-        # init_screen()
-        epd.Clear()
-        font_config = ImageFont.truetype(font_face, font_size)
-        # 255 = clear background frame
-        image = Image.new('1', (epd.height, epd.width), 255)
-
-        draw = ImageDraw.Draw(image)
-        draw.text((5, 60), text, font=font_config, fill=0)
-
-        epd.display_Base(epd.getbuffer(image))
-
-        logging.debug("[write_text] sleep screen")
-        epd.sleep()
-
-        return True
-
-    except IOError as e:
-        logging.error("[write_text] exception occurred")
-        logging.exception(e)
-
-        return False
-
-    except KeyboardInterrupt:
-        logging.debug("[write_to_screen] keyboard interrupt")
-
-        epd.module_exit()
-        sys.exit()
-"""
-
 
 def write_text(epd, text, style):
     # attempt at partial refresh, TODO
