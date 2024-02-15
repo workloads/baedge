@@ -53,6 +53,7 @@ routes          list Baedge Server routes using Flask         `make routes`
 run             run Baedge Server using Flask                 `make run`
 env-info        print Baedge Environment information          `make env-info`
 gpio-info       print GPIO information using Python           `make gpio-info`
+screen          set Baedge Screen                             `make screen screen=<screen>`
 help            display a list of Make Targets                `make help`
 _listincludes   list all included Makefiles and *.mk files    `make _listincludes`
 _selfcheck      lint Makefile                                 `make _selfcheck`

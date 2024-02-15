@@ -6,9 +6,14 @@ BINARY_PYTHON ?= python3
 FLAKE_CONFIG  ?= ".flake8"
 FLASK_APP     ?= server
 FLASK_PORT    ?= 2343
+NOMAD_SERVICE ?= "baedge-main"
 PYLINT_RCFILE ?= ".pylintrc"
 
+# retrieve Baedge Server API information from Nomad
+BAEDGE_API = $(shell nomad service info -t '{{range .}}{{printf "http://%s:%v\n" .Address .Port }}{{end}}' "${NOMAD_SERVICE}")
+
 include ../tooling/make/configs/shared.mk
+include ../tooling/make/functions/shared.mk
 include ../tooling/make/targets/shared.mk
 
 .SILENT .PHONY: deps
@@ -72,3 +77,15 @@ env-info: # print Baedge Environment information [Usage: `make env-info`]
 gpio-info: # print GPIO information using Python [Usage: `make gpio-info`]
 	${BINARY_PYTHON} \
 		gpio.py
+
+.SILENT .PHONY: screen
+screen: # set Baedge Screen [Usage: `make screen screen=<screen>`]
+	$(if $(screen),,$(call missing_argument,screen=<screen>))
+
+	echo "Attempting to write screen \`${screen}\` on device...\n"
+
+	curl \
+		--location \
+		--request POST \
+  	"${BAEDGE_API}/v1/device/write" \
+		--form "screen=\"$(screen)\""
