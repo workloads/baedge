@@ -48,7 +48,7 @@ deps            install dependencies                          `make deps`
 deps-dev        install development dependencies              `make deps-dev`
 fix             fix Python files using autopep8               `make fix`
 lint            lint Python files using Flake8 and Pylint     `make lint`
-snyk            lint Python files using Flake8 and Pylint     `make snyk`
+snyk            check Python files using Snyk                 `make snyk`
 routes          list Baedge Server routes using Flask         `make routes`
 run             run Baedge Server using Flask                 `make run`
 env-info        print Baedge Environment information          `make env-info`
