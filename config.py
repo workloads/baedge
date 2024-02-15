@@ -241,7 +241,6 @@ screens = {
         "qrcode": {
             "content": baedge["wearer"]["link"],
             "coordinates": (120, 60),
-            "fill": 255,
         },
     },
 }
