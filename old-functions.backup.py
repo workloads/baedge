@@ -13,14 +13,6 @@ FONT_SIZE = 15
 
 """
 def write_to_screen(epd, text, image):
-    #write content to eInk screen
-    logging.debug("[write_to_screen] text: %s", text)
-    logging.debug("[write_to_screen] image: %s", image)
-
-    if not len(text) > 0 and not len(image) > 0:
-        logging.error("[write_to_screen] `image` and `text` are empty, nothing to display")
-        return False
-
     try:
         # init_screen()
         epd.Clear()
@@ -53,25 +45,6 @@ def write_to_screen(epd, text, image):
 
 
 def write_text(epd, text, style):
-    """ write textual content to eInk screen """
-    hlp.log_debug('write_text', 'init')
-
-    hlp.log_debug('write_text', 'text: ' + text)
-    hlp.log_debug('write_text', 'style: ' + style)
-
-    # to do: move this up and define more globally
-    font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
-
-    epd.init()
-    # epd.Clear()
-
-    image = Image.new('1', (epd.height, epd.width), 255)
-
-    draw = ImageDraw.Draw(image)
-    draw.text((5, 60), text, font=font, fill=0)
-
-    epd.display(epd.getbuffer(image))
-
     # attempt at partial refresh, TODO
     # epd.display_Base_color(0xff)
     #
@@ -88,38 +61,7 @@ def write_text(epd, text, style):
     epd.sleep()
 
 
-def write_baedge_info(epd):
-    """ write Baedge info to eInk screen """
-    hlp.log_debug('write_baedge_info', 'init')
-
-    # to do: move this up and define more globally
-    text = "{Ba,e}dge\n go.workloads.io/baedge"
-
-    font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
-
-    # 255 = clear background frame
-    image = Image.new('1', (epd.height, epd.width), 255)
-    draw = ImageDraw.Draw(image)
-
-    draw.text((cfg.baedge["coordinates"]["qrcode"]), text, font=font, fill=0)
-
-    epd.display(epd.getbuffer(image))
-
-    logging.debug("[write_baedge_info] sleep screen")
-    # epd.sleep()
-
-    return True
-
-
 def write_nomad_info(epd):
-    """ write Nomad info to eInk screen """
-    hlp.log_debug('write_nomad_info', 'init')
-
-    font = ImageFont.truetype(FONT_FACE, FONT_SIZE)
-
-    # to do: move this up and define more globally
-    text = cfg.nomad["allocation"] + "\n" + cfg.nomad["address"]
-
     nimage = Image.new('1', (epd.height, epd.width), 255)
     draw = ImageDraw.Draw(nimage)
 
@@ -130,14 +72,3 @@ def write_nomad_info(epd):
 
     # draw a black rectangle on the top
     draw.rectangle((32, 0, 750, 31), fill=0)
-
-    # write out Nomad in white
-    draw.text((40, 0), "Nomad", font=font, fill=255)
-
-    # write out Nomad info in black
-    draw.text((0, 50), text, font=font, fill=0)
-
-    # write to screen
-    epd.display(epd.getbuffer(nimage))
-
-    return True
