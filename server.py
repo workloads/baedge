@@ -233,7 +233,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_signal)
 
     # start Flask application
-    hlp.log_debug(__name__, 'initialize Flask')
+    hlp.log_info(__name__, 'start server at http://' + cfg.app["host"] + ":" + str(cfg.app["port"]))
     server.run(
         debug=cfg.app["debug"],
         host=cfg.app["host"],
