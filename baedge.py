@@ -102,9 +102,9 @@ def write_screen(epd, screen_name, sleep_screen=False):
     Write contents to screen
 
     Parameters:
-        epd (object):        Object containing EPD library and configuration
-        screen (string):     String indicating which screen to load data from
-        sleep_screen (bool): Boolean indicating wether to sleep display or not
+        epd (object):         Object containing EPD library and configuration
+        screen_name (string): String indicating which screen to load data from
+        sleep_screen (bool):  Boolean indicating wether to sleep display or not
 
     Returns:
         bool: Boolean True if contents were written successfully
