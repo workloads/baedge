@@ -227,11 +227,11 @@ screens = {
         "texts": [
             {
                 "content": f'''
-              {baedge["wearer"]["name"]}
-              {baedge["wearer"]["title"]}
+                  {baedge["wearer"]["name"]}
+                  {baedge["wearer"]["title"]}
 
-              {baedge["wearer"]["social"]}
-            ''',
+                  {baedge["wearer"]["social"]}
+                ''',
 
                 "coordinates": (5, 5),
                 "fill": 255,
