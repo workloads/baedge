@@ -49,7 +49,7 @@ def handle_signal(signal_name, signal_frame):
           bool: Boolean True
     """
 
-    hlp.log_debug('handle_signal', 'catch `' + signal_name + '`, attempt graceful shutdown')
+    hlp.log_debug('handle_signal', 'catch signal `' + str(signal_name) + '`, attempt graceful shutdown')
 
     # attempt to clear the screen without sleeping to allow for releasing GPIO
     baedge.clear_screen(
