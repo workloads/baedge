@@ -160,8 +160,8 @@ def write_screen(epd, screen_name, sleep_screen=False):
         else:
             if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
                 try:
-                    qrc_content = screen["qrcode"]["content"]
-                    qrc_coordinates = screen["qrcode"]["coordinates"]
+                    content = screen["qrcode"]["content"]
+                    coordinates = screen["qrcode"]["coordinates"]
 
                     hlp.log_debug('write_screen', 'prep QR code image')
 
@@ -172,14 +172,14 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     )
 
                     # add data to image and make it fit the bounding box
-                    qrc_image.add_data(qrc_content)
+                    qrc_image.add_data(content)
                     qrc_image.make(cfg.baedge["qrcode"]["fit"])
 
                     hlp.log_debug('write_screen:qrcode_image', qrc_image)
                     qrc_image.make_image()
 
-                    hlp.log_debug('write_screen', 'place QR code image at coordinates: ' + str(qrc_coordinates))
-                    # canvas.paste(qrc_image, qrc_coordinates)
+                    hlp.log_debug('write_screen', 'place QR code image at coordinates: ' + str(coordinates))
+                    canvas.paste(qrc_image, coordinates)
 
                 except ValueError as e:
                     hlp.log_exception('write_screen', e)
