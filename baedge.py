@@ -154,18 +154,18 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # iterate over shape items for screen
         if "shapes" in screen:
             for item in screen["shapes"]:
-                hlp.log_debug('write_screen:shapes', item)
+                hlp.log_debug('write_screen:shape', item)
 
                 if item["coordinates"] and item["fill"] and item["type"]:
                     coordinates = item["coordinates"]
                     fill = item["fill"]
                     type = item["type"]
 
-                    hlp.log_debug('write_screen:shapes', 'write shape')
+                    hlp.log_debug('write_screen:shape', 'write shape')
                     # TODO: write shape
 
                 else:
-                    hlp.log_debug('write_screen:shapes', 'incomplete data, skip write shape')
+                    hlp.log_debug('write_screen:shape', 'incomplete data, skip write shape')
 
         # iterate over text items for screen
         if "texts" in screen:
@@ -178,6 +178,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     fill = item["fill"]
 
                     hlp.log_debug('write_screen:text', 'write text')
+
                     # assemble text object
                     # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
                     draw.text(
@@ -192,7 +193,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
 
         # check if QR Code configuration is present and prep QR code image
         if "qrcode" not in screen:
-            hlp.log_debug('write_screen', 'skip QR code configuration')
+            hlp.log_debug('write_screen:qrcode', 'incomplete data, skip write QR code')
 
         else:
             if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
@@ -200,7 +201,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     content = screen["qrcode"]["content"]
                     coordinates = screen["qrcode"]["coordinates"]
 
-                    hlp.log_debug('write_screen', 'prep QR code image')
+                    hlp.log_debug('write_screen:qrcode', 'prep QR code image')
 
                     # see https://pypi.org/project/qrcode/#advanced-usage
                     qrc_image = qrcode.QRCode(
@@ -212,14 +213,14 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     qrc_image.add_data(content)
                     qrc_image.make(cfg.baedge["qrcode"]["fit"])
 
-                    hlp.log_debug('write_screen:qrcode_image', qrc_image)
+                    hlp.log_debug('write_screen:qrcode', qrc_image)
                     qrc_image.make_image()
 
-                    hlp.log_debug('write_screen', 'place QR code image at coordinates: ' + str(coordinates))
+                    hlp.log_debug('write_screen:qrcode', 'place QR code image at coordinates: ' + str(coordinates))
                     canvas.paste(qrc_image, coordinates)
 
                 except ValueError as e:
-                    hlp.log_exception('write_screen', e)
+                    hlp.log_exception('write_screen:qrcode', e)
                     return None
 
         canvas.show()
