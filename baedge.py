@@ -172,7 +172,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
             for item in screen["texts"]:
                 hlp.log_debug('write_screen:text', item)
 
-                if item["content"] and item["coordinates"] and item["fill"]:
+                if "content" in item and "coordinates" in item and "fill" in item:
                     content = item["content"]
                     coordinates = item["coordinates"]
                     fill = item["fill"]
@@ -187,7 +187,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         font=font,
                         fill=fill
                     )
-
+                    print(coordinates,content,font,fill)
                 else:
                     hlp.log_debug('write_screen:text', 'incomplete data, skip write text')
 
@@ -223,7 +223,8 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     hlp.log_exception('write_screen:qrcode', e)
                     return None
 
-        canvas.show()
+        print(canvas.show())
+        print(canvas)
 
         # get buffered canvas data and update display
         epd.display(epd.getbuffer(canvas))
