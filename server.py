@@ -96,9 +96,11 @@ def apple_touch_icon():
     hlp.log_debug('GET ' + cfg.routes["apple-touch-icon"], 'init')
 
     # render file and return default status
+    # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     return send_from_directory(
         as_attachment=False,
         directory=cfg.app["media"],
+        etag=True,
         mimetype='image/png',
         path=cfg.media["web"]["apple-touch-icon"],
     )
@@ -111,9 +113,11 @@ def favicon():
     hlp.log_debug('GET ' + cfg.routes["favicon"], 'init')
 
     # render file and return default status
+    # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     return send_from_directory(
         as_attachment=False,
         directory=cfg.app["media"],
+        etag=True,
         mimetype='image/vnd.microsoft.icon',
         path=cfg.media["web"]["favicon"],
     )
