@@ -7,7 +7,7 @@ app = {
     # `debug` is expected to be bool
     "debug": bool(os.getenv("BAEDGE_SERVER_DEBUG", "false")),
 
-    "description": "{Ba,E}dge Computing Server",
+    "description": "Compute Server",
 
     # `dotenv` is expected to be bool
     "load_dotenv": bool(os.getenv("BAEDGE_SERVER_DOTENV", "false")),
@@ -31,7 +31,7 @@ app = {
     },
 
     "media": os.getenv("BAEDGE_MEDIA_PATH", "./media"),
-    "name": os.getenv("BAEDGE_SERVER_NAME", "🎫 Baedge Server."),
+    "name": os.getenv("BAEDGE_SERVER_NAME", "Baedge"),
 
     # define namespaces for routes
     "namespaces": {
