@@ -156,7 +156,7 @@ screens = {
                 ''',
 
                 "coordinates": (5, 5),
-                "fill": 255,
+                "fill": 0,
             },
         ]
     },
@@ -176,7 +176,7 @@ screens = {
                 ''',
 
                 "coordinates": (5, 5),
-                "fill": 255,
+                "fill": 0,
             },
         ]
     },
