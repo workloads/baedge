@@ -194,6 +194,16 @@ def write_screen(epd, screen_name, sleep_screen=False):
                 hlp.log_debug('write_screen:text', item)
 
                 if "content" in item and "coordinates" in item and "fill" in item:
+                    font_size = screen["font"]["size"]
+                    # while the longest single line of text (based on splitting by \n, getting the longest one, and comparing its length)
+                    while font.getlength(max(item["content"].split("\n"), key=len)) > max(epd.width, epd.height):
+                        hlp.log_debug("write_scree:text", "Overriding font size to fit on screen")
+                        font_size -= 1
+                        font = ImageFont.truetype(
+                               screen["font"]["face"],
+                               font_size,
+                         )    
+                    hlp.log_debug("write_screen:text", "Final font size, adjusted for tthe screen size:" + str(font_size))
                     content = item["content"]
                     coordinates = item["coordinates"]
                     fill = item["fill"]
