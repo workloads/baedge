@@ -36,6 +36,25 @@ else:
     SKIP_INITIALIZE_SCREEN = True
 
 
+def generate_relative_coordinates(height, width, offset, object_size):
+    longer = max(height, width)
+    shorter = min(height, width)
+    print(longer, shorter)
+    x = 0
+    y = 0
+    # if negative offset, relative to bottom right
+    if offset < 0:
+       print(object_size[0])
+       print(offset)
+       x = abs(offset)*(longer-object_size[0])
+       y = abs(offset)*(shorter-object_size[1])
+    # if positive offset, relative to upper left
+    else:
+        x = int(offset*longer)
+        y = int(offset*shorter)
+
+    return (x,y)
+
 def initialize_screen():
     """
     Initialize screen for use
