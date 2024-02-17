@@ -43,16 +43,18 @@ def generate_relative_coordinates(height, width, offset, object_size):
     x = 0
     y = 0
     # if negative offset, relative to bottom right
+    # calculate, in an int, the position by substracting the offset + the object size from the bottom right coordinates (edge of heightxwidth)
     if offset < 0:
        print(object_size[0])
        print(offset)
-       x = abs(offset)*(longer-object_size[0])
-       y = abs(offset)*(shorter-object_size[1])
+       x = int(longer - (abs(offset) * longer) - object_size[0])
+       y = int(shorter - (abs(offset) * shorter) - object_size[1])
     # if positive offset, relative to upper left
     else:
         x = int(offset*longer)
         y = int(offset*shorter)
 
+    print (x,y)
     return (x,y)
 
 def initialize_screen():
@@ -215,11 +217,10 @@ def write_screen(epd, screen_name, sleep_screen=False):
             hlp.log_debug('write_screen:qrcode', 'incomplete data, skip write QR code')
 
         else:
-            if screen["qrcode"]["content"] and screen["qrcode"]["coordinates"]:
+            if screen["qrcode"]["content"] and screen["qrcode"]["offset"]:
                 try:
                     content = screen["qrcode"]["content"]
-                    coordinates = screen["qrcode"]["coordinates"]
-
+                    # the (21,21) refers to the QR code image size, which matches the "version" 1 of the QR Code generation lib
                     hlp.log_debug('write_screen:qrcode', 'prep QR code image')
 
                     # see https://pypi.org/project/qrcode/#advanced-usage
@@ -234,7 +235,10 @@ def write_screen(epd, screen_name, sleep_screen=False):
 
                     hlp.log_debug('write_screen:qrcode', qrc_image)
                     qrc_canvas = qrc_image.make_image()
+                    print(qrc_canvas)
+                    print(qrc_canvas.size)
 
+                    coordinates = generate_relative_coordinates(epd.height, epd.width, screen["qrcode"]["offset"], qrc_canvas.size) 
                     hlp.log_debug('write_screen:qrcode', 'place QR code image at coordinates: ' + str(coordinates))
                     canvas.paste(qrc_canvas, coordinates)
 
