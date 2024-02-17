@@ -149,12 +149,7 @@ screens = {
 
         "texts": [
             {
-                "content": f'''
-                  {app["description"]}
-
-                  go.workloads.io/baedge
-                ''',
-
+                "content": app["description"] + "\ngo.workloads.io/baedge",
                 "coordinates": (5, 5),
                 "fill": 0,
             },
@@ -170,11 +165,7 @@ screens = {
 
         "texts": [
             {
-                "content": f'''
-                    Model:    {baedge["hardware"]["model"]}
-                    Revision: {baedge["hardware"]["revision"]}
-                ''',
-
+                "content": "Model:    " + baedge["hardware"]["model"] + "\nRevision: " + baedge["hardware"]["revision"],
                 "coordinates": (5, 5),
                 "fill": 0,
             },
@@ -205,12 +196,7 @@ screens = {
 
         "texts": [
             {
-                "content": f'''
-                  Allocation ID {nomad["allocation"]}
-                  Address:      {nomad["address"]}
-                  Version:      {nomad["version"]}
-                ''',
-
+                "content": "Allocation ID:" +  nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
                 "coordinates": (5, 5),
                 "fill": 255,
             }
@@ -226,13 +212,7 @@ screens = {
 
         "texts": [
             {
-                "content": f'''
-                  {baedge["wearer"]["name"]}
-                  {baedge["wearer"]["title"]}
-
-                  {baedge["wearer"]["social"]}
-                ''',
-
+                "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n\n" + baedge["wearer"]["social"],
                 "coordinates": (5, 5),
                 "fill": 255,
             }

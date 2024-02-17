@@ -183,7 +183,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     # see https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html#PIL.ImageDraw.Draw
                     draw.text(
                         coordinates,
-                        content,
+                        content.lstrip(),
                         font=font,
                         fill=fill
                     )
@@ -214,10 +214,10 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     qrc_image.make(cfg.baedge["qrcode"]["fit"])
 
                     hlp.log_debug('write_screen:qrcode', qrc_image)
-                    qrc_image.make_image()
+                    qrc_canvas = qrc_image.make_image()
 
                     hlp.log_debug('write_screen:qrcode', 'place QR code image at coordinates: ' + str(coordinates))
-                    canvas.paste(qrc_image, coordinates)
+                    canvas.paste(qrc_canvas, coordinates)
 
                 except ValueError as e:
                     hlp.log_exception('write_screen:qrcode', e)
