@@ -63,10 +63,10 @@ baedge = {
     # QR code configuration
     "qrcode": {
         # `box_size` defines how many pixels each block of the QR code is
-        "box_size": 4,
+        "box_size": 3,
 
         # `fit` defines wether the image should be made to fit the bounding box
-        "fit": True,
+      "fit": True,
 
         # `version` is a range between 1 and 40, indicating the size
         "version": 1,
@@ -214,13 +214,14 @@ screens = {
             {
                 "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n\n" + baedge["wearer"]["social"],
                 "coordinates": (5, 5),
-                "fill": 255,
+                "fill": 0,
             }
         ],
 
         "qrcode": {
             "content": baedge["wearer"]["link"],
-            "coordinates": (120, 60),
+            "offset": -0.001
+            #"coordinates": (120, 60),
         },
     },
 }
