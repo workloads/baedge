@@ -66,7 +66,7 @@ baedge = {
         "box_size": 3,
 
         # `fit` defines wether the image should be made to fit the bounding box
-      "fit": True,
+        "fit": True,
 
         # `version` is a range between 1 and 40, indicating the size
         "version": 1,
@@ -196,7 +196,7 @@ screens = {
 
         "texts": [
             {
-                "content": "Allocation ID:" +  nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
+                "content": "Allocation ID:" + nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
                 "coordinates": (5, 5),
                 "fill": 255,
             }
@@ -221,7 +221,7 @@ screens = {
         "qrcode": {
             "content": baedge["wearer"]["link"],
             "offset": -0.001
-            #"coordinates": (120, 60),
+            # "coordinates": (120, 60),
         },
     },
 }

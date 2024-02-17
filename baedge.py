@@ -45,17 +45,18 @@ def generate_relative_coordinates(height, width, offset, object_size):
     # if negative offset, relative to bottom right
     # calculate, in an int, the position by substracting the offset + the object size from the bottom right coordinates (edge of heightxwidth)
     if offset < 0:
-       print(object_size[0])
-       print(offset)
-       x = int(longer - (abs(offset) * longer) - object_size[0])
-       y = int(shorter - (abs(offset) * shorter) - object_size[1])
+        print(object_size[0])
+        print(offset)
+        x = int(longer - (abs(offset) * longer) - object_size[0])
+        y = int(shorter - (abs(offset) * shorter) - object_size[1])
     # if positive offset, relative to upper left
     else:
         x = int(offset*longer)
         y = int(offset*shorter)
 
-    print (x,y)
-    return (x,y)
+    print(x, y)
+    return (x, y)
+
 
 def initialize_screen():
     """
@@ -200,9 +201,10 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         hlp.log_debug("write_scree:text", "Overriding font size to fit on screen")
                         font_size -= 1
                         font = ImageFont.truetype(
-                               screen["font"]["face"],
-                               font_size,
-                         )    
+                            screen["font"]["face"],
+                            font_size,
+                        )
+
                     hlp.log_debug("write_screen:text", "Final font size, adjusted for tthe screen size:" + str(font_size))
                     content = item["content"]
                     coordinates = item["coordinates"]
@@ -218,7 +220,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         font=font,
                         fill=fill
                     )
-                    print(coordinates,content,font,fill)
+                    print(coordinates, content, font, fill)
                 else:
                     hlp.log_debug('write_screen:text', 'incomplete data, skip write text')
 
@@ -230,9 +232,8 @@ def write_screen(epd, screen_name, sleep_screen=False):
             if screen["qrcode"]["content"] and screen["qrcode"]["offset"]:
                 try:
                     content = screen["qrcode"]["content"]
-                    # the (21,21) refers to the QR code image size, which matches the "version" 1 of the QR Code generation lib
-                    hlp.log_debug('write_screen:qrcode', 'prep QR code image')
 
+                    hlp.log_debug('write_screen:qrcode', 'prep QR code image')
                     # see https://pypi.org/project/qrcode/#advanced-usage
                     qrc_image = qrcode.QRCode(
                         box_size=cfg.baedge["qrcode"]["box_size"],
@@ -248,7 +249,8 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     print(qrc_canvas)
                     print(qrc_canvas.size)
 
-                    coordinates = generate_relative_coordinates(epd.height, epd.width, screen["qrcode"]["offset"], qrc_canvas.size) 
+                    coordinates = generate_relative_coordinates(
+                        epd.height, epd.width, screen["qrcode"]["offset"], qrc_canvas.size)
                     hlp.log_debug('write_screen:qrcode', 'place QR code image at coordinates: ' + str(coordinates))
                     canvas.paste(qrc_canvas, coordinates)
 
