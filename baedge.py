@@ -157,36 +157,37 @@ def write_screen(epd, screen_name, sleep_screen=False):
         # draw initial image to canvas
         draw = ImageDraw.Draw(canvas)
 
-        # iterate over image items for screen
-        if "images" in screen:
-            for item in screen["images"]:
-                hlp.log_debug('write_screen:image', item)
-
-                if item["content"] and item["coordinates"]:
-                    content = item["content"]
-                    coordinates = item["coordinates"]
-
-                    hlp.log_debug('write_screen:image', 'write image')
-                    # TODO: write image
-
-                else:
-                    hlp.log_debug('write_screen:image', 'incomplete data, skip write image')
-
         # iterate over shape items for screen
         if "shapes" in screen:
             for item in screen["shapes"]:
                 hlp.log_debug('write_screen:shape', item)
 
-                if item["coordinates"] and item["fill"] and item["type"]:
-                    coordinates = item["coordinates"]
-                    fill = item["fill"]
-                    type = item["type"]
-
-                    hlp.log_debug('write_screen:shape', 'write shape')
-                    # TODO: write shape
+                if "coordinates" in item and "fill" in item and "type" in item:
+                    hlp.log_debug('write_screen:shape', "Complete data to write a shape, trying to write it")
+                    if item["type"] == "rectangle":
+                        hlp.log_debug('write_screen:shape', "Creating a rectangle") 
+                        draw.rectangle(item["coordinates"], fill=item["fill"])
+                    else:
+                        hlp.log_debug('write_screen:shape', "Unknown shape type: " + itme["type"] + ", skipping")
 
                 else:
                     hlp.log_debug('write_screen:shape', 'incomplete data, skip write shape')
+
+        # iterate over image items for screen
+        if "images" in screen:
+            for item in screen["images"]:
+                hlp.log_debug('write_screen:image', item)
+
+                if "content" in item and "coordinates" in item:
+                    content = item["content"]
+                    coordinates = item["coordinates"]
+
+                    hlp.log_debug('write_screen:image', 'write image')
+                    image = Image.open(item["content"])
+                    canvas.paste(image, item["coordinates"])
+
+                else:
+                    hlp.log_debug('write_screen:image', 'incomplete data, skip write image')
 
         # iterate over text items for screen
         if "texts" in screen:
@@ -194,12 +195,22 @@ def write_screen(epd, screen_name, sleep_screen=False):
                 hlp.log_debug('write_screen:text', item)
 
                 if "content" in item and "coordinates" in item and "fill" in item:
-                    font_size = screen["font"]["size"]
+                    text_font = font
+                    if "font" in item and "size" in item["font"] and "face" in item["font"]:
+                        hlp.log_debug("write_scree:text", "Overriding font with per-text specified one")
+                        text_font = ImageFont.truetype(
+                            item["font"]["face"],
+                            item["font"]["size"],
+                        )
+                        font_size = item["font"]["size"]
+                    else:
+                        font_size = screen["font"]["size"]
                     # while the longest single line of text (based on splitting by \n, getting the longest one, and comparing its length)
+                    # used to make the text small enough to fit on the screen
                     while font.getlength(max(item["content"].split("\n"), key=len)) > max(epd.width, epd.height):
                         hlp.log_debug("write_scree:text", "Overriding font size to fit on screen")
                         font_size -= 1
-                        font = ImageFont.truetype(
+                        text_font = ImageFont.truetype(
                                screen["font"]["face"],
                                font_size,
                          )    
@@ -215,7 +226,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     draw.text(
                         coordinates,
                         content.lstrip(),
-                        font=font,
+                        font=text_font,
                         fill=fill
                     )
                     print(coordinates,content,font,fill)
