@@ -89,8 +89,8 @@ media = {
     },
 
     "images": {
-        "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/32x32.png",
-        "nomad_logo": app["media"] + "/images/logomarks/nomad/32x32.png",
+        "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/light-32x32.png",
+        "nomad_logo": app["media"] + "/images/logomarks/nomad/dark-32x32.png",
     },
 
     # files in this dict are served through Flask's `send_from_directory`
@@ -182,13 +182,13 @@ screens = {
         "images": [
             {
                 "content": media["images"]["hashicorp_logo"],
-                "coordinates": (5, 5),
+                "coordinates": (2, 10),
             },
         ],
 
         "shapes": [
             {
-                "coordinates": (32, 0, 750, 31),
+                "coordinates": (0, 0, 750, 52),
                 "fill": 0,
                 "type": "rectangle",
             },
@@ -196,9 +196,18 @@ screens = {
 
         "texts": [
             {
-                "content": "Allocation ID:" +  nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
-                "coordinates": (5, 5),
+                "content": "Nomad Runtime",
+                "coordinates": (45, 10),
                 "fill": 255,
+                "font": {
+                    "face": media["fonts"]["robotomono"] + "/bold.ttf",
+                    "size": 23
+                }
+            },
+            {
+                "content": "Allocation ID:" +  nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
+                "coordinates": (10, 60),
+                "fill": 0,
             }
         ],
     },
