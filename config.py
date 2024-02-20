@@ -90,7 +90,8 @@ media = {
 
     "images": {
         "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/light-32x32.png",
-        "nomad_logo": app["media"] + "/images/logomarks/nomad/dark-32x32.png",
+        "nomad_logo": app["media"] + "/images/logomarks/nomad/light-32x32.png",
+        "baedge_logo": app["media"] + "/images/logomarks/baedge/light-128x32.png"
     },
 
     # files in this dict are served through Flask's `send_from_directory`
@@ -146,11 +147,24 @@ screens = {
             "face": media["fonts"]["robotomono"] + "/regular.ttf",
             "size": 15,
         },
+        "images": [
+            {
+                "content": media["images"]["baedge_logo"],
+                "coordinates": (10, 10),
+            },
+        ],
 
+        "shapes": [
+            {
+                "coordinates": (0, 0, 750, 52),
+                "fill": 0,
+                "type": "rectangle",
+            },
+        ],
         "texts": [
             {
                 "content": app["description"] + "\ngo.workloads.io/baedge",
-                "coordinates": (5, 5),
+                "coordinates": (5, 70),
                 "fill": 0,
             },
         ]
@@ -162,11 +176,24 @@ screens = {
             "face": media["fonts"]["robotomono"] + "/regular.ttf",
             "size": 15,
         },
+        "images": [
+            {
+                "content": media["images"]["baedge_logo"],
+                "coordinates": (10, 10),
+            },
+        ],
 
+        "shapes": [
+            {
+                "coordinates": (0, 0, 750, 52),
+                "fill": 0,
+                "type": "rectangle",
+            },
+        ],
         "texts": [
             {
                 "content": "Model:    " + baedge["hardware"]["model"] + "\nRevision: " + baedge["hardware"]["revision"],
-                "coordinates": (5, 5),
+                "coordinates": (5, 70),
                 "fill": 0,
             },
         ]
