@@ -149,7 +149,7 @@ screens = {
 
         "texts": [
             {
-                "content": app["description"] + "\ngo.workloads.io/baedge",
+                "content": app["description"] + "\n" + baedge["wearer"]["link"],
                 "coordinates": (5, 5),
                 "fill": 0,
             },
