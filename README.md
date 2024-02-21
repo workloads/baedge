@@ -8,6 +8,7 @@
 * [{Ba,E}dge Computing Server](#baedge-computing-server)
   * [Table of Contents](#table-of-contents)
   * [Requirements](#requirements)
+    * [Hardware](#hardware)
     * [Software](#software)
       * [Development](#development)
   * [Usage](#usage)
@@ -16,6 +17,14 @@
 <!-- TOC -->
 
 ## Requirements
+
+### Hardware
+
+- [Raspberry Pi Zero 2W](https://www.raspberrypi.org/products/raspberry-pi-zero-2-w/)
+- Waveshare eInk display
+  - [2.13 inch display](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT_(B))
+  - (preferred) [2.7 inch display](https://www.waveshare.com/wiki/2.7inch_e-Paper_HAT_(B))
+  - [2.9 inch display](https://www.waveshare.com/wiki/2.9inch_e-Paper_Module_(B))
 
 ### Software
 
