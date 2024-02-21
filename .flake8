@@ -1,0 +1,5 @@
+[flake8]
+count = True
+
+# see https://flake8.pycqa.org/en/latest/user/options.html#cmdoption-flake8-max-line-length
+max-line-length = 125

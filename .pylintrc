@@ -1,0 +1,14 @@
+# see https://pylint.pycqa.org/en/latest/user_guide/configuration/all-options.html
+
+[MAIN]
+fail-under      = 9.5
+ignore-patterns = ^\.#
+max-line-length = 125
+persistent      = true
+py-version      = 3.11
+suggestion-mode = true
+
+[REPORTS]
+output-format = colorized
+reports       = false
+score         = true

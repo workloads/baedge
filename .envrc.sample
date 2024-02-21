@@ -1,0 +1,19 @@
+# general configuration
+export LOG_LEVEL="DEBUG"
+
+# Baedge-specific configuration
+export BAEDGE_SERVER_DEBUG="true"
+export BAEDGE_MEDIA_PATH="/opt/baedge-assets"
+export BAEDGE_HARDWARE_MODEL="2in7b"
+export BAEDGE_HARDWARE_REVISION="_V2"
+
+# (human) wearer-specific configuration
+export BAEDGE_WEARER_NAME="{Ba,e}dge."
+export BAEDGE_WEARER_TITLE="Orchestration at the Edge of Human and Compute."
+export BAEDGE_WEARER_SOCIAL="@wrklds"
+export BAEDGE_WEARER_LINK="https://workloads.io"
+
+# Nomad-specific configuration
+export NOMAD_SHORT_ALLOC_ID="1a2b3c4d"
+export NOMAD_VERSION="0.0.0"
+export NOMAD_ADDRESS="127.0.0.1"
