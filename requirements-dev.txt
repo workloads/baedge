@@ -4,4 +4,4 @@
 
 autopep8==2.0.4
 flake8==7.0.0
-pylint=3.0.3
+pylint==3.0.3
