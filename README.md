@@ -8,14 +8,24 @@
 * [{Ba,E}dge Computing Server](#baedge-computing-server)
   * [Table of Contents](#table-of-contents)
   * [Requirements](#requirements)
+    * [Hardware](#hardware)
     * [Software](#software)
       * [Development](#development)
   * [Usage](#usage)
+  * [Notes](#notes)
   * [Contributors](#contributors)
   * [License](#license)
 <!-- TOC -->
 
 ## Requirements
+
+### Hardware
+
+- [Raspberry Pi Zero 2W](https://www.raspberrypi.org/products/raspberry-pi-zero-2-w/)
+- Waveshare eInk display
+  - [2.13 inch display](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT_(B))
+  - (preferred) [2.7 inch display](https://www.waveshare.com/wiki/2.7inch_e-Paper_HAT_(B))
+  - [2.9 inch display](https://www.waveshare.com/wiki/2.9inch_e-Paper_Module_(B))
 
 ### Software
 
@@ -58,6 +68,10 @@ help            display a list of Make Targets                `make help`
 _listincludes   list all included Makefiles and *.mk files    `make _listincludes`
 _selfcheck      lint Makefile                                 `make _selfcheck`
 ```
+
+## Notes
+
+The `baedge` application is designed to be orchestrated using the [`baedge` Nomad Pack](https://github.com/workloads/nomad-pack-registry/tree/main/packs/baedge) available in the [@workloads Nomad Pack Registry](https://github.com/workloads/nomad-pack-registry).
 
 ## Contributors
 
