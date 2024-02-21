@@ -12,6 +12,7 @@
     * [Software](#software)
       * [Development](#development)
   * [Usage](#usage)
+  * [Notes](#notes)
   * [Contributors](#contributors)
   * [License](#license)
 <!-- TOC -->
@@ -67,6 +68,10 @@ help            display a list of Make Targets                `make help`
 _listincludes   list all included Makefiles and *.mk files    `make _listincludes`
 _selfcheck      lint Makefile                                 `make _selfcheck`
 ```
+
+## Notes
+
+The `baedge` application is designed to be orchestrated using the [`baedge` Nomad Pack](https://github.com/workloads/nomad-pack-registry/tree/main/packs/baedge) available in the [@workloads Nomad Pack Registry](https://github.com/workloads/nomad-pack-registry).
 
 ## Contributors
 
