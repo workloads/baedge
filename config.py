@@ -43,6 +43,7 @@ app = {
     "port": int(os.getenv("BAEDGE_SERVER_PORT", "2343")),  # `2343` = `BDGE`
 
     "prefix": "/v1",
+    "static_files": os.getenv("BAEDGE_STATIC_FILES_PATH", "./media/web"),
     "templates": os.getenv("BAEDGE_TEMPLATES_PATH", "./media/templates"),
 }
 
