@@ -8,11 +8,11 @@ def log_info(identifier, message):
     Log an info-level item containing an identifier and a message
 
     Parameters:
-      identifier (string):      Function or route identifier.
-      message (string or dict): String or Dict of info-level message.
+        identifier (string):      Function or route identifier.
+        message (string or dict): String or Dict of info-level message.
 
     Returns:
-      bool: Boolean True
+        bool: Boolean True
     """
 
     # if `message` is a dict, print the individual keys and values
@@ -50,11 +50,11 @@ def log_error(identifier, message):
     Log an error-level item containing an identifier and a message
 
     Parameters:
-      identifier (string):      Function or route identifier.
-      message (string or dict): String of error-level message.
+        identifier (string):      Function or route identifier.
+        message (string or dict): String of error-level message.
 
     Returns:
-      bool: Boolean True
+        bool: Boolean True
     """
 
     log.error("[%s] %s", identifier, message)
