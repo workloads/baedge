@@ -67,6 +67,7 @@ def handle_signal(signal_name, signal_frame):
 # load Flask and disable wildcard static file serving
 server = Flask(
     __name__,
+    static_url_path='',
     static_folder=cfg.app["static_files"],
     template_folder=cfg.app["templates"],
 )
