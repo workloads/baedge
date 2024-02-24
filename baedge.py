@@ -159,9 +159,12 @@ def write_screen(epd, screen_name, sleep_screen=False):
                 if item["coordinates"] and item["fill"] and item["type"]:
                     coordinates = item["coordinates"]
                     fill = item["fill"]
-                    type = item["type"]
+
+                    # don't use `type` as it overrides a builtin
+                    shape_type = item["type"]
 
                     hlp.log_debug('write_screen:shape', 'write shape')
+                    hlp.log_debug('write_screen:shape', 'shape_type is: ' + shape_type)
                     # TODO: write shape
 
                 else:
@@ -174,7 +177,9 @@ def write_screen(epd, screen_name, sleep_screen=False):
 
                 if "content" in item and "coordinates" in item and "fill" in item:
                     font_size = screen["font"]["size"]
-                    # while the longest single line of text (based on splitting by \n, getting the longest one, and comparing its length)
+                    # TODO: is this still necessary with multiple `text` items?
+                    # while the longest single line of text (based on splitting by \n,
+                    # getting the longest one, and comparing its length)
                     while font.getlength(max(item["content"].split("\n"), key=len)) > max(epd.width, epd.height):
                         hlp.log_debug("write_scree:text", "Overriding font size to fit on screen")
                         font_size -= 1
