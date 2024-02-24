@@ -197,7 +197,7 @@ screens = {
         "texts": [
             {
                 # TODO: split into multiple `texts` items
-                "content": "Allocation ID:" + nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
+                "content": "Allocation ID:" + nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],  # noqa: E501
                 "coordinates": (5, 5),
                 "fill": 255,
             }
@@ -213,7 +213,7 @@ screens = {
 
         "texts": [
             {
-                "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n\n" + baedge["wearer"]["social"],
+                "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n\n" + baedge["wearer"]["social"],  # noqa: E501
                 "coordinates": (5, 5),
                 "fill": 0,
             }
