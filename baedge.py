@@ -55,7 +55,7 @@ def generate_relative_coordinates(height, width, offset, object_size):
         y = int(offset*shorter)
 
     print(x, y)
-    return (x, y)
+    return x, y
 
 
 def initialize_screen():

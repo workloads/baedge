@@ -196,6 +196,7 @@ screens = {
 
         "texts": [
             {
+                # TODO: split into multiple `texts` items
                 "content": "Allocation ID:" + nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
                 "coordinates": (5, 5),
                 "fill": 255,

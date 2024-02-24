@@ -39,14 +39,14 @@ else:
 # pylint: disable=unused-argument
 def handle_signal(signal_name, signal_frame):
     """
-      Log an exception-level item containing an identifier and an exception
+      Handle System Signal and attempt graceful shutdown.
 
       Parameters:
-          identifier (string):   A function or route identifier.
-          exception (exception): An exception of the error.
+          signal_name  (int):    A signal identifier.
+          signal_frame (object): A signal frame.
 
       Returns:
-          bool: Boolean True
+          n/a
     """
 
     hlp.log_debug('handle_signal', 'catch signal `' + str(signal_name) + '`, attempt graceful shutdown')
