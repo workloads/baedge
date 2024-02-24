@@ -97,6 +97,8 @@ def clear_screen(epd, sleep_screen=False):
         return None
 
 
+# FIXME https://pylint.readthedocs.io/en/stable/user_guide/messages/refactor/too-many-branches.html
+# FIXME https://pylint.readthedocs.io/en/stable/user_guide/messages/refactor/too-many-statements.html
 def write_screen(epd, screen_name, sleep_screen=False):
     """
     Write contents to screen
@@ -177,7 +179,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
 
                 if "content" in item and "coordinates" in item and "fill" in item:
                     font_size = screen["font"]["size"]
-                    # TODO: is this still necessary with multiple `text` items?
+                    # FIXME: is this still necessary with multiple `text` items?
                     # while the longest single line of text (based on splitting by \n,
                     # getting the longest one, and comparing its length)
                     while font.getlength(max(item["content"].split("\n"), key=len)) > max(epd.width, epd.height):
@@ -203,7 +205,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         font=font,
                         fill=fill
                     )
-                    print(coordinates, content, font, fill)
+
                 else:
                     hlp.log_debug('write_screen:text', 'incomplete data, skip write text')
 
@@ -229,8 +231,6 @@ def write_screen(epd, screen_name, sleep_screen=False):
 
                     hlp.log_debug('write_screen:qrcode', qrc_image)
                     qrc_canvas = qrc_image.make_image()
-                    print(qrc_canvas)
-                    print(qrc_canvas.size)
 
                     coordinates = hlp.generate_relative_coordinates(
                         epd.height,
@@ -245,9 +245,6 @@ def write_screen(epd, screen_name, sleep_screen=False):
                 except ValueError as e:
                     hlp.log_exception('write_screen:qrcode', e)
                     return None
-
-        print(canvas.show())
-        print(canvas)
 
         # get buffered canvas data and update display
         epd.display(epd.getbuffer(canvas))
