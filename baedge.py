@@ -36,28 +36,6 @@ else:
     SKIP_INITIALIZE_SCREEN = True
 
 
-def generate_relative_coordinates(height, width, offset, object_size):
-    longer = max(height, width)
-    shorter = min(height, width)
-    print(longer, shorter)
-    x = 0
-    y = 0
-    # if negative offset, relative to bottom right
-    # calculate, in an int, the position by substracting the offset + the object size from the bottom right coordinates (edge of heightxwidth)
-    if offset < 0:
-        print(object_size[0])
-        print(offset)
-        x = int(longer - (abs(offset) * longer) - object_size[0])
-        y = int(shorter - (abs(offset) * shorter) - object_size[1])
-    # if positive offset, relative to upper left
-    else:
-        x = int(offset*longer)
-        y = int(offset*shorter)
-
-    print(x, y)
-    return x, y
-
-
 def initialize_screen():
     """
     Initialize screen for use
@@ -249,8 +227,13 @@ def write_screen(epd, screen_name, sleep_screen=False):
                     print(qrc_canvas)
                     print(qrc_canvas.size)
 
-                    coordinates = generate_relative_coordinates(
-                        epd.height, epd.width, screen["qrcode"]["offset"], qrc_canvas.size)
+                    coordinates = hlp.generate_relative_coordinates(
+                        epd.height,
+                        epd.width,
+                        screen["qrcode"]["offset"],
+                        qrc_canvas.size
+                    )
+
                     hlp.log_debug('write_screen:qrcode', 'place QR code image at coordinates: ' + str(coordinates))
                     canvas.paste(qrc_canvas, coordinates)
 
