@@ -16,4 +16,4 @@ export BAEDGE_WEARER_LINK="https://workloads.io"
 # Nomad-specific configuration
 export NOMAD_SHORT_ALLOC_ID="1a2b3c4d"
 export NOMAD_VERSION="0.0.0"
-export NOMAD_ADDRESS="127.0.0.1"
+export NOMAD_ADDR_main="127.0.0.1"
