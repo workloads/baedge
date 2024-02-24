@@ -99,7 +99,7 @@ def apple_touch_icon():
     # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     return send_from_directory(
         as_attachment=False,
-        directory=cfg.app["media"],
+        directory=cfg.app["media"] + "/images",
         etag=True,
         mimetype='image/png',
         path=cfg.media["web"]["apple-touch-icon"],
@@ -116,7 +116,7 @@ def favicon():
     # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     return send_from_directory(
         as_attachment=False,
-        directory=cfg.app["media"],
+        directory=cfg.app["media"] + "/images",
         etag=True,
         mimetype='image/vnd.microsoft.icon',
         path=cfg.media["web"]["favicon"],
