@@ -39,14 +39,14 @@ else:
 # pylint: disable=unused-argument
 def handle_signal(signal_name, signal_frame):
     """
-      Handle System Signal and attempt graceful shutdown.
+    Handle System Signal and attempt graceful shutdown.
 
-      Parameters:
-          signal_name  (int):    A signal identifier.
-          signal_frame (object): A signal frame.
+    Parameters:
+        signal_name  (int):    A signal identifier.
+        signal_frame (object): A signal frame.
 
-      Returns:
-          n/a
+    Returns:
+        n/a
     """
 
     hlp.log_debug('handle_signal', 'catch signal `' + str(signal_name) + '`, attempt graceful shutdown')
