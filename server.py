@@ -83,10 +83,8 @@ def root_get():
         'index.html',
         title=cfg.app["name"],
         description=cfg.app["description"],
-
-        # `logo_path` must be a path that is actually routed
-        logo_path="/" + cfg.media["web"]["apple-touch-icon"],
-        logo_alt_text=cfg.app["description"],
+        prefix=cfg.app["prefix"],
+        routes=ROUTES,
     ), 200
 
 
@@ -152,19 +150,8 @@ def status_routes_get():
     """ route status endpoint """
     hlp.log_debug('GET ' + cfg.routes["status_routes"], 'init')
 
-    route_list = []
-
-    for route in server.url_map.iter_rules():
-        methods = ', '.join(route.methods)
-
-        route_list.append({
-            'function': route.endpoint,
-            'methods': methods,
-            'path': str(route),
-        })
-
     # render route info and return status 200
-    return make_response(jsonify(route_list), 200)
+    return make_response(jsonify(ROUTES), 200)
 
 
 @server.route(cfg.routes["status_screen"], methods=['GET'])
@@ -217,6 +204,15 @@ def write_post():
 
     return response
 
+
+# assemble formatted route map
+# MUST BE defined after all routes have been added
+ROUTES = hlp.format_url_map(
+    url_map=server.url_map.iter_rules(),
+    hidden_routes=cfg.routes["hidden_routes"],
+    visible_methods=cfg.routes["visible_methods"],
+    visible_prefix=cfg.app["prefix"],
+)
 
 # if no app name is specified, default to running Flask internally
 if __name__ == "__main__":

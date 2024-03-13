@@ -116,3 +116,38 @@ def generate_relative_coordinates(height, width, offset, object_size):
 
     print(x, y)
     return x, y
+
+
+def format_url_map(url_map, hidden_routes, visible_methods, visible_prefix):
+    """
+    Format a (Flask) URL Map to meet certain conditions
+
+    Parameters:
+        url_map (object):        Object of Flask URL Maps
+        hidden_routes (list):    List of Routes that should be hidden (omitted)
+        visible_methods (list):  List of (HTTP) Methods that should be visible
+        visible_prefix (string): Prefix of the visible routes
+
+    Returns:
+        object: Object containing formatted routes
+    """
+
+    routes = {
+        method: [] for method in visible_methods
+    }
+
+    # iterate over all received URLs
+    for route in url_map:
+        # only consider rules that start with `visible_prefix`
+        if str(route).startswith(visible_prefix):
+
+            methods = [
+              method for method in route.methods if method in visible_methods
+            ]
+
+            for method in methods:
+                log_debug('format_url_map', f'route: {route}, method: {method}')
+                routes[method].append(str(route))
+
+    print(routes)
+    return routes

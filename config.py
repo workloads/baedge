@@ -115,6 +115,19 @@ nomad = {
 
 # application routes for Flask
 routes = {
+    # list of methods to show in the `status_routes` endpoint
+    "visible_methods": [
+        "GET",
+        "POST",
+    ],
+
+    # list of routes to hide from the `status_routes` endpoint
+    "hidden_routes": [
+        "/<path:filename>",
+        "/" + media["web"]["apple-touch-icon"],
+        "/" + media["web"]["favicon"],
+    ],
+
     "root": "/",
 
     # favicon-like requests

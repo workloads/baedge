@@ -97,8 +97,6 @@ def clear_screen(epd, sleep_screen=False):
         return None
 
 
-# FIXME https://pylint.readthedocs.io/en/stable/user_guide/messages/refactor/too-many-branches.html
-# FIXME https://pylint.readthedocs.io/en/stable/user_guide/messages/refactor/too-many-statements.html
 def write_screen(epd, screen_name, sleep_screen=False):
     """
     Write contents to screen
