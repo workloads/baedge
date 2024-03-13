@@ -1,21 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="uk-background-primary uk-background-cover">
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/wingcss"/>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/uikit-3.18.3.css">
+
+  <link rel="stylesheet" href="/css/baedge.css">
   <title>{{ title }}</title>
 </head>
-<body>
-  <section class="hero container center text-center full-screen">
-    <div>
-      <img src="{{ logo_path }}" alt="{{ logo_alt_text }}" title="{{ logo_alt_text }}" height="125">
-      <h3>{{ title }}</h3>
-      <h5>{{ description }}</h5>
-    </div>
-  </section>
 
-  <footer class="text-center">
-    <a href="https://github.com/workloads/baedge-server" title="{Ba,E}dge GitHub Project">{Ba,E}dge</a>, made with ❤️ by <a href="https://workloads.io/">Workloads</a>.
+<body>
+
+  <header class="uk-background-secondary uk-light uk-height-1-1">
+    <h1 class="uk-h1 uk-padding-small">
+      {{ title }} &mdash; {{ description }}
+    </h1>
+  </header>
+
+  <main class="uk-container">
+    <div class="uk-section-xsmall">
+      {% for method in routes %}
+
+      {% if method == "GET" %}
+      <div class="uk-label">Status</div>
+      {% elif method == "POST" %}
+      <span class="uk-label uk-label-warning">Device</span>
+      {% endif %}
+
+      {% for route in routes[method] %}
+      <button
+        class="uk-button"
+        hx-{{ method }}="{{ route }}"
+        hx-swap="innerHTML"
+        hx-target="#receiver"
+        hx-trigger="click"
+      >{{ route | trim(prefix) }}</button>
+      {% endfor %}
+      {% endfor %}
+    </div>
+
+    <div class="uk-alert">
+      <h2>
+        API Response
+        <span class="uk-align-right uk-label">Status: <span id="response-status">n/a</span></span>
+      </h2>
+
+      <div class="uk-height-large uk-placeholder uk-panel-scrollable" id="receiver">Pending&hellip;</div>
+    </div>
+  </main>
+
+  <footer class="uk-background-secondary uk-light uk-padding-small uk-position-bottom">
+    <span class="uk-align-left">
+      <a href="/"><img alt="{{ title }} &mdash; {{ description }}" id="footer-icon" src="/images/logo.png" title="{{ title }} &mdash; {{ description }}"></a>
+    </span>
+
+    <span class="uk-align-right">Made with ❤️ by <a href="https://workloads.io/">Workloads</a>.</span>
   </footer>
+
+  <script src="/js/htmx-1.9.10.js" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
 </body>
 </html>

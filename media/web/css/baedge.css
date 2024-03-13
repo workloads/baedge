@@ -1,0 +1,31 @@
+#header-icon {
+  height: 18px;
+  width: 18px;
+}
+
+#footer-icon {
+  height: 36px;
+  width: 36px;
+}
+
+.uk-background-primary {
+  background-color: #eee9fc;
+}
+
+.uk-background-secondary {
+  background-color: #282433;
+}
+
+.uk-button {
+  background-color: #3f3951;
+  color: #eee9fc
+}
+
+.uk-label {
+  background: #938aad;
+}
+
+.uk-light,
+.uk-light a {
+  color: #eee9fc;
+}
