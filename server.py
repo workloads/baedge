@@ -39,14 +39,14 @@ else:
 # pylint: disable=unused-argument
 def handle_signal(signal_name, signal_frame):
     """
-      Log an exception-level item containing an identifier and an exception
+    Handle System Signal and attempt graceful shutdown.
 
-      Parameters:
-          identifier (string):   A function or route identifier.
-          exception (exception): An exception of the error.
+    Parameters:
+        signal_name  (int):    A signal identifier.
+        signal_frame (object): A signal frame.
 
-      Returns:
-          bool: Boolean True
+    Returns:
+        n/a
     """
 
     hlp.log_debug('handle_signal', 'catch signal `' + str(signal_name) + '`, attempt graceful shutdown')
@@ -67,7 +67,8 @@ def handle_signal(signal_name, signal_frame):
 # load Flask and disable wildcard static file serving
 server = Flask(
     __name__,
-    static_folder=None,
+    static_url_path='',
+    static_folder=cfg.app["static_files"],
     template_folder=cfg.app["templates"],
 )
 
@@ -84,7 +85,7 @@ def root_get():
         description=cfg.app["description"],
 
         # `logo_path` must be a path that is actually routed
-        logo_path="/" + cfg.media["web"]["favicon"],
+        logo_path="/" + cfg.media["web"]["apple-touch-icon"],
         logo_alt_text=cfg.app["description"],
     ), 200
 
@@ -99,7 +100,7 @@ def apple_touch_icon():
     # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     return send_from_directory(
         as_attachment=False,
-        directory=cfg.app["media"],
+        directory=cfg.app["static_files"] + "/images",
         etag=True,
         mimetype='image/png',
         path=cfg.media["web"]["apple-touch-icon"],
@@ -116,7 +117,7 @@ def favicon():
     # see https://flask.palletsprojects.com/en/3.0.x/api/#flask.send_from_directory
     return send_from_directory(
         as_attachment=False,
-        directory=cfg.app["media"],
+        directory=cfg.app["static_files"] + "/images",
         etag=True,
         mimetype='image/vnd.microsoft.icon',
         path=cfg.media["web"]["favicon"],

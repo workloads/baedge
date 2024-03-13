@@ -36,27 +36,6 @@ else:
     SKIP_INITIALIZE_SCREEN = True
 
 
-def generate_relative_coordinates(height, width, offset, object_size):
-    longer = max(height, width)
-    shorter = min(height, width)
-    print(longer, shorter)
-    x = 0
-    y = 0
-    # if negative offset, relative to bottom right
-    # calculate, in an int, the position by substracting the offset + the object size from the bottom right coordinates (edge of heightxwidth)
-    if offset < 0:
-       print(object_size[0])
-       print(offset)
-       x = int(longer - (abs(offset) * longer) - object_size[0])
-       y = int(shorter - (abs(offset) * shorter) - object_size[1])
-    # if positive offset, relative to upper left
-    else:
-        x = int(offset*longer)
-        y = int(offset*shorter)
-
-    print (x,y)
-    return (x,y)
-
 def initialize_screen():
     """
     Initialize screen for use
@@ -118,6 +97,8 @@ def clear_screen(epd, sleep_screen=False):
         return None
 
 
+# FIXME https://pylint.readthedocs.io/en/stable/user_guide/messages/refactor/too-many-branches.html
+# FIXME https://pylint.readthedocs.io/en/stable/user_guide/messages/refactor/too-many-statements.html
 def write_screen(epd, screen_name, sleep_screen=False):
     """
     Write contents to screen
@@ -229,7 +210,6 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         font=text_font,
                         fill=fill
                     )
-                    print(coordinates,content,font,fill)
                 else:
                     hlp.log_debug('write_screen:text', 'incomplete data, skip write text')
 
@@ -256,19 +236,20 @@ def write_screen(epd, screen_name, sleep_screen=False):
 
                     hlp.log_debug('write_screen:qrcode', qrc_image)
                     qrc_canvas = qrc_image.make_image()
-                    print(qrc_canvas)
-                    print(qrc_canvas.size)
 
-                    coordinates = generate_relative_coordinates(epd.height, epd.width, screen["qrcode"]["offset"], qrc_canvas.size) 
+                    coordinates = hlp.generate_relative_coordinates(
+                        epd.height,
+                        epd.width,
+                        screen["qrcode"]["offset"],
+                        qrc_canvas.size
+                    )
+
                     hlp.log_debug('write_screen:qrcode', 'place QR code image at coordinates: ' + str(coordinates))
                     canvas.paste(qrc_canvas, coordinates)
 
                 except ValueError as e:
                     hlp.log_exception('write_screen:qrcode', e)
                     return None
-
-        print(canvas.show())
-        print(canvas)
 
         # get buffered canvas data and update display
         epd.display(epd.getbuffer(canvas))

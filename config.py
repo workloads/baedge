@@ -43,6 +43,7 @@ app = {
     "port": int(os.getenv("BAEDGE_SERVER_PORT", "2343")),  # `2343` = `BDGE`
 
     "prefix": "/v1",
+    "static_files": os.getenv("BAEDGE_STATIC_FILES_PATH", "./media/web"),
     "templates": os.getenv("BAEDGE_TEMPLATES_PATH", "./media/templates"),
 }
 
@@ -248,7 +249,7 @@ screens = {
 
         "texts": [
             {
-                "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n\n" + baedge["wearer"]["social"],
+                "content": baedge["wearer"]["name"] + "\n" + baedge["wearer"]["title"] + "\n\n" + baedge["wearer"]["social"],  # noqa: E501
                 "coordinates": (5, 5),
                 "fill": 0,
             }
