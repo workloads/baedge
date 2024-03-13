@@ -67,7 +67,7 @@ baedge = {
         "box_size": 3,
 
         # `fit` defines wether the image should be made to fit the bounding box
-        "fit": True,
+      "fit": True,
 
         # `version` is a range between 1 and 40, indicating the size
         "version": 1,
@@ -90,8 +90,9 @@ media = {
     },
 
     "images": {
-        "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/32x32.png",
-        "nomad_logo": app["media"] + "/images/logomarks/nomad/32x32.png",
+        "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/light-32x32.png",
+        "nomad_logo": app["media"] + "/images/logomarks/nomad/light-32x32.png",
+        "baedge_logo": app["media"] + "/images/logomarks/baedge/light-128x32.png"
     },
 
     # files in this dict are served through Flask's `send_from_directory`
@@ -147,11 +148,24 @@ screens = {
             "face": media["fonts"]["robotomono"] + "/regular.ttf",
             "size": 15,
         },
+        "images": [
+            {
+                "content": media["images"]["baedge_logo"],
+                "coordinates": (10, 10),
+            },
+        ],
 
+        "shapes": [
+            {
+                "coordinates": (0, 0, 750, 52),
+                "fill": 0,
+                "type": "rectangle",
+            },
+        ],
         "texts": [
             {
-                "content": app["description"] + "\n" + baedge["wearer"]["link"],
-                "coordinates": (5, 5),
+                "content": app["description"] + "\ngo.workloads.io/baedge",
+                "coordinates": (5, 70),
                 "fill": 0,
             },
         ]
@@ -163,11 +177,24 @@ screens = {
             "face": media["fonts"]["robotomono"] + "/regular.ttf",
             "size": 15,
         },
+        "images": [
+            {
+                "content": media["images"]["baedge_logo"],
+                "coordinates": (10, 10),
+            },
+        ],
 
+        "shapes": [
+            {
+                "coordinates": (0, 0, 750, 52),
+                "fill": 0,
+                "type": "rectangle",
+            },
+        ],
         "texts": [
             {
                 "content": "Model:    " + baedge["hardware"]["model"] + "\nRevision: " + baedge["hardware"]["revision"],
-                "coordinates": (5, 5),
+                "coordinates": (5, 70),
                 "fill": 0,
             },
         ]
@@ -183,13 +210,13 @@ screens = {
         "images": [
             {
                 "content": media["images"]["hashicorp_logo"],
-                "coordinates": (5, 5),
+                "coordinates": (2, 10),
             },
         ],
 
         "shapes": [
             {
-                "coordinates": (32, 0, 750, 31),
+                "coordinates": (0, 0, 750, 52),
                 "fill": 0,
                 "type": "rectangle",
             },
@@ -197,10 +224,18 @@ screens = {
 
         "texts": [
             {
-                # TODO: split into multiple `texts` items
-                "content": "Allocation ID:" + nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],  # noqa: E501
-                "coordinates": (5, 5),
+                "content": "Nomad Runtime",
+                "coordinates": (45, 10),
                 "fill": 255,
+                "font": {
+                    "face": media["fonts"]["robotomono"] + "/bold.ttf",
+                    "size": 23
+                }
+            },
+            {
+                "content": "Allocation ID:" +  nomad["allocation"] + "\nAddress:      " + nomad["address"] + "\nVersion:      " + nomad["version"],
+                "coordinates": (10, 60),
+                "fill": 0,
             }
         ],
     },
@@ -223,7 +258,7 @@ screens = {
         "qrcode": {
             "content": baedge["wearer"]["link"],
             "offset": -0.001
-            # "coordinates": (120, 60),
+            #"coordinates": (120, 60),
         },
     },
 }
