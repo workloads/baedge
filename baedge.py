@@ -207,7 +207,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         font_size = screen["font"]["size"]
                     # while the longest single line of text (based on splitting by \n, getting the longest one, and comparing its length)
                     # used to make the text small enough to fit on the screen
-                    while font.getlength(max(item["content"].split("\n"), key=len)) > max(epd.width, epd.height):
+                    while text_font.getlength(max(item["content"].split("\n"), key=len)) > max(epd.width, epd.height):
                         hlp.log_debug("write_scree:text", "Overriding font size to fit on screen")
                         font_size -= 1
                         text_font = ImageFont.truetype(
