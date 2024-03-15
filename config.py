@@ -92,7 +92,8 @@ media = {
     "images": {
         "hashicorp_logo": app["media"] + "/images/logomarks/hashicorp/light-32x32.png",
         "nomad_logo": app["media"] + "/images/logomarks/nomad/light-32x32.png",
-        "baedge_logo": app["media"] + "/images/logomarks/baedge/light-128x32.png"
+        "baedge_logo": app["media"] + "/images/logomarks/baedge/light-128x32.png",
+        "scale_logo": app["media"] + "/images/logomarks/scale/light-240x66.png"
     },
 
     # files in this dict are served through Flask's `send_from_directory`
@@ -153,6 +154,7 @@ screens = {
         "hardware",
         "nomad",
         "wearer",
+        "scale"
     ],
 
     # the `socials` screen displays wearer information
@@ -182,6 +184,26 @@ screens = {
                 "fill": 0,
             },
         ]
+    },
+    "scale": {
+        "font": {
+            "face": media["fonts"]["robotomono"] + "/regular.ttf",
+            "size": 15,
+        },
+
+        "images": [
+            {
+                "content": media["images"]["scale_logo"],
+                "coordinates": (15, 55),
+            },
+        ],
+        "shapes": [
+            {
+                "coordinates": (0, 0, 750, 750),
+                "fill": 0,
+                "type": "rectangle",
+            },
+        ],        
     },
 
     # the `socials` screen displays wearer information
