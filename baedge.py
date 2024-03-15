@@ -72,7 +72,7 @@ def clear_screen(epd, sleep_screen=False):
 
     Parameters:
         epd (object):        Object containing EPD library and configuration
-        sleep_screen (bool): Boolean indicating wether to sleep display or not
+        sleep_screen (bool): Boolean indicating whether to sleep display or not
 
     Returns:
         bool: Boolean True if screen was cleared successfully
@@ -104,7 +104,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
     Parameters:
         epd (object):         Object containing EPD library and configuration
         screen_name (string): String indicating which screen to load data from
-        sleep_screen (bool):  Boolean indicating wether to sleep display or not
+        sleep_screen (bool):  Boolean indicating whether to sleep display or not
 
     Returns:
         bool: Boolean True if contents were written successfully
@@ -147,7 +147,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         hlp.log_debug('write_screen:shape', "Creating a rectangle") 
                         draw.rectangle(item["coordinates"], fill=item["fill"])
                     else:
-                        hlp.log_debug('write_screen:shape', "Unknown shape type: " + itme["type"] + ", skipping")
+                        hlp.log_debug('write_screen:shape', "Unknown shape type: " + item["type"] + ", skipping")
 
                 else:
                     hlp.log_debug('write_screen:shape', 'incomplete data, skip write shape')
