@@ -144,7 +144,7 @@ def write_screen(epd, screen_name, sleep_screen=False):
                 if "coordinates" in item and "fill" in item and "type" in item:
                     hlp.log_debug('write_screen:shape', "Complete data to write a shape, trying to write it")
                     if item["type"] == "rectangle":
-                        hlp.log_debug('write_screen:shape', "Creating a rectangle") 
+                        hlp.log_debug('write_screen:shape', "Creating a rectangle")
                         draw.rectangle(item["coordinates"], fill=item["fill"])
                     else:
                         hlp.log_debug('write_screen:shape', "Unknown shape type: " + item["type"] + ", skipping")
@@ -190,9 +190,9 @@ def write_screen(epd, screen_name, sleep_screen=False):
                         hlp.log_debug("write_scree:text", "Overriding font size to fit on screen")
                         font_size -= 1
                         text_font = ImageFont.truetype(
-                               screen["font"]["face"],
-                               font_size,
-                         )    
+                            screen["font"]["face"],
+                            font_size,
+                        )
                     hlp.log_debug("write_screen:text", "Final font size, adjusted for tthe screen size:" + str(font_size))
                     content = item["content"]
                     coordinates = item["coordinates"]

@@ -1,91 +1,56 @@
 # Makefile for Baedge Server
 
 # configuration
-TITLE          = 🎫 {BA,E}DGE SERVER
-BINARY_PYTHON ?= python3
-FLAKE_CONFIG  ?= ".flake8"
-FLASK_APP     ?= server
-FLASK_PORT    ?= 2343
-NOMAD_SERVICE ?= "baedge-main"
-PYLINT_RCFILE ?= ".pylintrc"
+BAEDGE_API      = $(shell $(BINARY_NOMAD) service info -t '{{range .}}{{printf "http://%s:%v\n" .Address .Port }}{{end}}' "${NOMAD_SERVICE}")
+BINARY_FLASK   ?= flask
+FLASK_APP      ?= server
+FLASK_PORT     ?= 2343
+NOMAD_SERVICE  ?= "baedge-main"
+MAKEFILE_TITLE  = 🎫 {BA,E}DGE SERVER
 
-# retrieve Baedge Server API information from Nomad
-BAEDGE_API = $(shell nomad service info -t '{{range .}}{{printf "http://%s:%v\n" .Address .Port }}{{end}}' "${NOMAD_SERVICE}")
 
 include ../tooling/make/configs/shared.mk
 include ../tooling/make/functions/shared.mk
+include ../tooling/make/targets/python.mk
+include ../tooling/make/functions/snyk.mk
 include ../tooling/make/targets/shared.mk
-
-.SILENT .PHONY: deps
-deps: # install dependencies [Usage: `make deps`]
-	pip \
-		install \
-		--requirement "requirements.txt"
-
-.SILENT .PHONY: deps-dev
-deps-dev: # install development dependencies [Usage: `make deps-dev`]
-	pip \
-		install \
-		--requirement "requirements-dev.txt"
-
-.SILENT .PHONY: fix
-fix: # fix Python files using autopep8 [Usage: `make fix`]
-	autopep8 \
-		--in-place \
-		*.py \
-
-.SILENT .PHONY: lint
-lint: # lint Python files using Flake8 and Pylint [Usage: `make lint`]
-	flake8 \
-		--config="${FLAKE_CONFIG}" \
-		*.py \
-	&& \
-	pylint \
-		--rcfile="${PYLINT_RCFILE}" \
-		*.py
-
-.SILENT .PHONY: snyk
-snyk: # check Python files using Snyk [Usage: `make snyk`]
-	snyk \
-		test \
-			--command="${BINARY_PYTHON}" \
-			--file="requirements.txt" \
-			--package-manager=pip \
-			-- --allow-missing
 
 .SILENT .PHONY: routes
 routes: # list Baedge Server routes using Flask [Usage: `make routes`]
-	flask \
+	$(BINARY_FLASK) \
 		--app="${FLASK_APP}" \
 		routes
 
 .SILENT .PHONY: run
 run: # run Baedge Server using Flask [Usage: `make run`]
-	flask \
+	$(BINARY_FLASK) \
 		--app="${FLASK_APP}" \
 		--debug \
 		run \
 			--port="${FLASK_PORT}"
 
-.SILENT .PHONY: env-info
-env-info: # print Baedge Environment information [Usage: `make env-info`]
-	env | \
-	grep \
-		"BAEDGE_"
+.SILENT .PHONY: env
+env: # print environment information [Usage: `make env-info`]
+	$(call print_env,"BAEDGE_")
 
 .SILENT .PHONY: gpio-info
 gpio-info: # print GPIO information using Python [Usage: `make gpio-info`]
-	${BINARY_PYTHON} \
+	$(BINARY_PYTHON) \
 		gpio.py
 
 .SILENT .PHONY: screen
 screen: # set Baedge Screen [Usage: `make screen screen=<screen>`]
 	$(if $(screen),,$(call missing_argument,screen=<screen>))
 
-	echo "Attempting to write screen \`${screen}\` on device...\n"
+	$(call print_reference,"Attempting to write screen \`${screen}\` on device...\n")
 
-	curl \
+	$(BINARY_CURL) \
 		--location \
 		--request POST \
   	"${BAEDGE_API}/v1/device/write" \
 		--form "screen=\"$(screen)\""
+
+.SILENT .PHONY: snyk
+snyk: # check Python files using Snyk [Usage: `make snyk`]
+	$(call snyk_test,$(BINARY_PYTHON),$(CONFIG_PIP_REQS),pip,"--allow-missing")
+	$(call snyk_test,$(BINARY_PYTHON),$(CONFIG_PIP_REQS_DEV),pip,"--allow-missing")

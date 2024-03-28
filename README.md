@@ -53,20 +53,20 @@ Running `make` without commands will print out the following help information:
 ```text
 🎫 {BA,E}DGE SERVER
 
-Target          Description                                   Usage
-deps            install dependencies                          `make deps`
-deps-dev        install development dependencies              `make deps-dev`
-fix             fix Python files using autopep8               `make fix`
-lint            lint Python files using Flake8 and Pylint     `make lint`
-snyk            check Python files using Snyk                 `make snyk`
-routes          list Baedge Server routes using Flask         `make routes`
-run             run Baedge Server using Flask                 `make run`
-env-info        print Baedge Environment information          `make env-info`
-gpio-info       print GPIO information using Python           `make gpio-info`
-screen          set Baedge Screen                             `make screen screen=<screen>`
-help            display a list of Make Targets                `make help`
-_listincludes   list all included Makefiles and *.mk files    `make _listincludes`
-_selfcheck      lint Makefile                                 `make _selfcheck`
+Target          Description                                          Usage
+routes          list Baedge Server routes using Flask                `make routes`
+run             run Baedge Server using Flask                        `make run`
+env             print environment information                        `make env-info`
+gpio-info       print GPIO information using Python                  `make gpio-info`
+screen          set Baedge Screen                                    `make screen screen=<screen>`
+snyk            check Python files using Snyk                        `make snyk`
+deps            install Python dependencies using pip                `make deps`
+deps-dev        install Python development dependencies using pip    `make deps-dev`
+fix             fix Python files using autopep8                      `make fix`
+lint            lint Python files using Flake8 and Pylint            `make lint`
+help            display a list of Make Targets                       `make help`
+_listincludes   list all included Makefiles and *.mk files           `make _listincludes`
+_selfcheck      lint Makefile                                        `make _selfcheck`
 ```
 
 ## Notes
