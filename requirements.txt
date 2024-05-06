@@ -19,4 +19,4 @@ qrcode==7.4.2
 RPi.GPIO==0.7.1
 spidev==3.6
 typing_extensions==4.9.0
-Werkzeug==3.0.1
+Werkzeug==3.0.3
