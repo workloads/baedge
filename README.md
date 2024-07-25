@@ -56,8 +56,8 @@ Running `make` without commands will print out the following help information:
 Target          Description                                          Usage
 routes          list Baedge Server routes using Flask                `make routes`
 run             run Baedge Server using Flask                        `make run`
-env             print environment information                        `make env-info`
-gpio-info       print GPIO information using Python                  `make gpio-info`
+print-env       print environment information                        `make print-env`
+print-gpio      print GPIO information using Python                  `make print-gpio`
 screen          set Baedge Screen                                    `make screen screen=<screen>`
 snyk            check Python files using Snyk                        `make snyk`
 deps            install Python dependencies using pip                `make deps`
